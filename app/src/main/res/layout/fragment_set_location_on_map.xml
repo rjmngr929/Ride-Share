@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.bottomsheet_fragments.SetLocationOnMapFragment"
+    android:background="@drawable/top_cornor_rounded"
+    android:backgroundTint="@color/bg_dark_secondary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/top_cornor_rounded"
+        android:backgroundTint="@color/bg_dark_secondary"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/_20sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select your location"
+                android:textSize="@dimen/_10ssp"
+                android:textColor="@color/white"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"/>
+
+            <View
+                android:id="@+id/alertdialog_close_btn"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:background="@drawable/ic_close"
+                android:backgroundTint="@color/white"
+                android:padding="@dimen/_12sdp"
+                android:layout_gravity="center"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_4sdp">
+
+            <View
+                android:id="@+id/location_icon"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:background="@drawable/ic_recent_ride_location_icon"
+                android:backgroundTint="@color/primary"
+                android:layout_gravity="top"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/pin_addr_left"/>
+
+            <LinearLayout
+                android:id="@+id/pin_addr_left"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                app:layout_constraintStart_toEndOf="@+id/location_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/change_addr_btn">
+
+                <TextView
+                    android:id="@+id/address_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Railway station "
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
+
+                <TextView
+                    android:id="@+id/locality_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jodhpur, Rajasthan 342001, India"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"
+                    android:fontFamily="@font/poppins_medium"/>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/change_addr_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CHANGE"
+                android:textSize="@dimen/_10ssp"
+                android:textColor="@color/primary"
+                android:fontFamily="@font/poppins_medium"
+                app:layout_constraintStart_toEndOf="@+id/pin_addr_left"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dividerColor="@color/gray"
+            android:layout_marginVertical="@dimen/_6sdp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" save location as"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="@dimen/_4sdp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+               android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_light"
+                android:paddingHorizontal="@dimen/_10ssp"
+                android:paddingVertical="@dimen/_4sdp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="HOME"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_light"
+                android:paddingHorizontal="@dimen/_10ssp"
+                android:paddingVertical="@dimen/_4sdp"
+                android:layout_marginHorizontal="@dimen/_6sdp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Work"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_light"
+                android:paddingHorizontal="@dimen/_10ssp"
+                android:paddingVertical="@dimen/_4sdp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+ADD NEW"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/select_address_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/selectAddress"
+            android:textColor="@color/primary"
+            android:backgroundTint="@color/bg_light"
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+    </LinearLayout>
+
+</FrameLayout>

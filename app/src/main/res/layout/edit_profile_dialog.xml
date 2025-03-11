@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_8sdp"
+    android:background="@drawable/top_cornor_rounded"
+    android:orientation="vertical">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_2sdp"
+        app:dividerColor="@color/white"
+        android:layout_gravity="center"
+        android:layout_marginVertical="@dimen/_12sdp"/>
+
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profile photo"
+        android:textSize="@dimen/_16ssp"
+        android:textColor="@color/white"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_6sdp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:padding="@dimen/_10sdp">
+
+        <LinearLayout
+            android:id="@+id/camera_circle"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/rounded_border"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@+id/textView2"
+            app:layout_constraintEnd_toStartOf="@+id/gallery_circle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_baseline_photo_camera_24"
+                android:backgroundTint="@color/white"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_2sdp"
+            android:layout_marginBottom="14dp"
+            android:text="Camera"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/camera_circle"
+            app:layout_constraintStart_toStartOf="@+id/camera_circle"
+            app:layout_constraintTop_toBottomOf="@+id/camera_circle" />
+
+        <LinearLayout
+            android:id="@+id/gallery_circle"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/rounded_border"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/camera_circle"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_baseline_photo_library_24"
+                android:backgroundTint="@color/white"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gallery_circle"
+            android:layout_marginVertical="@dimen/_2sdp"
+            android:layout_marginBottom="19dp"
+            android:text="Gallery"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/gallery_circle"
+            app:layout_constraintStart_toStartOf="@+id/gallery_circle"
+            app:layout_constraintTop_toBottomOf="@+id/gallery_circle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

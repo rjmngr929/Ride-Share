@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.bottomsheet_fragments.PaymentOptionFragment"
+    android:background="@drawable/top_cornor_rounded"
+    android:backgroundTint="@color/bg_dark_secondary"
+    android:orientation="vertical"
+    android:padding="@dimen/_12sdp"
+    android:scrollbars="none"
+    android:scrollIndicators="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dividerThickness="@dimen/_2sdp"
+            app:dividerInsetStart="150dp"
+            app:dividerInsetEnd="150dp"
+            app:dividerColor="@color/white"
+            android:layout_marginTop="@dimen/_12sdp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_12sdp"
+        android:paddingHorizontal="@dimen/_12sdp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Payment Option"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/alertdialog_close_btn"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:background="@drawable/ic_close"
+            android:backgroundTint="@color/white"
+            android:padding="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_12sdp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Fare"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/_12ssp"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₹ 14.73"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerColor="@color/gray"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Payment Method"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/white"
+        android:layout_marginVertical="@dimen/_12sdp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/wallet_select_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_curved_border"
+        android:backgroundTint="@color/bg_dark_secondary">
+
+        <View
+            android:id="@+id/left_section_select_wallet"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:background="@drawable/ic_wallet"
+            android:backgroundTint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/middle_section_select_wallet"/>
+
+        <LinearLayout
+            android:id="@+id/middle_section_select_wallet"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/_12sdp"
+            app:layout_constraintStart_toEndOf="@+id/left_section_select_wallet"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/select_wallet_radio_btn">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Raido Wallet"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₹ 14.73"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_10ssp"
+                android:fontFamily="@font/poppins_regular"/>
+
+        </LinearLayout>
+
+        <RadioButton
+            android:id="@+id/select_wallet_radio_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/middle_section_select_wallet"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerColor="@color/gray"
+        android:layout_marginVertical="@dimen/_10sdp"/>
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="UPI"-->
+<!--        android:textSize="@dimen/_12ssp"-->
+<!--        android:fontFamily="@font/poppins_medium"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:layout_marginVertical="@dimen/_12sdp"/>-->
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/rounded_curved_border"-->
+<!--        android:backgroundTint="@color/bg_dark_secondary">-->
+
+<!--        <View-->
+<!--            android:id="@+id/left_section_select_phonepe"-->
+<!--            android:layout_width="@dimen/_25sdp"-->
+<!--            android:layout_height="@dimen/_25sdp"-->
+<!--            android:background="@drawable/ic_phonepe_icon"-->
+<!--            android:layout_marginEnd="@dimen/_3sdp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/phonepe_text_label"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/phonepe_text_label"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Phonepe"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="@dimen/_12ssp"-->
+<!--            android:fontFamily="@font/poppins_medium"-->
+<!--            android:layout_marginHorizontal="@dimen/_12sdp"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/left_section_select_phonepe"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/select_phonepe_radio_btn"/>-->
+
+<!--        <RadioButton-->
+<!--            android:id="@+id/select_phonepe_radio_btn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/phonepe_text_label"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginVertical="@dimen/_4sdp"-->
+<!--        android:background="@drawable/rounded_curved_border"-->
+<!--        android:backgroundTint="@color/bg_dark_secondary">-->
+
+<!--        <View-->
+<!--            android:id="@+id/left_section_select_gpay"-->
+<!--            android:layout_width="@dimen/_28sdp"-->
+<!--            android:layout_height="@dimen/_25sdp"-->
+<!--            android:background="@drawable/ic_google_pay_icon"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/gpay_text_label"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/gpay_text_label"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Google pay"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="@dimen/_12ssp"-->
+<!--            android:fontFamily="@font/poppins_medium"-->
+<!--            android:layout_marginHorizontal="@dimen/_12sdp"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/left_section_select_gpay"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/select_gpay_radio_btn"/>-->
+
+<!--        <RadioButton-->
+<!--            android:id="@+id/select_gpay_radio_btn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/gpay_text_label"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--    <com.google.android.material.divider.MaterialDivider-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:dividerColor="@color/gray"-->
+<!--        android:layout_marginVertical="@dimen/_10sdp"/>-->
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Credit and debit cards"-->
+<!--        android:textSize="@dimen/_12ssp"-->
+<!--        android:fontFamily="@font/poppins_medium"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:layout_marginVertical="@dimen/_12sdp"/>-->
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginVertical="@dimen/_4sdp"-->
+<!--        android:background="@drawable/rounded_curved_border"-->
+<!--        android:backgroundTint="@color/bg_dark_secondary">-->
+
+<!--        <View-->
+<!--            android:id="@+id/left_section_select_addcards"-->
+<!--            android:layout_width="@dimen/_25sdp"-->
+<!--            android:layout_height="@dimen/_25sdp"-->
+<!--            android:background="@drawable/ic_wallet"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/addcards_text_label"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/addcards_text_label"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Add card"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="@dimen/_12ssp"-->
+<!--            android:fontFamily="@font/poppins_medium"-->
+<!--            android:layout_marginHorizontal="@dimen/_12sdp"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/left_section_select_addcards"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/select_addcards_radio_btn"/>-->
+
+<!--        <RadioButton-->
+<!--            android:id="@+id/select_addcards_radio_btn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/addcards_text_label"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--    <com.google.android.material.divider.MaterialDivider-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:dividerColor="@color/gray"-->
+<!--        android:layout_marginVertical="@dimen/_10sdp"/>-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="COD"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/_12sdp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cash_select_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_curved_border"
+        android:backgroundTint="@color/bg_dark_secondary">
+
+        <View
+            android:id="@+id/left_section_select_cod"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:background="@drawable/ic_wallet"
+            android:backgroundTint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/cod_text_label"/>
+
+        <TextView
+            android:id="@+id/cod_text_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Cash on delivery"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            app:layout_constraintStart_toEndOf="@+id/left_section_select_cod"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/select_cod_radio_btn"/>
+
+        <RadioButton
+            android:id="@+id/select_cod_radio_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/cod_text_label"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</ScrollView>

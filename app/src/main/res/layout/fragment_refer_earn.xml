@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.bottomsheet_fragments.drawers.ReferEarnFragment"
+    android:background="@drawable/top_cornor_rounded"
+    android:backgroundTint="@color/bg_dark_secondary"
+    android:orientation="vertical">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerThickness="@dimen/_4sdp"
+        app:dividerInsetStart="140dp"
+        app:dividerInsetEnd="140dp"
+        app:dividerColor="@color/white"
+        android:layout_margin="@dimen/_16sdp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_20sdp">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Refer &amp; Earn"
+            android:maxLength="20"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20ssp"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            />
+
+        <View
+            android:id="@+id/alertdialog_close_btn"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:background="@drawable/ic_close"
+            android:backgroundTint="@color/white"
+            android:padding="@dimen/_12sdp"
+            android:layout_gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:scrollIndicators="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_250sdp"
+                android:src="@drawable/refer_banner"/>
+
+
+            <TextView
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="wrap_content"
+                android:text="Earn upto 50 per friend you invite to Rapido"
+                android:textSize="@dimen/_14ssp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:textAlignment="center"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_light"
+                android:padding="@dimen/_14sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="How it works ? "
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:fontFamily="@font/poppins_medium"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/work_left_sec"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Your Friend completes 1 order within 7 days of registration You earn"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_medium"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/work_right_sec"/>
+
+                    <LinearLayout
+                        android:id="@+id/work_right_sec"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="20"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_18ssp"/>
+
+                        <View
+                            android:layout_width="@dimen/_24sdp"
+                            android:layout_height="@dimen/_22sdp"
+                            android:background="@drawable/coin_logo"
+                            android:layout_marginHorizontal="@dimen/_4sdp"/>
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_light"
+                android:padding="@dimen/_14sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginVertical="@dimen/_14sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Invite"
+                    android:layout_gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginBottom="@dimen/_10sdp"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_4sdp">
+
+                    <LinearLayout
+                        android:id="@+id/whatsapp_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/instagram_btn">
+
+                        <View
+                            android:layout_width="@dimen/_35sdp"
+                            android:layout_height="@dimen/_35sdp"
+                            android:background="@drawable/ic_whatsapp_icon"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Whatsapp"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10ssp"
+                            android:layout_marginVertical="@dimen/_2sdp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/instagram_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        app:layout_constraintStart_toEndOf="@+id/whatsapp_btn"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/sms_btn">
+
+                        <View
+                            android:layout_width="@dimen/_35sdp"
+                            android:layout_height="@dimen/_35sdp"
+                            android:background="@drawable/ic_instagram_icon"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Instagram"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10ssp"
+                            android:layout_marginVertical="@dimen/_2sdp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/sms_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        app:layout_constraintStart_toEndOf="@+id/instagram_btn"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/more_btn">
+
+                        <View
+                            android:layout_width="@dimen/_35sdp"
+                            android:layout_height="@dimen/_35sdp"
+                            android:background="@drawable/ic_sms_icon"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SMS"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10ssp"
+                            android:layout_marginVertical="@dimen/_2sdp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/more_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        app:layout_constraintStart_toEndOf="@+id/sms_btn"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <View
+                            android:layout_width="@dimen/_35sdp"
+                            android:layout_height="@dimen/_35sdp"
+                            android:background="@drawable/ic_more_icon"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="More"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10ssp"
+                            android:layout_marginVertical="@dimen/_2sdp"/>
+
+                    </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/refer_now_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Refer Now"
+                android:textColor="@color/primary"
+                android:backgroundTint="@color/bg_light"
+                android:layout_marginBottom="@dimen/_14sdp"
+                android:layout_marginHorizontal="@dimen/_14sdp"
+                android:paddingVertical="@dimen/_10sdp"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</LinearLayout>

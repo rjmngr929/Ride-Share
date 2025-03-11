@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_16sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.bottomsheet_fragments.drawers.payment.DrawerPaymentFragment"
+    android:background="@drawable/top_cornor_rounded"
+    android:backgroundTint="@color/bg_dark_secondary"
+    android:orientation="vertical">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerThickness="@dimen/_4sdp"
+        app:dividerInsetStart="140dp"
+        app:dividerInsetEnd="140dp"
+        app:dividerColor="@color/white"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_12sdp">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Payment"
+            android:maxLength="20"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20ssp"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            />
+
+        <View
+            android:id="@+id/alertdialog_close_btn"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:background="@drawable/ic_close"
+            android:backgroundTint="@color/white"
+            android:padding="@dimen/_12sdp"
+            android:layout_gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollIndicators="none"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wallets"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/white"
+                android:layout_marginVertical="@dimen/_12sdp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_dark_secondary">
+
+                <View
+                    android:id="@+id/left_section_select_wallet"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/ic_wallet"
+                    android:backgroundTint="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                   app:layout_constraintBottom_toTopOf="@+id/add_money_btn"
+                    app:layout_constraintEnd_toStartOf="@+id/middle_section_select_wallet"/>
+
+                <LinearLayout
+                    android:id="@+id/middle_section_select_wallet"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    app:layout_constraintStart_toEndOf="@+id/left_section_select_wallet"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/add_money_btn"
+                    app:layout_constraintEnd_toEndOf="parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Raido Wallet"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        android:fontFamily="@font/poppins_medium"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="₹ 14.73"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_10ssp"
+                        android:fontFamily="@font/poppins_regular"/>
+
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add_money_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+ Add money"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/bg_light"
+                    android:layout_marginVertical="@dimen/_12sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/left_section_select_wallet"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UPI"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/white"
+                android:layout_marginVertical="@dimen/_12sdp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_dark_secondary">
+
+                <View
+                    android:id="@+id/left_section_select_phonepe"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/ic_phonepe_icon"
+                    android:layout_marginEnd="@dimen/_3sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/phonepe_text_label"/>
+
+                <TextView
+                    android:id="@+id/phonepe_text_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Phonepe"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    app:layout_constraintStart_toEndOf="@+id/left_section_select_phonepe"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_4sdp"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_dark_secondary">
+
+                <View
+                    android:id="@+id/left_section_select_gpay"
+                    android:layout_width="@dimen/_28sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/ic_google_pay_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/gpay_text_label"/>
+
+                <TextView
+                    android:id="@+id/gpay_text_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Google pay"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    app:layout_constraintStart_toEndOf="@+id/left_section_select_gpay"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Credit and debit cards"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/white"
+                android:layout_marginVertical="@dimen/_12sdp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_dark_secondary">
+
+                <View
+                    android:id="@+id/left_section_select_addcards"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/ic_wallet"
+                    android:backgroundTint="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/addcards_text_label"/>
+
+                <TextView
+                    android:id="@+id/addcards_text_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Add card"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    app:layout_constraintStart_toEndOf="@+id/left_section_select_addcards"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/white"
+                android:layout_marginVertical="@dimen/_12sdp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_4sdp"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_dark_secondary">
+
+                <View
+                    android:id="@+id/left_section_select_cash"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/ic_wallet"
+                    android:backgroundTint="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/cash_text_label"/>
+
+                <TextView
+                    android:id="@+id/cash_text_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Cash"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    app:layout_constraintStart_toEndOf="@+id/left_section_select_cash"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/show_passbook_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_12sdp"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_light"
+                android:padding="@dimen/_12sdp">
+
+                <View
+                    android:id="@+id/left_section_select_history"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/ic_wallet"
+                    android:backgroundTint="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/history_text_label"/>
+
+                <TextView
+                    android:id="@+id/history_text_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Show Passbook"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    app:layout_constraintStart_toEndOf="@+id/left_section_select_history"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

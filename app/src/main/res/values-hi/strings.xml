@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Raido</string>
+
+    <string name="action_settings">सेटिंग्स</string>
+    <string name="additional_listener_msg">अतिरिक्त श्रोता संदेश</string>
+    <string name="granted_permissions">मंज़ूर किया गया: %s</string>
+    <string name="permanently_denied_permissions">स्थायी रूप से अस्वीकृत: %s</string>
+    <string name="permissions_required">अनुमतियाँ आवश्यक हैं</string>
+    <string name="rationale_permissions">दलील: %s</string>
+    <string name="request_again">पुनः अनुरोध करें</string>
+    <string name="test_activity_permissions">गतिविधि अनुमतियों का परीक्षण करें</string>
+    <string name="okay">ठीक है</string>
+    <string name="change_language">भाषा बदलें</string>
+
+    <!-- Enter Mobile Number Screen -->
+    <string name="securing_your_personal_information_is_our_priority">आपकी व्यक्तिगत जानकारी की सुरक्षा हमारी प्राथमिकता है</string>
+    <string name="enter_phone_number">फोन नंबर दर्ज करें</string>
+    <string name="enter_your_phone_number">अपना फोन नंबर दर्ज करें</string>
+    <string name="create_your_account">अपना खाता बनाएं</string>
+    <string name="hi_welcome_to_raido">नमस्ते! Raido में आपका स्वागत है</string>
+    <string name="get_otp">ओटीपी प्राप्त करें</string>
+    <string name="by_continuing_you_agree_to_the_t_amp_c_and_privacy_policy">
+        जारी रखते हुए, आप सहमत होते हैं %1$s और %2$s
+    </string>
+    <string name="terms_and_conditions">नियम और शर्तें</string>
+    <string name="privacy_policy">गोपनीयता नीति</string>
+    <!-- Enter Mobile Number Screen -->
+
+    <!-- OTP Verify Screen -->
+    <string name="verify_phone">फोन सत्यापित करें</string>
+    <string name="code_has_send_to_">कोड +91 पर भेजा गया है</string>
+    <string name="verify_otp">ओटीपी सत्यापित करें</string>
+    <string name="resend_code">कोड फिर से भेजें</string>
+    <string name="did_nt_get_otp_code">ओटीपी कोड नहीं मिला?</string>
+    <string name="resend_otp_in">ओटीपी फिर से भेजें</string>
+    <!-- OTP Verify Screen -->
+
+    <!-- Validation Fields -->
+    <string name="mobileValidate">फोन नंबर 10 अंकों का होना चाहिए</string>
+    <string name="emptyTextField">यह फ़ील्ड खाली नहीं छोड़ी जा सकती।</string>
+    <!-- Validation Fields -->
+
+    <!-- Database Name -->
+    <string name="database_name">raido_db</string>
+    <string name="change_number">नंबर बदलें?</string>
+    <string name="switch_theme">थीम स्विच करें</string>
+    <!-- Database Name -->
+
+    <!--    ***************************      -->
+    <string name="enable_gps">Enable GPS</string>
+    <string name="required_for_this_app">Required for this app</string>
+    <string name="enable_now">Enable Now</string>
+    <string name="location_permission_not_granted">Location Permission not granted</string>
+    <string name="current_location">Current Location</string>
+    <string name="where_to">Where to?</string>
+    <string name="pickup_location">Pickup Location</string>
+    <string name="request_cab">Request Cab</string>
+    <string name="your_cab_is_arriving">Your Cab is Arriving</string>
+    <string name="requesting_your_cab">Requesting your cab</string>
+    <string name="your_cab_is_booked">Your Cab is Booked</string>
+    <string name="your_cab_has_arrived">Your Cab has Arrived</string>
+    <string name="you_are_on_a_trip">You are on a trip</string>
+    <string name="trip_end">Trip End</string>
+    <string name="take_next_ride">Take Next Ride</string>
+    <string name="route_not_available_choose_different_locations">Route Not Available: Choose different pickup and drop location</string>
+    <string name="google_maps_key">AIzaSyBX1aSFT7snbQd4CaPNtX0VzbhtGCMTXuk</string>
+    <string name="default_notification_channel_id">My_Raido_Notification_Channel</string>
+    <string name="bookRide">Book Ride</string>
+    <string name="cancelRide">Cancel Ride</string>
+    <string name="selectAddress">Select this Address</string>
+    <string name="addMoney">Add Money</string>
+    <string name="update">Update</string>
+    <string name="bike_tab">Bike</string>
+    <string name="auto_tab">Auto</string>
+    <string name="cab_tab">Cab</string>
+    <string name="claimInsuarance">Claim Insurance</string>
+    <string name="emailUs">Email Us</string>
+    <string name="Back_to_home">Back to home</string>
+    <string name="download_bill">Download bill</string>
+    <!--    ***************************      -->
+
+</resources>

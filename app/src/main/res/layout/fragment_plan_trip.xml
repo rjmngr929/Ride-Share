@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.bottomsheet_fragments.PlanTripFragment"
+    android:background="@color/bg_dark_secondary">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:padding="@dimen/_12sdp">
+
+      <com.google.android.material.divider.MaterialDivider
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:dividerThickness="@dimen/_2sdp"
+          app:dividerInsetStart="150dp"
+          app:dividerInsetEnd="150dp"
+          app:dividerColor="@color/white"
+          android:layout_marginTop="@dimen/_12sdp"/>
+
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="@dimen/_12sdp">
+
+          <TextView
+              android:id="@+id/textView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Plan your trip"
+              android:textColor="@color/white"
+              android:textSize="@dimen/_18ssp"
+              android:textStyle="bold"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent" />
+
+          <View
+              android:id="@+id/alertdialog_close_btn"
+              android:layout_width="@dimen/_16sdp"
+              android:layout_height="@dimen/_16sdp"
+              android:background="@drawable/ic_close"
+              android:backgroundTint="@color/white"
+              android:padding="@dimen/_12sdp"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintTop_toTopOf="parent" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <androidx.cardview.widget.CardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:cardCornerRadius="@dimen/_16sdp"
+          app:cardBackgroundColor="@color/bg_light"
+          app:contentPadding="@dimen/_12sdp">
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal"
+              android:gravity="center">
+
+              <LinearLayout
+                  android:layout_width="@dimen/_20sdp"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:gravity="center">
+
+                  <View
+                      android:layout_width="@dimen/_5sdp"
+                      android:layout_height="@dimen/_5sdp"
+                      android:background="@drawable/rounded_border"
+                      android:backgroundTint="@color/white"/>
+
+                  <View
+                      android:id="@+id/verticalDivider"
+                      android:layout_width="@dimen/_1sdp"
+                      android:layout_height="28dp"
+                      android:background="@drawable/vertically_dashed"
+                      android:backgroundTint="@color/white"/>
+
+                  <View
+                      android:layout_width="@dimen/_5sdp"
+                      android:layout_height="@dimen/_5sdp"
+                      android:background="@drawable/rounded_border"
+                      android:backgroundTint="@color/primary"/>
+
+              </LinearLayout>
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">
+
+
+<!--                  <EditText-->
+<!--                      android:id="@+id/source_edittext"-->
+<!--                      android:layout_width="wrap_content"-->
+<!--                      android:layout_height="wrap_content"-->
+<!--                      android:hint="Your current location"-->
+<!--                      android:textColorHint="@color/gray"-->
+<!--                      android:background="@color/bg_light"-->
+<!--                      android:textColor="@color/white"-->
+<!--                      android:textSize="@dimen/_14sdp"-->
+<!--                      android:maxLines="1"-->
+<!--                      android:inputType="text"/>-->
+
+                  <AutoCompleteTextView
+                      android:id="@+id/source_edittext"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="Your current location"
+                      android:textColorHint="@color/gray"
+                      android:background="@color/bg_light"
+                      android:textColor="@color/white"
+                      android:maxLines="1"
+                      android:ellipsize="end"
+                      android:scrollHorizontally="false"
+                      android:singleLine="true"
+                      android:gravity="start"
+                      android:inputType="text"/>
+
+                  <com.google.android.material.divider.MaterialDivider
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      app:dividerColor="@color/white"
+                      android:layout_marginVertical="@dimen/_4sdp"/>
+
+<!--                  <EditText-->
+<!--                      android:id="@+id/destination_edittext"-->
+<!--                      android:layout_width="wrap_content"-->
+<!--                      android:layout_height="wrap_content"-->
+<!--                      android:hint="where to?"-->
+<!--                      android:textColorHint="@color/gray"-->
+<!--                      android:background="@color/bg_light"-->
+<!--                      android:textColor="@color/white"-->
+<!--                      android:textSize="@dimen/_14sdp"-->
+<!--                      android:maxLines="1"-->
+<!--                      android:inputType="text"/>-->
+
+                  <AutoCompleteTextView
+                      android:id="@+id/destination_edittext"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:dropDownWidth="match_parent"
+                      android:hint="where to?"
+                      android:textColorHint="@color/gray"
+                      android:background="@color/bg_light"
+                      android:textColor="@color/white"
+                      android:maxLines="1"
+                      android:ellipsize="end"
+                      android:scrollHorizontally="false"
+                      android:singleLine="true"
+                      android:gravity="start"
+                      android:inputType="text"/>
+
+
+              </LinearLayout>
+
+          </LinearLayout>
+
+      </androidx.cardview.widget.CardView>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
+
+          <androidx.cardview.widget.CardView
+              android:id="@+id/current_state_btn"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:cardCornerRadius="@dimen/_20sdp"
+              app:cardBackgroundColor="@color/bg_light"
+              android:layout_marginVertical="@dimen/_14sdp">
+
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:gravity="center"
+                  android:paddingHorizontal="@dimen/_10sdp"
+                  android:paddingVertical="@dimen/_6sdp">
+                  <View
+                      android:layout_width="@dimen/_14sdp"
+                      android:layout_height="@dimen/_14sdp"
+                      android:background="@drawable/ic_clock_primary"/>
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Now"
+                      android:textSize="@dimen/_10ssp"
+                      android:textColor="@color/white"
+                      android:layout_marginHorizontal="@dimen/_4sdp"/>
+
+                  <View
+                      android:layout_width="@dimen/_10sdp"
+                      android:layout_height="@dimen/_10sdp"
+                      android:background="@drawable/ic_down_arrow" />
+              </LinearLayout>
+
+          </androidx.cardview.widget.CardView>
+
+          <androidx.cardview.widget.CardView
+              android:id="@+id/setOnMap_btn"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:cardCornerRadius="@dimen/_20sdp"
+              app:cardBackgroundColor="@color/bg_light"
+              android:layout_marginHorizontal="@dimen/_10sdp"
+              android:layout_marginVertical="@dimen/_14sdp">
+
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:gravity="center"
+                  android:paddingHorizontal="@dimen/_10sdp"
+                  android:paddingVertical="@dimen/_6sdp">
+                  <View
+                      android:layout_width="@dimen/_10sdp"
+                      android:layout_height="@dimen/_14sdp"
+                      android:background="@drawable/ic_marker_primary"/>
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Set on Map"
+                      android:textSize="@dimen/_10ssp"
+                      android:textColor="@color/white"
+                      android:layout_marginHorizontal="@dimen/_4sdp"/>
+              </LinearLayout>
+
+          </androidx.cardview.widget.CardView>
+
+          <androidx.cardview.widget.CardView
+              android:id="@+id/add_stop_btn"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:cardCornerRadius="@dimen/_20sdp"
+              app:cardBackgroundColor="@color/bg_light"
+              android:layout_marginVertical="@dimen/_14sdp">
+
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:gravity="center"
+                  android:paddingHorizontal="@dimen/_10sdp"
+                  android:paddingVertical="@dimen/_6sdp">
+                  <LinearLayout
+                      android:layout_width="@dimen/_14sdp"
+                      android:layout_height="@dimen/_14sdp"
+                      android:gravity="center"
+                      android:background="@drawable/rounded_border"
+                      android:backgroundTint="@color/primary">
+                      <TextView
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="+"
+                          android:textSize="@dimen/_10ssp"
+                          android:textColor="@color/bg_dark"/>
+                  </LinearLayout>
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Add Stop"
+                      android:textSize="@dimen/_10ssp"
+                      android:textColor="@color/white"
+                      android:layout_marginHorizontal="@dimen/_4sdp"/>
+              </LinearLayout>
+
+          </androidx.cardview.widget.CardView>
+
+      </LinearLayout>
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Recent Ride's"
+          android:textSize="@dimen/_18ssp"
+          android:textColor="@color/white"
+          android:textStyle="bold"
+          android:textAlignment="center"/>
+
+      <include
+          android:id="@+id/emptylist"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          layout="@layout/data_not_found"
+          android:layout_gravity="center"
+          android:visibility="gone"
+          android:layout_marginVertical="@dimen/_20sdp"/>
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/recyclerView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          tools:itemCount="10"
+          tools:listitem="@layout/recent_rides_row_layout" />
+
+  </LinearLayout>
+
+</FrameLayout>

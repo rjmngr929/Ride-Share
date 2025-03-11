@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.bottomsheet_fragments.driver.DriverInfoFragment"
+    android:background="@drawable/top_cornor_rounded"
+    android:backgroundTint="@color/bg_dark_secondary"
+    android:orientation="vertical"
+    android:fillViewport="true"
+    android:scrollbars="none"
+    android:scrollIndicators="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dividerThickness="@dimen/_2sdp"
+            app:dividerInsetStart="150dp"
+            app:dividerInsetEnd="150dp"
+            app:dividerColor="@color/white"
+            android:layout_marginTop="@dimen/_16sdp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_12sdp"
+            android:paddingHorizontal="@dimen/_16sdp">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You’ve arrived"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18ssp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/alertdialog_close_btn"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:background="@drawable/ic_close"
+                android:backgroundTint="@color/white"
+                android:padding="@dimen/_12sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/bg_dark"
+            android:text="Make sure your belongins are not left behind"
+            android:textSize="@dimen/_12ssp"
+            android:textAlignment="center"
+            android:background="@color/primary"
+            android:fontFamily="@font/poppins_medium"
+            android:padding="@dimen/_8sdp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_12sdp"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/_12sdp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_6sdp">
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Driver’s Name"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_4sdp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Royal Enfield"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"
+                    android:maxLength="30"
+                    android:ellipsize="end"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="|"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_marginHorizontal="@dimen/_4sdp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DL7CD8977"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"
+                    android:maxLength="10"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_4sdp">
+                <TextView
+                    android:id="@+id/trip_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trip complited"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white"
+                    android:layout_alignParentStart="true"/>
+
+                <LinearLayout
+                    android:id="@+id/trip_id_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentEnd="true">
+                    <TextView
+                        android:id="@+id/trip_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="lorem#998765432109"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/white"/>
+                    <View
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:background="@drawable/ic_copy_icon"
+                        android:layout_marginHorizontal="@dimen/_4sdp"/>
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/date_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white"
+                    android:layout_below="@+id/trip_label"
+                    android:layout_alignParentStart="true"/>
+
+                <TextView
+                    android:id="@+id/date_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sunday, 20 october 2024"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white"
+                    android:layout_below="@+id/trip_id_layout"
+                    android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="How’s your trip?"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_12sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(Give 1 to 5 stars about your trip)"
+                android:textSize="@dimen/_10ssp"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/_12sdp"/>
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:stepSize="0.2"
+                android:layout_gravity="center"
+                android:progressTint="@color/primary"
+                android:progressBackgroundTint="#a8a8a8"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="@color/gray"
+                android:layout_marginVertical="@dimen/_4sdp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_light"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    android:paddingVertical="@dimen/_8sdp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trip Details"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/white"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:background="@drawable/rounded_curved_border"
+                        android:backgroundTint="@color/primary"
+                        android:padding="@dimen/_6sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true">
+                        <View
+                            android:layout_width="@dimen/_12sdp"
+                            android:layout_height="@dimen/_12sdp"
+                            android:background="@drawable/ic_coin_vertical"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+23coins"
+                            android:textSize="@dimen/_8ssp"
+                            android:textColor="@color/bg_dark"
+                            />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    android:paddingVertical="@dimen/_4sdp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pickup Location"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/white"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Railway station"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/white"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    android:paddingVertical="@dimen/_4sdp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Destination"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/white"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Home"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/white"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:dividerColor="@color/gray"
+                    android:layout_marginVertical="@dimen/_4sdp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    android:paddingVertical="@dimen/_8sdp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Payment Method"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/white"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cash"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/white"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_4sdp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/back_home_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/bg_light"
+                    android:text="@string/Back_to_home"
+                    android:textColor="@color/primary"
+                    android:layout_marginHorizontal="@dimen/_4sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/bill_download_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bill_download_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/bg_light"
+                    android:text="@string/download_bill"
+                    android:textColor="@color/primary"
+                    android:layout_marginHorizontal="@dimen/_4sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/back_home_btn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

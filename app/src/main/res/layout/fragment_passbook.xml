@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.bottomsheet_fragments.drawers.payment.PassbookFragment"
+    android:background="@drawable/top_cornor_rounded"
+    android:backgroundTint="@color/bg_dark_secondary"
+    android:padding="@dimen/_16sdp"
+    android:orientation="vertical">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerThickness="@dimen/_4sdp"
+        app:dividerInsetStart="140dp"
+        app:dividerInsetEnd="140dp"
+        app:dividerColor="@color/white"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_12sdp">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Passbook"
+            android:maxLength="20"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20ssp"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            />
+
+        <View
+            android:id="@+id/alertdialog_close_btn"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:background="@drawable/ic_close"
+            android:backgroundTint="@color/white"
+            android:padding="@dimen/_12sdp"
+            android:layout_gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:itemCount="2"
+        tools:listitem="@layout/transaction_history_item" />
+
+</LinearLayout>

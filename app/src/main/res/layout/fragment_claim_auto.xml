@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/bg_dark_secondary"
+    android:paddingTop="@dimen/_12sdp"
+    tools:context=".ui.home.bottomsheet_fragments.drawers.claims.fragments.ClaimAutoFragment">
+
+    <LinearLayout
+        android:id="@+id/bike_cliam_top_sec"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bike_cliam_bottom_sec">
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bike_cliam_bottom_sec"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/bike_cliam_top_sec"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="For Rapido Auto Accidental claims or any questions regarding it, please write a mail to support@raido.bike"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/white_off"/>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/Emailus_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/emailUs"
+            android:textColor="@color/primary"
+            android:backgroundTint="@color/bg_light"
+            android:layout_marginVertical="@dimen/_4sdp"/>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

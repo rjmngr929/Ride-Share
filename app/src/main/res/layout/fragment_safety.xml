@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/_16sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.bottomsheet_fragments.drawers.safety.SafetyFragment"
+    android:background="@drawable/top_cornor_rounded"
+    android:backgroundTint="@color/bg_dark_secondary"
+    android:orientation="vertical">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerThickness="@dimen/_4sdp"
+        app:dividerInsetStart="140dp"
+        app:dividerInsetEnd="140dp"
+        app:dividerColor="@color/white"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_12sdp">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Saftey Toolkit"
+            android:maxLength="20"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20ssp"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            />
+
+        <View
+            android:id="@+id/alertdialog_close_btn"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:background="@drawable/ic_close"
+            android:backgroundTint="@color/white"
+            android:padding="@dimen/_12sdp"
+            android:layout_gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:scrollIndicators="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/empty_contact_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    android:layout_alignParentTop="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/add_contact_bottom_layout">
+
+                    <TextView
+                        android:id="@+id/add_contact_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add trusted contact"
+                        android:textSize="@dimen/_18ssp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_semibold"/>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/empty_contact_card_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/bg_light"
+                        app:contentPadding="@dimen/_12sdp"
+                        app:cardCornerRadius="@dimen/_12sdp"
+                        android:layout_marginVertical="@dimen/_4sdp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Add trusted contact"
+                                android:textSize="@dimen/_14ssp"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/poppins_medium"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Share ride trip details with your loved ones in a single tap"
+                                android:textSize="@dimen/_12ssp"
+                                android:textColor="@color/gray"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/select_contact_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/contact_row_layout"/>
+
+                </LinearLayout>
+
+
+              <LinearLayout
+                  android:id="@+id/add_contact_bottom_layout"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_alignParentBottom="true"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toBottomOf="@+id/empty_contact_layout"
+                  app:layout_constraintBottom_toBottomOf="parent">
+
+                  <com.google.android.material.button.MaterialButton
+                      android:id="@+id/add_contact_btn"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="Add here"
+                      android:textColor="@color/primary"
+                      android:backgroundTint="@color/bg_light"/>
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Your safety is our top priority at Raido — from vetted drivers to real-time ride tracking, we ensure a secure and comfortable journey every time."
+                      android:textSize="@dimen/_10ssp"
+                      android:textColor="@color/gray"/>
+
+
+              </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

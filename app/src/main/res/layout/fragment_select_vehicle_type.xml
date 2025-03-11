@@ -1,0 +1,956 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.bottomsheet_fragments.SelectVehicleTypeFragment"
+    android:background="@drawable/top_cornor_rounded"
+    android:backgroundTint="@color/bg_dark_secondary">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/top_cornor_rounded"
+        android:backgroundTint="@color/bg_dark_secondary"
+        android:orientation="vertical"
+        android:padding="@dimen/_20sdp">
+
+        <LinearLayout
+            android:id="@+id/select_vehicle_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bike_cart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_curved_border"
+                android:padding="@dimen/_10sdp">
+
+                <View
+                    android:id="@+id/left_section_select_bike"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/ic_motor_icon"
+                    android:backgroundTint="@color/primary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/middle_section_select_bike"/>
+
+                <LinearLayout
+                    android:id="@+id/middle_section_select_bike"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    app:layout_constraintStart_toEndOf="@+id/left_section_select_bike"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/right_section_select_bike">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bike"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14ssp"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/bike_time_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_10ssp"/>
+
+                        <TextView
+                            android:id="@+id/bike_away_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_10ssp"/>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/right_section_select_bike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toEndOf="@+id/middle_section_select_bike"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/bike_price_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/bike_regular_price_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_12ssp"
+                        android:foregroundTint="@color/gray"/>
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/taxi_cart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_dark_secondary"
+                android:padding="@dimen/_10sdp">
+
+                <View
+                    android:id="@+id/left_section_select_taxi"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/ic_auto"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/middle_section_select_taxi"/>
+
+                <LinearLayout
+                    android:id="@+id/middle_section_select_taxi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    app:layout_constraintStart_toEndOf="@+id/left_section_select_taxi"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/right_section_select_taxi">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Taxi"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14ssp"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/auto_time_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_10ssp"/>
+
+                        <TextView
+                            android:id="@+id/auto_away_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_10ssp"/>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/right_section_select_taxi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toEndOf="@+id/middle_section_select_taxi"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/auto_price_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/auto_regular_price_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_12ssp"
+                        android:foregroundTint="@color/gray"/>
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/car_cart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_dark_secondary"
+                android:padding="@dimen/_12sdp">
+
+                <View
+                    android:id="@+id/left_section_select_car"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/ic_cab"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/middle_section_select_car"/>
+
+                <LinearLayout
+                    android:id="@+id/middle_section_select_car"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    app:layout_constraintStart_toEndOf="@+id/left_section_select_car"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/right_section_select_car">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Car"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14ssp"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/cab_time_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_10ssp"/>
+
+                        <TextView
+                            android:id="@+id/cab_away_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_10ssp"/>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/right_section_select_car"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toEndOf="@+id/middle_section_select_car"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/cab_price_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/cab_regular_price_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_12ssp"
+                        android:foregroundTint="@color/gray"/>
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bikelite_cart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_curved_border"
+                android:backgroundTint="@color/bg_dark_secondary"
+                android:padding="@dimen/_12sdp">
+
+                <View
+                    android:id="@+id/left_section_select_bike_lite"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/ic_motor_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/middle_section_select_bike_lite"/>
+
+                <LinearLayout
+                    android:id="@+id/middle_section_select_bike_lite"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    app:layout_constraintStart_toEndOf="@+id/left_section_select_bike_lite"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/right_section_select_bike_lite">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bike lite"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14ssp"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/bike_lite_time_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_10ssp"/>
+
+                        <TextView
+                            android:id="@+id/bike_lite_away_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_10ssp"/>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/right_section_select_bike_lite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toEndOf="@+id/middle_section_select_bike_lite"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/bike_lite_price_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/bikelite_regular_price_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_12ssp"
+                        android:foregroundTint="@color/gray"/>
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                app:dividerColor="#454545"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp">
+
+                <LinearLayout
+                    android:id="@+id/left_section_book_ride"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/book_ride_btn">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PAY USING"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/gray"/>
+                    <LinearLayout
+                        android:id="@+id/change_payment_mode_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_4sdp"
+                        android:gravity="center">
+                        <View
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:background="@drawable/ic_wallet"
+                            android:backgroundTint="@color/white"/>
+                        <TextView
+                            android:id="@+id/payment_type_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="cash"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10ssp"
+                            android:layout_marginHorizontal="@dimen/_6sdp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/book_ride_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bookRide"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/bg_light"
+                    app:layout_constraintStart_toEndOf="@+id/left_section_book_ride"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--                        <com.google.android.gms.maps.MapView-->
+    <!--                            android:id="@+id/googleMap"-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="match_parent"-->
+    <!--                            android:layout_centerInParent="true"-->
+    <!--                            android:visibility="gone"/>-->
+        </LinearLayout>
+
+        <include
+            android:id="@+id/shimmerEffect"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            layout="@layout/shimmer_select_vehicle"
+            android:visibility="visible"/>
+
+    </RelativeLayout>
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical">-->
+
+<!--        <com.google.android.material.divider.MaterialDivider-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:dividerThickness="@dimen/_2sdp"-->
+<!--            app:dividerInsetStart="150dp"-->
+<!--            app:dividerInsetEnd="150dp"-->
+<!--            app:dividerColor="@color/white"-->
+<!--            android:layout_marginTop="@dimen/_12sdp"/>-->
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginTop="@dimen/_10sdp">-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/map_section"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="@dimen/_400sdp"-->
+<!--                android:background="@drawable/top_cornor_rounded"-->
+<!--                android:backgroundTint="@color/white"-->
+<!--                android:orientation="vertical"-->
+<!--                android:layout_alignParentTop="true"-->
+<!--                >-->
+
+<!--                <com.google.android.gms.maps.MapView-->
+<!--                    android:id="@+id/googleMap"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_centerInParent="true"/>-->
+
+
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/select_vehicle_section"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/top_cornor_rounded"-->
+<!--                android:backgroundTint="@color/bg_dark_secondary"-->
+<!--                android:orientation="vertical"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:padding="@dimen/_20sdp">-->
+
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:id="@+id/bike_cart"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@drawable/rounded_curved_border"-->
+<!--                    android:padding="@dimen/_10sdp">-->
+
+<!--                    <View-->
+<!--                        android:id="@+id/left_section_select_bike"-->
+<!--                        android:layout_width="@dimen/_25sdp"-->
+<!--                        android:layout_height="@dimen/_25sdp"-->
+<!--                        android:background="@drawable/ic_motor_icon"-->
+<!--                        android:backgroundTint="@color/primary"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toStartOf="@+id/middle_section_select_bike"/>-->
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/middle_section_select_bike"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:paddingHorizontal="@dimen/_12sdp"-->
+<!--                        app:layout_constraintStart_toEndOf="@+id/left_section_select_bike"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toStartOf="@+id/right_section_select_bike">-->
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="Bike"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="@dimen/_14ssp"-->
+<!--                            android:maxLines="1"-->
+<!--                            android:ellipsize="end"/>-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal">-->
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text=" 06:05pm | "-->
+<!--                                android:textColor="@color/gray"-->
+<!--                                android:textSize="@dimen/_10ssp"/>-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="3 min away"-->
+<!--                                android:textColor="@color/gray"-->
+<!--                                android:textSize="@dimen/_10ssp"/>-->
+
+
+<!--                        </LinearLayout>-->
+
+
+<!--                    </LinearLayout>-->
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/right_section_select_bike"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        app:layout_constraintStart_toEndOf="@+id/middle_section_select_bike"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent">-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="₹ 14.73"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="@dimen/_12ssp"-->
+<!--                            android:textStyle="bold"/>-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/bike_old_price_text"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="₹ 29.47"-->
+<!--                            android:textColor="@color/gray"-->
+<!--                            android:textSize="@dimen/_12ssp"-->
+<!--                            android:foregroundTint="@color/gray"/>-->
+
+<!--                    </LinearLayout>-->
+
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:id="@+id/taxi_cart"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@drawable/rounded_curved_border"-->
+<!--                    android:backgroundTint="@color/bg_dark_secondary"-->
+<!--                    android:padding="@dimen/_10sdp">-->
+
+<!--                    <View-->
+<!--                        android:id="@+id/left_section_select_taxi"-->
+<!--                        android:layout_width="@dimen/_25sdp"-->
+<!--                        android:layout_height="@dimen/_25sdp"-->
+<!--                        android:background="@drawable/ic_auto"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toStartOf="@+id/middle_section_select_taxi"/>-->
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/middle_section_select_taxi"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:paddingHorizontal="@dimen/_12sdp"-->
+<!--                        app:layout_constraintStart_toEndOf="@+id/left_section_select_taxi"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toStartOf="@+id/right_section_select_taxi">-->
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="Taxi"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="@dimen/_14ssp"-->
+<!--                            android:maxLines="1"-->
+<!--                            android:ellipsize="end"/>-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal">-->
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text=" 06:05pm | "-->
+<!--                                android:textColor="@color/gray"-->
+<!--                                android:textSize="@dimen/_10ssp"/>-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="3 min away"-->
+<!--                                android:textColor="@color/gray"-->
+<!--                                android:textSize="@dimen/_10ssp"/>-->
+
+
+<!--                        </LinearLayout>-->
+
+
+<!--                    </LinearLayout>-->
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/right_section_select_taxi"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        app:layout_constraintStart_toEndOf="@+id/middle_section_select_taxi"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent">-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="₹ 14.73"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="@dimen/_12ssp"-->
+<!--                            android:textStyle="bold"/>-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/auto_old_price_text"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="₹ 29.47"-->
+<!--                            android:textColor="@color/gray"-->
+<!--                            android:textSize="@dimen/_12ssp"-->
+<!--                            android:foregroundTint="@color/gray"/>-->
+
+<!--                    </LinearLayout>-->
+
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:id="@+id/car_cart"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@drawable/rounded_curved_border"-->
+<!--                    android:backgroundTint="@color/bg_dark_secondary"-->
+<!--                    android:padding="@dimen/_12sdp">-->
+
+<!--                    <View-->
+<!--                        android:id="@+id/left_section_select_car"-->
+<!--                        android:layout_width="@dimen/_25sdp"-->
+<!--                        android:layout_height="@dimen/_25sdp"-->
+<!--                        android:background="@drawable/ic_cab"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toStartOf="@+id/middle_section_select_car"/>-->
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/middle_section_select_car"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:paddingHorizontal="@dimen/_12sdp"-->
+<!--                        app:layout_constraintStart_toEndOf="@+id/left_section_select_car"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toStartOf="@+id/right_section_select_car">-->
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="Car"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="@dimen/_14ssp"-->
+<!--                            android:maxLines="1"-->
+<!--                            android:ellipsize="end"/>-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal">-->
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text=" 06:05pm | "-->
+<!--                                android:textColor="@color/gray"-->
+<!--                                android:textSize="@dimen/_10ssp"/>-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="3 min away"-->
+<!--                                android:textColor="@color/gray"-->
+<!--                                android:textSize="@dimen/_10ssp"/>-->
+
+
+<!--                        </LinearLayout>-->
+
+
+<!--                    </LinearLayout>-->
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/right_section_select_car"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        app:layout_constraintStart_toEndOf="@+id/middle_section_select_car"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent">-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="₹ 14.73"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="@dimen/_12ssp"-->
+<!--                            android:textStyle="bold"/>-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/cab_old_price_text"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="₹ 29.47"-->
+<!--                            android:textColor="@color/gray"-->
+<!--                            android:textSize="@dimen/_12ssp"-->
+<!--                            android:foregroundTint="@color/gray"/>-->
+
+<!--                    </LinearLayout>-->
+
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:id="@+id/bikelite_cart"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@drawable/rounded_curved_border"-->
+<!--                    android:backgroundTint="@color/bg_dark_secondary"-->
+<!--                    android:padding="@dimen/_12sdp">-->
+
+<!--                    <View-->
+<!--                        android:id="@+id/left_section_select_bike_lite"-->
+<!--                        android:layout_width="@dimen/_25sdp"-->
+<!--                        android:layout_height="@dimen/_25sdp"-->
+<!--                        android:background="@drawable/ic_motor_icon"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toStartOf="@+id/middle_section_select_bike_lite"/>-->
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/middle_section_select_bike_lite"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:paddingHorizontal="@dimen/_12sdp"-->
+<!--                        app:layout_constraintStart_toEndOf="@+id/left_section_select_bike_lite"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toStartOf="@+id/right_section_select_bike_lite">-->
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="Bike lite"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="@dimen/_14ssp"-->
+<!--                            android:maxLines="1"-->
+<!--                            android:ellipsize="end"/>-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal">-->
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text=" 06:05pm | "-->
+<!--                                android:textColor="@color/gray"-->
+<!--                                android:textSize="@dimen/_10ssp"/>-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="3 min away"-->
+<!--                                android:textColor="@color/gray"-->
+<!--                                android:textSize="@dimen/_10ssp"/>-->
+
+
+<!--                        </LinearLayout>-->
+
+
+<!--                    </LinearLayout>-->
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/right_section_select_bike_lite"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        app:layout_constraintStart_toEndOf="@+id/middle_section_select_bike_lite"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent">-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="₹ 14.73"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="@dimen/_12ssp"-->
+<!--                            android:textStyle="bold"/>-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/bikelite_old_price_text"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="₹ 29.47"-->
+<!--                            android:textColor="@color/gray"-->
+<!--                            android:textSize="@dimen/_12ssp"-->
+<!--                            android:foregroundTint="@color/gray"/>-->
+
+<!--                    </LinearLayout>-->
+
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--                <com.google.android.material.divider.MaterialDivider-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="@dimen/_1sdp"-->
+<!--                    app:dividerColor="#454545"/>-->
+
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="@dimen/_12sdp">-->
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/left_section_book_ride"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintEnd_toStartOf="@+id/book_ride_btn">-->
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="PAY USING"-->
+<!--                            android:textSize="@dimen/_10ssp"-->
+<!--                            android:textColor="@color/gray"/>-->
+<!--                        <LinearLayout-->
+<!--                            android:id="@+id/change_payment_mode_btn"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:padding="@dimen/_4sdp"-->
+<!--                            android:gravity="center">-->
+<!--                            <View-->
+<!--                                android:layout_width="@dimen/_20sdp"-->
+<!--                                android:layout_height="@dimen/_20sdp"-->
+<!--                                android:background="@drawable/ic_wallet"-->
+<!--                                android:backgroundTint="@color/white"/>-->
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="cash"-->
+<!--                                android:maxLines="1"-->
+<!--                                android:ellipsize="end"-->
+<!--                                android:textColor="@color/white"-->
+<!--                                android:textSize="@dimen/_10ssp"-->
+<!--                                android:layout_marginHorizontal="@dimen/_6sdp"/>-->
+<!--                        </LinearLayout>-->
+<!--                    </LinearLayout>-->
+
+<!--                    <com.google.android.material.button.MaterialButton-->
+<!--                        android:id="@+id/book_ride_btn"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/bookRide"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:backgroundTint="@color/bg_light"-->
+<!--                        app:layout_constraintStart_toEndOf="@+id/left_section_book_ride"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--            </LinearLayout>-->
+
+<!--        </RelativeLayout>-->
+
+<!--    </LinearLayout>-->
+
+</FrameLayout>

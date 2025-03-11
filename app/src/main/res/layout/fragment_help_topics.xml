@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/top_cornor_rounded"
+    android:backgroundTint="@color/bg_dark_secondary"
+    tools:context=".ui.home.bottomsheet_fragments.Help.HelpTopicsFragment"
+    android:orientation="vertical">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerThickness="@dimen/_4sdp"
+        app:dividerInsetStart="140dp"
+        app:dividerInsetEnd="140dp"
+        app:dividerColor="@color/white"
+        android:layout_margin="@dimen/_16sdp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_12sdp">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FAQ's"
+            android:maxLength="20"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20ssp"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            />
+
+        <View
+            android:id="@+id/alertdialog_close_btn"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:background="@drawable/ic_close"
+            android:backgroundTint="@color/white"
+            android:padding="@dimen/_12sdp"
+            android:layout_gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_12sdp">
+
+        <TextView
+            android:id="@+id/help_topic_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Safety &amp; Security"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ticket_check_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ticket_check_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/rounded_curved_border"
+            android:backgroundTint="@color/bg_light"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_4sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/help_topic_text">
+
+            <View
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:background="@drawable/voucheravailable" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tickets"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp"
+                android:layout_marginStart="@dimen/_6sdp"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:itemCount="1"
+        tools:listitem="@layout/help_quotes_row_layout" />
+
+    <LinearLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_12sdp"
+        android:background="@drawable/rounded_curved_border"
+        android:backgroundTint="@color/bg_light"
+        android:layout_margin="@dimen/_12sdp"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/question_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Question"
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/answer_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Answer"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+</LinearLayout>

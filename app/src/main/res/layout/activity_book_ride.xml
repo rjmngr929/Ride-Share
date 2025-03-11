@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.home.bookRide.BookRideActivity"
+    android:background="@color/bg_dark_secondary">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/top_divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerThickness="@dimen/_2sdp"
+        app:dividerInsetStart="150dp"
+        app:dividerInsetEnd="150dp"
+        app:dividerColor="@color/white"
+        android:layout_marginVertical="@dimen/_12sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/map_layout"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/map_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:cardCornerRadius="@dimen/_12sdp"
+        app:layout_constraintTop_toBottomOf="@+id/top_divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_container_bookride">
+
+<!--        <com.google.android.gms.maps.MapView-->
+<!--            android:id="@+id/googleMap"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            />-->
+
+<!--        <com.ola.mapsdk.view.OlaMapView-->
+<!--            android:id="@+id/mapView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"/>-->
+        <com.ola.maps.navigation.v5.navigation.OlaMapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_bookride"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_2sdp"
+        android:layout_marginTop="-30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/map_layout"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

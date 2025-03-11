@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/bg_dark_secondary"
+    android:paddingTop="@dimen/_12sdp"
+    tools:context=".ui.home.bottomsheet_fragments.drawers.claims.fragments.ClaimBikeFragment">
+
+   <LinearLayout
+       android:id="@+id/bike_cliam_top_sec"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:orientation="vertical"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintBottom_toTopOf="@+id/bike_cliam_bottom_sec">
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Policy coverage"
+           android:textSize="@dimen/_12ssp"
+            android:textColor="@color/white"
+           android:fontFamily="@font/poppins_medium"/>
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@drawable/rounded_border"
+           android:orientation="vertical"
+           android:padding="@dimen/_10sdp"
+           android:layout_marginVertical="@dimen/_4sdp">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Personal Accident/Accident Death"
+               android:textColor="@color/white"
+               android:textSize="@dimen/_12ssp"/>
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Up to ₹5,00,000"
+               android:textColor="@color/white_off"
+               android:textSize="@dimen/_10ssp"/>
+       </LinearLayout>
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@drawable/rounded_border"
+           android:orientation="vertical"
+           android:padding="@dimen/_10sdp"
+           android:layout_marginVertical="@dimen/_4sdp">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Mediacl Expense for Hospitalization"
+               android:textColor="@color/white"
+               android:textSize="@dimen/_12ssp"/>
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Up to ₹1,00,000"
+               android:textColor="@color/white_off"
+               android:textSize="@dimen/_10ssp"/>
+       </LinearLayout>
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@drawable/rounded_border"
+           android:orientation="vertical"
+           android:padding="@dimen/_10sdp"
+           android:layout_marginVertical="@dimen/_4sdp">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="OPD Treatment"
+               android:textColor="@color/white"
+               android:textSize="@dimen/_12ssp"/>
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Up to ₹3000"
+               android:textColor="@color/white_off"
+               android:textSize="@dimen/_10ssp"/>
+       </LinearLayout>
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Legal"
+           android:textSize="@dimen/_12ssp"
+           android:textColor="@color/white"
+           android:fontFamily="@font/poppins_medium"
+           android:layout_marginTop="@dimen/_18sdp"/>
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:background="@drawable/rounded_border"
+           android:padding="@dimen/_10sdp">
+           <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical" >
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Claim Procedure"
+                   android:textColor="@color/white"
+                   android:textSize="@dimen/_12ssp"
+                   android:layout_alignParentStart="true"
+                   android:layout_centerVertical="true"/>
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="View"
+                   android:textColor="@color/white"
+                   android:textSize="@dimen/_12ssp"
+                   android:layout_alignParentEnd="true"
+                   android:layout_centerVertical="true"/>
+           </RelativeLayout>
+           <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:layout_marginTop="@dimen/_8sdp">
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Terms &amp; Condition"
+                   android:textColor="@color/white"
+                   android:textSize="@dimen/_12ssp"
+                   android:layout_alignParentStart="true"
+                   android:layout_centerVertical="true"/>
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="View"
+                   android:textColor="@color/white"
+                   android:textSize="@dimen/_12ssp"
+                   android:layout_alignParentEnd="true"
+                   android:layout_centerVertical="true"/>
+           </RelativeLayout>
+       </LinearLayout>
+
+
+   </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bike_cliam_bottom_sec"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/bike_cliam_top_sec"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please provide your correct email-Id, date of birth and phone number to avoid cancellation of your insurance claim."
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/white_off"/>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/claim_bike_insuarance_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/claimInsuarance"
+            android:textColor="@color/primary"
+            android:backgroundTint="@color/bg_light"
+            android:layout_marginVertical="@dimen/_4sdp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

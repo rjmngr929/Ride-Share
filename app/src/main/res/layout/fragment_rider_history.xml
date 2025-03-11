@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.bottomsheet_fragments.drawers.RiderHistoryFragment"
+    android:background="@drawable/top_cornor_rounded"
+    android:backgroundTint="@color/bg_dark_secondary">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dividerThickness="@dimen/_4sdp"
+            app:dividerInsetStart="150dp"
+            app:dividerInsetEnd="150dp"
+            app:dividerColor="@color/white"
+            android:layout_marginTop="@dimen/_12sdp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_18sdp">
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rider History"
+                android:maxLength="20"
+                android:ellipsize="end"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_20ssp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                />
+
+            <View
+                android:id="@+id/alertdialog_close_btn"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:background="@drawable/ic_close"
+                android:backgroundTint="@color/white"
+                android:padding="@dimen/_12sdp"
+                android:layout_gravity="center"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_12sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recent"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/white"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/rounded_border"
+                app:cardCornerRadius="@dimen/_50sdp"
+                app:cardBackgroundColor="@color/bg_light"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true">
+                <View
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:background="@drawable/ic_settings"
+                    android:backgroundTint="@color/primary"
+                    android:layout_gravity="center"/>
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/emptylist"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            layout="@layout/data_not_found"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="10"
+            tools:listitem="@layout/recent_rides_row_layout" />
+
+    </LinearLayout>
+
+</FrameLayout>

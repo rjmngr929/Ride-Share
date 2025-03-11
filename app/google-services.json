@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "728725384539",
+    "firebase_url": "https://raido-334da-default-rtdb.firebaseio.com",
+    "project_id": "raido-334da",
+    "storage_bucket": "raido-334da.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728725384539:android:1ec3d0fc5d16eb9b74be7e",
+        "android_client_info": {
+          "package_name": "com.my.raido"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPimPYM2HJRXHBT_Lztgxdc28bdJOrHq0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728725384539:android:2db1d954fb316a1e74be7e",
+        "android_client_info": {
+          "package_name": "com.my.raidocaption"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPimPYM2HJRXHBT_Lztgxdc28bdJOrHq0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/_6sdp"
+    android:background="@color/bg_dark_secondary"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cointrxn_type_layout"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            app:cardBackgroundColor="@color/bg_light"
+            app:cardCornerRadius="@dimen/_12sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/coin_detail_layout">
+
+            <View
+                android:id="@+id/status_icon"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:background="@drawable/voucheravailable"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/coin_detail_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            app:layout_constraintStart_toEndOf="@+id/cointrxn_type_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/coin_val_text">
+
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Coin Expired"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/white"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/date_time_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="03 Sept 2024 | 09:37am"
+                android:textSize="@dimen/_10ssp"
+                android:textColor="@color/gray"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/coin_val_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-₹1"
+            android:textSize="@dimen/_14ssp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppins_medium"
+            app:layout_constraintStart_toEndOf="@+id/coin_detail_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerColor="@color/white"
+        android:layout_marginTop="@dimen/_10ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cointrxn_type_layout"/>
+
+</LinearLayout>

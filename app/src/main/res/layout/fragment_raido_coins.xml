@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_16sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.bottomsheet_fragments.drawers.RaidoCoinsFragment"
+    android:background="@drawable/top_cornor_rounded"
+    android:backgroundTint="@color/bg_dark_secondary"
+    android:orientation="vertical">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerThickness="@dimen/_4sdp"
+        app:dividerInsetStart="140dp"
+        app:dividerInsetEnd="140dp"
+        app:dividerColor="@color/white"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_12sdp">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Raido Coins"
+            android:maxLength="20"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20ssp"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            />
+
+        <View
+            android:id="@+id/alertdialog_close_btn"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:background="@drawable/ic_close"
+            android:backgroundTint="@color/white"
+            android:padding="@dimen/_12sdp"
+            android:layout_gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollIndicators="none"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:src="@drawable/raido_coin"
+                    android:scaleType="fitXY"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textSize="@dimen/_30ssp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/poppins_semibold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total coin balance"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/bg_light"
+                app:cardCornerRadius="@dimen/_12sdp"
+                android:layout_marginVertical="@dimen/_20sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Always use rapido coins"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp"
+                   android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_4sdp"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_140sdp"
+                android:scaleType="fitXY"
+                android:src="@drawable/raido_banner"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Coins Transactions"
+                android:textSize="@dimen/_18ssp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_marginVertical="@dimen/_8sdp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cointrxn_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="3"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/coin_trxn_row_layout" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View all transactions"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"/>
+
+                <View
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:background="@drawable/ic_forward_arrow"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
