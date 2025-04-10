@@ -1,7 +1,27 @@
+<h1 align="center">Raido 🚖</h1>
 
- 
- 
- 
+<p><strong>Raido</strong> is a modern ride-hailing Android application built entirely in <strong>Kotlin</strong>, designed for customers to conveniently book rides in real-time. It offers a smooth user experience with robust architecture and efficient data handling.</p>
+
+<h2>🛠 Tech Stack & Architecture</h2>
+
+<ul>
+  <li><strong>Language</strong>: Kotlin</li>
+  <li><strong>Architecture</strong>: MVVM (Model-View-ViewModel)</li>
+  <li><strong>Dependency Injection</strong>: Dagger-Hilt</li>
+  <li><strong>Live Data & ViewModel</strong> for reactive UI updates</li>
+  <li><strong>Real-time Communication</strong>: Socket integration (Node.js backend)</li>
+  <li><strong>Map Integration</strong>: Ola maps-navigation-sdk for accurate routing & tracking</li>
+  <li><strong>Backend</strong>: Laravel (API) + Node.js (Socket Server)</li>
+</ul>
+
+<h2>🚀 Features</h2>
+
+<ul>
+  <li>Book rides instantly with real-time driver tracking</li>
+  <li>Live status updates and location sharing</li>
+  <li>Clean and scalable architecture for maintainability</li>
+  <li>Secure and smooth user authentication & ride flow</li>
+</ul>
  
  <h5 class="mb-3">Project Images :</h5>
         <img src="https://github.com/user-attachments/assets/73fc492b-11d3-465c-ab09-e5ce17711411" class="porfolio_gallery bg-white rounded" alt="gallery-images" width="200" height="400">
