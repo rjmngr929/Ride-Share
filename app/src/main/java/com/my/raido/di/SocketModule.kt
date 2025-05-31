@@ -1,6 +1,7 @@
 package com.my.raido.di
 
 import android.util.Log
+import com.my.raido.Utils.TokenManager
 import com.my.raido.constants.SocketConstants.SOCKET_BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -18,48 +19,25 @@ object SocketModule {
 
     private val TRANSPORTS = arrayOf(WebSocket.NAME)
 
-//    @Provides
-//    @Singleton
-//    fun provideSocket(): Socket {
-//        val socket: Socket
-//
-//        val options = IO.Options.builder()
-//            .setTransports(TRANSPORTS)
-//            .setUpgrade(true)
-//            .setRememberUpgrade(false)
-//            .build()
-//        options.reconnection = true
-//        //  options.reconnectionAttempts = 1000;
-//        options.reconnectionDelay = 1000
-//        options.timeout = 10000
-//        socket =
-//            IO.socket(
-//                URI.create(SOCKET_BASE_URL), //SOCKET_BASE_URL + NAME_SPACE
-//                options
-//            )
-//
-//
-//        return socket
-//    }
-
     @Provides
     @Singleton
-    fun provideSocket(): Socket = IO.socket(URI.create(SOCKET_BASE_URL), socketOptions()).apply {
+    fun provideSocket(tokenManager: TokenManager): Socket = IO.socket(URI.create(SOCKET_BASE_URL), socketOptions(tokenManager)).apply {
         on(Socket.EVENT_CONNECT_ERROR) { args ->
             Log.e("SocketModule", "Connection Error: ${args.firstOrNull()}")
         }
     }
 
-    private fun socketOptions(): IO.Options {
+    private fun socketOptions(tokenManager: TokenManager): IO.Options {
+        val token = tokenManager.getToken()
         return IO.Options.builder()
             .setTransports(arrayOf(WebSocket.NAME))
             .setUpgrade(true)
-            .setRememberUpgrade(false)
+            .setRememberUpgrade(true) //false
             .setReconnection(true)
             .setReconnectionDelay(1000)
             .setTimeout(10000)
+            .setAuth(mapOf("token" to token))
             .build()
     }
-
 
 }

@@ -25,23 +25,53 @@
         app:dividerInsetEnd="140dp"
         app:dividerColor="@color/white"/>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/alertdialog_close_btn"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
-        app:cardBackgroundColor="@color/bg_light"
-        app:cardCornerRadius="@dimen/_50sdp"
-        android:layout_margin="@dimen/_10sdp">
-        <View
-            android:layout_width="@dimen/_18sdp"
-            android:layout_height="@dimen/_18sdp"
-            android:background="@drawable/ic_arrow_back"
-            android:backgroundTint="@color/white"
-            android:padding="@dimen/_12sdp"
-            android:layout_gravity="center"/>
-    </androidx.cardview.widget.CardView>
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/alertdialog_close_btn"-->
+<!--        android:layout_width="@dimen/_50sdp"-->
+<!--        android:layout_height="@dimen/_50sdp"-->
+<!--        app:cardBackgroundColor="@color/bg_light"-->
+<!--        app:cardCornerRadius="@dimen/_50sdp"-->
+<!--        android:layout_margin="@dimen/_10sdp">-->
+<!--        <View-->
+<!--            android:layout_width="@dimen/_18sdp"-->
+<!--            android:layout_height="@dimen/_18sdp"-->
+<!--            android:background="@drawable/ic_arrow_back"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            android:padding="@dimen/_12sdp"-->
+<!--            android:layout_gravity="center"/>-->
+<!--    </androidx.cardview.widget.CardView>-->
 
-    <ScrollView
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_12sdp">
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ride Summary"
+                android:maxLength="20"
+                android:ellipsize="end"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_20ssp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                />
+
+            <View
+                android:id="@+id/alertdialog_close_btn"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:background="@drawable/ic_close"
+                android:backgroundTint="@color/white"
+                android:padding="@dimen/_12sdp"
+                android:layout_gravity="center"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+
+        <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
@@ -78,10 +108,10 @@
                             android:gravity="center"
                             android:layout_centerVertical="true">
                             <View
-                                android:layout_width="@dimen/_25sdp"
-                                android:layout_height="@dimen/_25sdp"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
                                 android:background="@drawable/ic_motor_icon"
-                                android:backgroundTint="@color/bg_dark"
+                                android:backgroundTint="@color/gray"
                                 android:layout_gravity="center"/>
                         </LinearLayout>
 
@@ -97,76 +127,85 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Bike Ride"
-                                android:textSize="@dimen/_12ssp"
+                                android:textSize="@dimen/_14ssp"
                                 android:textColor="@color/white"/>
 
                             <TextView
                                 android:id="@+id/ride_date"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="11 Nov 2024 | 12:24 am"
-                                android:textSize="@dimen/_10ssp"
+                                android:text=""
+                                android:textSize="@dimen/_12ssp"
                                 android:textColor="@color/gray"/>
 
                             <TextView
                                 android:id="@+id/ride_amount_status"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="₹60 | Completed"
-                                android:textSize="@dimen/_10ssp"
+                                android:text=""
+                                android:textSize="@dimen/_12ssp"
                                 android:textColor="@color/gray"/>
 
                         </LinearLayout>
 
                     </RelativeLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_marginVertical="@dimen/_12sdp"
-                        android:background="@drawable/dashed_divider" />
 
-                    <RelativeLayout
+                    <LinearLayout
+                        android:id="@+id/driver_detail_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
                         <View
-                            android:id="@+id/driver_profile"
-                            android:layout_width="@dimen/_30sdp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:background="@color/gray"
-                            android:layout_centerVertical="true"/>
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginVertical="@dimen/_12sdp"
+                            android:background="@drawable/dashed_divider" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_marginHorizontal="@dimen/_8sdp"
-                            android:layout_toEndOf="@+id/driver_profile"
-                            android:layout_centerVertical="true">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                            <TextView
-                                android:id="@+id/driver_name_text"
+                            <ImageView
+                                android:id="@+id/driver_profile"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:src="@drawable/dummyuser"
+                                android:layout_centerVertical="true"/>
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="You rated Driver Name"
-                                android:textSize="@dimen/_10ssp"
-                                android:textColor="@color/white"/>
+                                android:orientation="vertical"
+                                android:layout_marginHorizontal="@dimen/_8sdp"
+                                android:layout_toEndOf="@+id/driver_profile"
+                                android:layout_centerVertical="true">
 
-                            <RatingBar
-                                android:id="@+id/driver_rating"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:progressTint="#FFCC01"
-                                android:saveEnabled="false"
-                                style="?android:attr/ratingBarStyleSmall"/>
+                                <TextView
+                                    android:id="@+id/driver_name_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="You rated Driver Name"
+                                    android:textSize="@dimen/_10ssp"
+                                    android:textColor="@color/white"/>
+
+                                <RatingBar
+                                    android:id="@+id/driver_rating"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:progressTint="#FFCC01"
+                                    android:saveEnabled="false"
+                                    style="?android:attr/ratingBarStyleSmall"/>
 
 
 
 
-                        </LinearLayout>
+                            </LinearLayout>
 
-                    </RelativeLayout>
+                        </RelativeLayout>
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
@@ -177,10 +216,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginVertical="@dimen/_12sdp">
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_6sdp">
                 <View
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:background="@drawable/ic_motor_icon"
                     android:backgroundTint="@color/white"/>
 
@@ -188,7 +228,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="RIDE DETAILS"
-                    android:textSize="@dimen/_14ssp"
+                    android:textSize="@dimen/_12ssp"
                     android:textColor="@color/white"
                     android:layout_marginHorizontal="@dimen/_4sdp"
                     android:textStyle="bold"/>
@@ -250,7 +290,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/white"
-                                android:text="7867+2R6"
+                                android:text=""
                                 android:textSize="@dimen/_10sdp"
                                 android:maxLines="1"/>
 
@@ -259,7 +299,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/gray"
-                                android:text="Address G..."
+                                android:text=""
                                 android:textSize="@dimen/_8sdp"
                                 android:maxLines="1"/>
 
@@ -269,7 +309,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/white"
-                                android:text="7867+2R6"
+                                android:text=""
                                 android:textSize="@dimen/_10sdp"
                                 android:maxLines="1"
                                 android:layout_marginTop="@dimen/_8sdp"/>
@@ -279,7 +319,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/gray"
-                                android:text="Address G..."
+                                android:text=""
                                 android:textSize="@dimen/_8sdp"
                                 android:maxLines="1"/>
 
@@ -302,7 +342,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Duration"
-                            android:textSize="@dimen/_10ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/gray"
                             android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"/>
@@ -311,8 +351,8 @@
                             android:id="@+id/duration_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="17.3 min"
-                            android:textSize="@dimen/_10ssp"
+                            android:text=""
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/gray"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"/>
@@ -327,7 +367,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Distance"
-                            android:textSize="@dimen/_10ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/gray"
                             android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"/>
@@ -336,8 +376,8 @@
                             android:id="@+id/distance_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="9.9 kms"
-                            android:textSize="@dimen/_10ssp"
+                            android:text=""
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/gray"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"/>
@@ -352,7 +392,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Ride ID"
-                            android:textSize="@dimen/_10ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/gray"
                             android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"/>
@@ -361,8 +401,8 @@
                             android:id="@+id/rideId_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="RD14268125631255"
-                            android:textSize="@dimen/_10ssp"
+                            android:text=""
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/gray"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"/>
@@ -375,231 +415,268 @@
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginVertical="@dimen/_12sdp">
-                <View
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:background="@drawable/ic_wallet"
-                    android:backgroundTint="@color/white"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="INVOICE"
-                    android:textSize="@dimen/_14ssp"
-                    android:textColor="@color/white"
-                    android:layout_marginHorizontal="@dimen/_4sdp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-
-            <androidx.cardview.widget.CardView
+                android:id="@+id/invoice_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/bg_light"
-                app:cardCornerRadius="@dimen/_15sdp">
-
+                android:orientation="vertical"
+                android:visibility="gone">
                 <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_6sdp">
+                    <View
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:background="@drawable/ic_wallet"
+                        android:backgroundTint="@color/white"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="INVOICE"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/white"
+                        android:layout_marginHorizontal="@dimen/_4sdp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_12sdp">
-
-                        <TextView
-                            android:id="@+id/total_fare_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Total Fare"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_12ssp"
-                            android:textStyle="bold"/>
-
-                        <LinearLayout
-                            android:id="@+id/fare_amount_layout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_alignParentEnd="true">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:gravity="end">
-                                <TextView
-                                    android:id="@+id/fare_text"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="₹60.0"
-                                    android:textSize="@dimen/_12ssp"
-                                    android:textColor="@color/white"
-                                    android:textStyle="bold"/>
-
-                                <TextView
-                                    android:id="@+id/paid_via_text"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Paid via cash"
-                                    android:textSize="@dimen/_8ssp"
-                                    android:textColor="@color/white"/>
-
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="@dimen/_12sdp"
-                                android:layout_height="@dimen/_12sdp"
-                                android:layout_marginHorizontal="@dimen/_2sdp"
-                                android:background="@drawable/ic_down_arrow"
-                                android:backgroundTint="@color/gray"/>
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
+                    app:cardBackgroundColor="@color/bg_light"
+                    app:cardCornerRadius="@dimen/_15sdp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingHorizontal="@dimen/_12sdp">
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:background="@drawable/dashed_divider"
-                            android:layout_marginBottom="@dimen/_10sdp"/>
+                        android:orientation="vertical">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_12sdp">
 
                             <TextView
+                                android:id="@+id/total_fare_label"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Ride Charge"
-                                android:textSize="@dimen/_10ssp"
-                                android:textColor="@color/gray"
-                                android:layout_alignParentStart="true"
-                                android:layout_centerVertical="true"/>
+                                android:text="Total Fare"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12ssp"
+                                android:textStyle="bold"/>
 
-                            <TextView
-                                android:id="@+id/rideCharge_text"
+                            <LinearLayout
+                                android:id="@+id/fare_amount_layout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="₹75.4"
-                                android:textSize="@dimen/_10ssp"
-                                android:textColor="@color/gray"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"/>
+                                android:orientation="horizontal"
+                                android:layout_alignParentEnd="true">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:gravity="end">
+                                    <TextView
+                                        android:id="@+id/fare_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text=""
+                                        android:textSize="@dimen/_12ssp"
+                                        android:textColor="@color/white"
+                                        android:textStyle="bold"/>
+
+                                    <TextView
+                                        android:id="@+id/paid_via_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Paid via cash"
+                                        android:textSize="@dimen/_8ssp"
+                                        android:textColor="@color/white"/>
+
+                                </LinearLayout>
+
+                                <View
+                                    android:layout_width="@dimen/_12sdp"
+                                    android:layout_height="@dimen/_12sdp"
+                                    android:layout_marginHorizontal="@dimen/_2sdp"
+                                    android:background="@drawable/ic_down_arrow"
+                                    android:backgroundTint="@color/gray"
+                                    android:visibility="gone"/>
+
+                            </LinearLayout>
 
                         </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Booking Fees &amp; Convenience Charges"
-                                android:textSize="@dimen/_10ssp"
-                                android:textColor="@color/gray"
-                                android:layout_alignParentStart="true"
-                                android:layout_centerVertical="true"/>
-
-                            <TextView
-                                android:id="@+id/booking_fees_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="₹75.4"
-                                android:textSize="@dimen/_10ssp"
-                                android:textColor="@color/gray"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"/>
-
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Discount"
-                                android:textSize="@dimen/_10ssp"
-                                android:textColor="@color/gray"
-                                android:layout_alignParentStart="true"
-                                android:layout_centerVertical="true"/>
-
-                            <TextView
-                                android:id="@+id/discount_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="- ₹12.4"
-                                android:textSize="@dimen/_10ssp"
-                                android:textColor="@color/gray"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"/>
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-                    <com.google.android.material.divider.MaterialDivider
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:dividerColor="@color/gray"
-                        android:layout_marginTop="@dimen/_12sdp"/>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_12sdp">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true">
+                            android:orientation="vertical"
+                            android:paddingHorizontal="@dimen/_12sdp">
 
                             <View
-                                android:layout_width="@dimen/_20sdp"
-                                android:layout_height="@dimen/_20sdp"
-                                android:background="@color/white"/>
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:background="@drawable/dashed_divider"
+                                android:layout_marginBottom="@dimen/_10sdp"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Ride Charge"
+                                    android:textSize="@dimen/_12ssp"
+                                    android:textColor="@color/gray"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"/>
+
+                                <TextView
+                                    android:id="@+id/rideCharge_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:text=""
+                                    android:textColor="@color/gray"
+                                    android:textSize="@dimen/_12ssp" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Booking Fees &amp; Convenience Charges"
+                                    android:textSize="@dimen/_12ssp"
+                                    android:textColor="@color/gray"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"/>
+
+                                <TextView
+                                    android:id="@+id/booking_fees_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:textSize="@dimen/_12ssp"
+                                    android:textColor="@color/gray"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"/>
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Discount"
+                                    android:textSize="@dimen/_12ssp"
+                                    android:textColor="@color/gray"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"/>
+
+                                <TextView
+                                    android:id="@+id/discount_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:textSize="@dimen/_12ssp"
+                                    android:textColor="@color/gray"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"/>
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/waiting_time_row"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/waiting_time_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Waiting Time"
+                                    android:textSize="@dimen/_12ssp"
+                                    android:textColor="@color/gray"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"/>
+
+                                <TextView
+                                    android:id="@+id/waiting_time_charge_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:textSize="@dimen/_12ssp"
+                                    android:textColor="@color/gray"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"/>
+
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:background="@drawable/dashed_divider"
+                                android:layout_marginVertical="@dimen/_10sdp"/>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Send via Email"
-                                android:textSize="@dimen/_12ssp"
-                                android:textColor="@color/white"
-                                android:layout_marginHorizontal="@dimen/_4sdp"/>
+                                android:layout_marginBottom="@dimen/_10sdp">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:gravity="center"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true">
+
+                                    <View
+                                        android:layout_width="@dimen/_20sdp"
+                                        android:layout_height="@dimen/_20sdp"
+                                        android:visibility="gone"
+                                        android:background="@color/white"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Send via Email"
+                                        android:textSize="@dimen/_12ssp"
+                                        android:textColor="@color/white"/>
+
+                                </LinearLayout>
+
+                                <View
+                                    android:layout_width="@dimen/_12sdp"
+                                    android:layout_height="@dimen/_12sdp"
+                                    android:background="@drawable/ic_forward_arrow"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"/>
+
+
+                            </RelativeLayout>
 
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="@dimen/_12sdp"
-                            android:layout_height="@dimen/_12sdp"
-                            android:background="@drawable/ic_forward_arrow"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"/>
 
+                    </LinearLayout>
 
-                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 

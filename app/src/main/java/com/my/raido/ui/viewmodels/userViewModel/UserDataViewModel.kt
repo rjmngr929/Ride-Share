@@ -11,8 +11,9 @@ import com.my.raido.models.Database.DataModel.User
 import com.my.raido.models.NotificationModel
 import com.my.raido.models.profile.ProfileDetailRequest
 import com.my.raido.models.profile.ProfileDetailResponse
+import com.my.raido.models.response.AddBalanceResModel
+import com.my.raido.models.response.DashboardDataModel
 import com.my.raido.models.response.PassbookResModel
-import com.my.raido.models.response.ResponseModel
 import com.my.raido.repository.UserRepository
 import com.my.raido.repository.UserRoomDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -63,6 +64,22 @@ class UserDataViewModel @Inject constructor(
         }
     }
 
+//********************** Dashboard Data ******************************************
+    val dashboardDataResponseLiveData: LiveData<NetworkResult<DashboardDataModel>>
+        get() = userRepository.dashboardApiResponseLiveData
+
+    fun dashboardApi(){
+        viewModelScope.launch {
+            userRepository.dashboardApi()
+        }
+    }
+
+    fun clearDashboardRes(){
+        userRepository._dashboardApiResponseLiveData.postValue(NetworkResult.Empty())
+    }
+
+//********************** Dashboard Data ******************************************
+
 //********************** Create Order Data ******************************************
     val createOrderResponseLiveData: LiveData<NetworkResult<CreateOrderResponse>>
         get() = userRepository.createPaymentResponseLiveData
@@ -80,7 +97,7 @@ class UserDataViewModel @Inject constructor(
 //********************** Create Order Data ******************************************
 
 //********************** Update Order Data ******************************************
-    val updateOrderResponseLiveData: LiveData<NetworkResult<ResponseModel>>
+    val updateOrderResponseLiveData: LiveData<NetworkResult<AddBalanceResModel>>
         get() = userRepository.updatePaymentStatusResponseLiveData
 
     fun updateOrderStatus(orderId: String){

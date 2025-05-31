@@ -149,7 +149,7 @@ class RiderHistoryFragment : BottomSheetDialogFragment() {
 
                     binding.emptylist.emptyData.gone()
 
-                    val riderList = it.data?.rideList ?: ArrayList<RidesData>()
+                    val riderList = it.data?.rideList ?: mutableListOf<RidesData>()
 
                     if(riderList.isNullOrEmpty()){
                         binding.emptylist.emptyData.visible()
@@ -157,10 +157,12 @@ class RiderHistoryFragment : BottomSheetDialogFragment() {
                         binding.emptylist.emptyData.gone()
                     }
 
-                    Log.d(TAG, "bindObservers: riderList data => ${it.data?.status}, ${it.data?.message} and ${it.data?.rideList}")
-                    
+//                    Log.d(TAG, "bindObservers: riderList data => ${it.data?.status}, ${it.data?.message} and ${it.data?.rideList}")
+
+                    val aryData = riderList.asReversed()
+
                     // Update the adapter with new data
-                    recentRidesAdapter.updateItems(riderList)
+                    recentRidesAdapter.updateItems(aryData)
 
                     cabViewModel.clearRes()
 

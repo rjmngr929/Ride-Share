@@ -5,6 +5,8 @@ import com.my.raido.models.NotificationModel
 import com.my.raido.models.contacts.ContactRequestData
 import com.my.raido.models.contacts.ContactResponse
 import com.my.raido.models.profile.ProfileDetailResponse
+import com.my.raido.models.response.AddBalanceResModel
+import com.my.raido.models.response.DashboardDataModel
 import com.my.raido.models.response.PassbookResModel
 import com.my.raido.models.response.ResponseModel
 import okhttp3.MultipartBody
@@ -59,12 +61,12 @@ interface UserAPI {
     suspend fun createPaymentOrder(@Field("amount") amount: String) : Response<CreateOrderResponse>
 
     @GET("auth/user/wallet/get-payment-detailsby/{orderId}")
-    suspend fun checkOrderStatus( @Path("orderId") orderId: String) : Response<ResponseModel>
+    suspend fun checkOrderStatus( @Path("orderId") orderId: String) : Response<AddBalanceResModel>
 
     @GET("auth/user/wallet/passbook")
     suspend fun fetchPassbook() : Response<PassbookResModel>
 
-
-
+    @GET("auth/user/dashboard")
+    suspend fun dashboardApi() : Response<DashboardDataModel>
 
 }

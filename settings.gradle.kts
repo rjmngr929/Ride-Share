@@ -26,4 +26,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Raido"
 include(":app")
-include(":Simulator")

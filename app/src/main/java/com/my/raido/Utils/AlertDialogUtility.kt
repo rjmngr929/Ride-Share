@@ -22,6 +22,7 @@ class AlertDialogUtility @Inject constructor(@ApplicationContext val context: Co
         private var mAlert: AlertDialog? = null
         private var mConfirmationAlert: AlertDialog? = null
 
+    private var isDialogShowing = false
 
     fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
         showToast(context, message, duration)
@@ -121,6 +122,12 @@ class AlertDialogUtility @Inject constructor(@ApplicationContext val context: Co
         }
 
         fun alertDialogAnim(context: Context, msg: String, rawFile: Int, finishedActivity: Boolean = false){
+
+            // Agar dialog already dikh raha hai, to skip
+            if (isDialogShowing) return
+
+            isDialogShowing = true // Dialog ab dikh raha hai
+
             var dialogBuilder = android.app.AlertDialog.Builder(context)
             val layoutView: View = LayoutInflater.from(context).inflate(R.layout.alertdialog_anim_layout, null)
 
@@ -142,15 +149,16 @@ class AlertDialogUtility @Inject constructor(@ApplicationContext val context: Co
             val activity = context as Activity
 
             confirmBtn.setOnClickListener {
-                if(finishedActivity){
+                if (finishedActivity) {
                     activity.finish()
                 }
                 alertDialog.dismiss()
+                isDialogShowing = false // Dialog dismiss ho gaya
             }
         }
 
     @SuppressLint("MissingInflatedId")
-    fun customAlertDialogAnim(myContext: Context, titleMsg: String, msg: String, rawFile: Int, onButtonClick: () -> Unit = {}){
+    fun customAlertDialogAnim(myContext: Context, titleMsg: String, msg: String, rawFile: Int, msgDisplay: Boolean = true, btnText : String= "", onButtonClick: () -> Unit = {}){
         var dialogBuilder = android.app.AlertDialog.Builder(myContext)
         val layoutView: View = LayoutInflater.from(myContext).inflate(R.layout.alertdialog_custom_anim_layout, null)
 
@@ -169,7 +177,15 @@ class AlertDialogUtility @Inject constructor(@ApplicationContext val context: Co
         alertDialog.show()
 
         title.text = titleMsg
-        message.text = msg
+        if(msgDisplay) {
+            message.text = msg
+        }else{
+            message.gone()
+        }
+
+        if(btnText.isNotEmpty()){
+            confirmBtn.text = btnText
+        }
 
         confirmBtn.setOnClickListener {
             onButtonClick()

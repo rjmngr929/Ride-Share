@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.home.bottomsheet_fragments.PlanTripFragment"
-    android:background="@color/bg_dark_secondary">
+    tools:context=".ui.home.bottomsheet_fragments.ride_book.PlanTripFragment"
+    android:background="@drawable/top_cornor_rounded"
+    android:backgroundTint="@color/bg_dark_secondary">
 
   <LinearLayout
       android:layout_width="match_parent"
@@ -26,7 +27,7 @@
       <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:padding="@dimen/_12sdp">
+          android:layout_marginVertical="@dimen/_12sdp">
 
           <TextView
               android:id="@+id/textView"
@@ -41,16 +42,28 @@
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toTopOf="parent" />
 
-          <View
+<!--          <View-->
+<!--              android:id="@+id/alertdialog_close_btn"-->
+<!--              android:layout_width="@dimen/_16sdp"-->
+<!--              android:layout_height="@dimen/_16sdp"-->
+<!--              android:background="@drawable/ic_close"-->
+<!--              android:backgroundTint="@color/white"-->
+<!--              android:padding="@dimen/_12sdp"-->
+<!--              app:layout_constraintBottom_toBottomOf="parent"-->
+<!--              app:layout_constraintEnd_toEndOf="parent"-->
+<!--              app:layout_constraintTop_toTopOf="parent" />-->
+          <ImageButton
               android:id="@+id/alertdialog_close_btn"
-              android:layout_width="@dimen/_16sdp"
-              android:layout_height="@dimen/_16sdp"
-              android:background="@drawable/ic_close"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:src="@drawable/ic_close"
               android:backgroundTint="@color/white"
-              android:padding="@dimen/_12sdp"
+              android:padding="@dimen/_8sdp"
+              android:background="@android:color/transparent"
+              app:tint="@color/white"
               app:layout_constraintBottom_toBottomOf="parent"
               app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintTop_toTopOf="parent" />
+              app:layout_constraintTop_toTopOf="parent"/>
       </androidx.constraintlayout.widget.ConstraintLayout>
 
       <androidx.cardview.widget.CardView
@@ -170,15 +183,16 @@
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:orientation="horizontal">
+          android:orientation="horizontal"
+          android:layout_marginVertical="@dimen/_6sdp">
 
           <androidx.cardview.widget.CardView
               android:id="@+id/current_state_btn"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               app:cardCornerRadius="@dimen/_20sdp"
-              app:cardBackgroundColor="@color/bg_light"
-              android:layout_marginVertical="@dimen/_14sdp">
+              android:visibility="gone"
+              app:cardBackgroundColor="@color/bg_light">
 
               <LinearLayout
                   android:layout_width="wrap_content"
@@ -212,9 +226,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               app:cardCornerRadius="@dimen/_20sdp"
-              app:cardBackgroundColor="@color/bg_light"
-              android:layout_marginHorizontal="@dimen/_10sdp"
-              android:layout_marginVertical="@dimen/_14sdp">
+              app:cardBackgroundColor="@color/bg_light">
 
               <LinearLayout
                   android:layout_width="wrap_content"
@@ -243,8 +255,8 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               app:cardCornerRadius="@dimen/_20sdp"
-              app:cardBackgroundColor="@color/bg_light"
-              android:layout_marginVertical="@dimen/_14sdp">
+              android:visibility="gone"
+              app:cardBackgroundColor="@color/bg_light">
 
               <LinearLayout
                   android:layout_width="wrap_content"
@@ -279,30 +291,44 @@
 
       </LinearLayout>
 
-      <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="Recent Ride's"
-          android:textSize="@dimen/_18ssp"
-          android:textColor="@color/white"
-          android:textStyle="bold"
-          android:textAlignment="center"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_address_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="10"
+            tools:listitem="@layout/search_address_layout" />
 
-      <include
-          android:id="@+id/emptylist"
-          android:layout_height="wrap_content"
-          android:layout_width="wrap_content"
-          layout="@layout/data_not_found"
-          android:layout_gravity="center"
-          android:visibility="gone"
-          android:layout_marginVertical="@dimen/_20sdp"/>
+<!--      <LinearLayout-->
+<!--          android:layout_width="match_parent"-->
+<!--          android:layout_height="wrap_content"-->
+<!--          android:orientation="vertical"-->
+<!--          android:visibility="gone">-->
+<!--          <TextView-->
+<!--              android:layout_width="match_parent"-->
+<!--              android:layout_height="wrap_content"-->
+<!--              android:text="Recent Ride's"-->
+<!--              android:textSize="@dimen/_18ssp"-->
+<!--              android:textColor="@color/white"-->
+<!--              android:textStyle="bold"-->
+<!--              android:textAlignment="center"/>-->
 
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/recyclerView"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          tools:itemCount="10"
-          tools:listitem="@layout/recent_rides_row_layout" />
+<!--          <include-->
+<!--              android:id="@+id/emptylist"-->
+<!--              android:layout_height="wrap_content"-->
+<!--              android:layout_width="wrap_content"-->
+<!--              layout="@layout/data_not_found"-->
+<!--              android:layout_gravity="center"-->
+<!--              android:visibility="gone"-->
+<!--              android:layout_marginVertical="@dimen/_20sdp"/>-->
+
+<!--          <androidx.recyclerview.widget.RecyclerView-->
+<!--              android:id="@+id/recyclerView"-->
+<!--              android:layout_width="match_parent"-->
+<!--              android:layout_height="wrap_content"-->
+<!--              tools:itemCount="10"-->
+<!--              tools:listitem="@layout/recent_rides_row_layout" />-->
+
+<!--      </LinearLayout>-->
 
   </LinearLayout>
 

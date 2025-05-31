@@ -35,16 +35,27 @@ android:orientation="vertical">
             android:layout_centerInParent="true"
             />
 
-        <View
+<!--        <View-->
+<!--            android:id="@+id/alertdialog_close_btn"-->
+<!--            android:layout_width="@dimen/_16sdp"-->
+<!--            android:layout_height="@dimen/_16sdp"-->
+<!--            android:background="@drawable/ic_close"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            android:padding="@dimen/_12sdp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_centerVertical="true"/>-->
+        <ImageButton
             android:id="@+id/alertdialog_close_btn"
-            android:layout_width="@dimen/_16sdp"
-            android:layout_height="@dimen/_16sdp"
-            android:background="@drawable/ic_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close"
             android:backgroundTint="@color/white"
-            android:padding="@dimen/_12sdp"
-            android:layout_gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:background="@android:color/transparent"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            app:tint="@color/white" />
     </RelativeLayout>
 
 
@@ -60,13 +71,15 @@ android:orientation="vertical">
                 android:textColor="@color/white"
                 android:textSize="@dimen/_18ssp"
                 android:layout_marginHorizontal="@dimen/_16sdp"
+                android:visibility="gone"
                 android:fontFamily="@font/poppins_semibold"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_4sdp"
-                android:layout_marginHorizontal="@dimen/_16sdp">
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:visibility="gone">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/left_section_recentride"
@@ -134,7 +147,8 @@ android:orientation="vertical">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:dividerColor="@color/gray"
-                android:layout_marginVertical="@dimen/_10sdp"/>
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:visibility="gone"/>
 
             <TextView
                 android:layout_width="wrap_content"

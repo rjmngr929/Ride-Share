@@ -34,26 +34,39 @@
         android:layout_marginBottom="@dimen/_10sdp"
         android:padding="@dimen/_10sdp">
 
-        <LinearLayout
+<!--        <LinearLayout-->
+<!--            android:id="@+id/camera_circle"-->
+<!--            android:layout_width="@dimen/_40sdp"-->
+<!--            android:layout_height="@dimen/_40sdp"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:layout_marginBottom="2dp"-->
+<!--            android:background="@drawable/rounded_border"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="@dimen/_10sdp"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/textView2"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/gallery_circle"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
+
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@drawable/ic_baseline_photo_camera_24"-->
+<!--                android:backgroundTint="@color/white"/>-->
+<!--        </LinearLayout>-->
+
+        <ImageButton
             android:id="@+id/camera_circle"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_photo_camera_24"
+            android:backgroundTint="@color/white"
+            android:padding="@dimen/_8sdp"
             android:background="@drawable/rounded_border"
-            android:gravity="center"
-            android:padding="@dimen/_10sdp"
             app:layout_constraintBottom_toTopOf="@+id/textView2"
             app:layout_constraintEnd_toStartOf="@+id/gallery_circle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/ic_baseline_photo_camera_24"
-                android:backgroundTint="@color/white"/>
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/textView2"
@@ -69,26 +82,40 @@
             app:layout_constraintStart_toStartOf="@+id/camera_circle"
             app:layout_constraintTop_toBottomOf="@+id/camera_circle" />
 
-        <LinearLayout
+<!--        <LinearLayout-->
+<!--            android:id="@+id/gallery_circle"-->
+<!--            android:layout_width="@dimen/_40sdp"-->
+<!--            android:layout_height="@dimen/_40sdp"-->
+<!--            android:layout_marginHorizontal="@dimen/_20sdp"-->
+<!--            android:layout_marginBottom="2dp"-->
+<!--            android:background="@drawable/rounded_border"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="@dimen/_10sdp"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/textView"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/camera_circle"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
+
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@drawable/ic_baseline_photo_library_24"-->
+<!--                android:backgroundTint="@color/white"/>-->
+<!--        </LinearLayout>-->
+
+        <ImageButton
             android:id="@+id/gallery_circle"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_photo_library_24"
+            android:backgroundTint="@color/white"
+            android:padding="@dimen/_8sdp"
             android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginBottom="2dp"
             android:background="@drawable/rounded_border"
-            android:gravity="center"
-            android:padding="@dimen/_10sdp"
             app:layout_constraintBottom_toTopOf="@+id/textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/camera_circle"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/ic_baseline_photo_library_24"
-                android:backgroundTint="@color/white"/>
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/textView"

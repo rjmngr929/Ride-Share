@@ -55,9 +55,9 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(project(":Simulator"))
     implementation(libs.androidx.lifecycle.livedata.core)
     implementation(libs.transport.runtime)
+    implementation(libs.androidx.core.animation)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -159,7 +159,8 @@ dependencies {
 //    ************************************
     //OlaMap SDK
     implementation(files("libs/maps-navigation-sdk-1.0.116.aar"))
-//Required for OlaMap SDK
+//    implementation(files("libs/maps-1.0.68.aar"))
+    //Required for OlaMap SDK
     implementation ("org.maplibre.gl:android-sdk:10.2.0")
     implementation ("org.maplibre.gl:android-sdk-directions-models:5.9.0")
     implementation ("org.maplibre.gl:android-sdk-services:5.9.0")
@@ -172,16 +173,18 @@ dependencies {
 
     implementation ("com.squareup.okhttp3:logging-interceptor:4.2.1")
 
-    //    CashFree
+    //CashFree
     implementation ("com.cashfree.pg:api:2.1.25")
 
-
-//    Socket
+    //Socket
     implementation ("io.socket:socket.io-client:2.0.1") {
         exclude(
             group = "org.json",
             module = "json"
         )
     }
+
+
+//    debugImplementation ("com.squareup.leakcanary:leakcanary-android:2.12")
 
 }

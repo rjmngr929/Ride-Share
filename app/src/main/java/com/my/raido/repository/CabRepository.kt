@@ -3,6 +3,7 @@ package com.my.raido.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.my.raido.Helper.NetworkHelper
 import com.my.raido.Utils.NetworkResult
 import com.my.raido.api.CabAPI
 import com.my.raido.di.exception.NetworkExceptionHandler
@@ -12,46 +13,51 @@ import com.my.raido.models.cab.NearByRidersModelResponse
 import com.my.raido.models.cab.RideBookRequest
 import com.my.raido.models.cab.RideBookResponse
 import com.my.raido.models.cab.toMap
-import com.my.raido.models.response.DriverDetailModel
+import com.my.raido.models.response.ResponseModel
 import org.json.JSONObject
 import retrofit2.Response
 import javax.inject.Inject
 
-class CabRepository @Inject constructor(private val cabApi: CabAPI, private val exceptionHandler: NetworkExceptionHandler) {
+class CabRepository @Inject constructor(private val cabApi: CabAPI, private val networkHelper: NetworkHelper, private val exceptionHandler: NetworkExceptionHandler) {
 
 //********************** Near By Cabs ******************************************
     val _nearByCabsResponseLiveData = MutableLiveData<NetworkResult<NearByRidersModelResponse>>()
     val nearByCabsResponseLiveData: LiveData<NetworkResult<NearByRidersModelResponse>>
         get() = _nearByCabsResponseLiveData
 
-    suspend fun fetchNearbyCabs(lat: Double, lng: Double) {
+    suspend fun fetchDashboardDetail() {
         _nearByCabsResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-//            Log.d("TAG", "fetchNearbyCabs: response data => ${profileDetailRequest.toMap()} ")
-            val response =cabApi.fetchNearByDrivers(
-               latitude = lat,
-                longitude = lng
-            )
-            Log.d("TAG", "fetchNearbyCabs: response data => $response and ${lat}, $lng")
-            if (response.isSuccessful) {
-                handleNearByCabResponse(response)
-            } else {
-                Log.d("TAG", "fetchNearbyCabs: error on response unsuccessfull => ${response.errorBody()?.string().let {
-                    if (it != null) {
-                        JSONObject(it)
+        if(networkHelper.isNetworkConnected()) {
+            try {
+    //            Log.d("TAG", "fetchNearbyCabs: response data => ${profileDetailRequest.toMap()} ")
+
+                val response = cabApi.fetchDashboardDetail()
+                Log.d("TAG", "fetchDashboardDetail:  API Called!!...$response")
+                if (response.isSuccessful) {
+                    handleNearByCabResponse(response)
+                } else {
+                    Log.d("TAG", "fetchNearbyCabs: error on response unsuccessfull => ${response.errorBody()?.string().let {
+                        if (it != null) {
+                            JSONObject(it)
+                        }
+                    }}")
+                    try {
+                        Log.d("TAG", "fetchNearbyCabs: error on catch part ${response.errorBody()?.string()}")
+                        _nearByCabsResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "fetchNearbyCabs: error on catch part ${e}")
                     }
-                }}")
-                try {
-                    _nearByCabsResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                            ?.let { JSONObject(it).getString("message") }))
-                }catch (e: Exception){
-                    Log.d("TAG", "fetchNearbyCabs: error on catch part ${e}")
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "fetchNearbyCabs: error on catch part network => ${e}")
+                _nearByCabsResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "fetchNearbyCabs: error on catch part network => ${e}")
-            _nearByCabsResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _nearByCabsResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 
@@ -69,6 +75,59 @@ class CabRepository @Inject constructor(private val cabApi: CabAPI, private val 
     }
 //********************** Near By Cabs ******************************************
 
+//********************** Update Non service District ******************************************
+    val _nonServiceDistrictResponseLiveData = MutableLiveData<NetworkResult<ResponseModel>>()
+    val nonServiceDistrictResponseLiveData: LiveData<NetworkResult<ResponseModel>>
+        get() = _nonServiceDistrictResponseLiveData
+
+    suspend fun updateNonServiceDistrict(district: String) {
+        _nonServiceDistrictResponseLiveData.postValue(NetworkResult.Loading())
+        if(networkHelper.isNetworkConnected()) {
+            try {
+    //            Log.d("TAG", "fetchNearbyCabs: response data => ${profileDetailRequest.toMap()} ")
+                val response =cabApi.updateNonServiceDistrict(district = district)
+                Log.d("TAG", "updateNonServiceDistrict: response data => $response")
+                if (response.isSuccessful) {
+                    handleNonServiceDistrictResponse(response)
+                } else {
+                    Log.d("TAG", "updateNonServiceDistrict: error on response unsuccessfull => ${response.errorBody()?.string().let {
+                        if (it != null) {
+                            JSONObject(it)
+                        }
+                    }}")
+                    try {
+                        _nonServiceDistrictResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "updateNonServiceDistrict: error on catch part ${e}")
+                    }
+                }
+            }catch (e: Exception){
+                Log.d("TAG", "updateNonServiceDistrict: error on catch part network => ${e}")
+                _nonServiceDistrictResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+            }
+        }else{
+            _nonServiceDistrictResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
+        }
+    }
+
+    private fun handleNonServiceDistrictResponse(response: Response<ResponseModel>) {
+        if (response.isSuccessful && response.body() != null) {
+            _nonServiceDistrictResponseLiveData.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null){
+            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _nonServiceDistrictResponseLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+        }
+        else{
+            _nonServiceDistrictResponseLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+        }
+    }
+//********************** Update Non service District ******************************************
+
     //********************** Recent Ride History Data ******************************************
     val _recentRidesResponseLiveData = MutableLiveData<NetworkResult<RecentRidesModel>>()
     val recentRidesResponseLiveData: LiveData<NetworkResult<RecentRidesModel>>
@@ -76,23 +135,29 @@ class CabRepository @Inject constructor(private val cabApi: CabAPI, private val 
 
     suspend fun fetchRecentRidesHistory() {
         _recentRidesResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-            val response =cabApi.getRecentRides()
-            if (response.isSuccessful) {
-                Log.d("TAG", "fetchRecentRidesHistory: recent Rides data => ${response}")
-                handleRecentRidesDataResponse(response)
-            } else {
-                try {
-                    _recentRidesResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                            ?.let { JSONObject(it).getString("message") }))
-                }catch (e: Exception){
-                    Log.d("TAG", "fetchRecentRidesHistory: recent Rides data => upper ${e}")
+        if(networkHelper.isNetworkConnected()) {
+            try {
+                val response =cabApi.getRecentRides()
+                if (response.isSuccessful) {
+                    Log.d("TAG", "fetchRecentRidesHistory: recent Rides data => ${response}")
+                    handleRecentRidesDataResponse(response)
+                } else {
+                    try {
+                        _recentRidesResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "fetchRecentRidesHistory: recent Rides data => upper ${e}")
+                    }
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "fetchRecentRidesHistory: recent Rides data => lower ${e}")
+                _recentRidesResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "fetchRecentRidesHistory: recent Rides data => lower ${e}")
-            _recentRidesResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _recentRidesResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 
@@ -117,24 +182,30 @@ class CabRepository @Inject constructor(private val cabApi: CabAPI, private val 
 
     suspend fun fetchRecentRideDetail(rideId: String) {
         _recentRideDetailResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-            val response =cabApi.getRecentRideDetail(rideId = rideId)
-            Log.d("TAG", "fetchRecentRideDetailHistory: recent Rides data => ${response}")
-            if (response.isSuccessful) {
+        if(networkHelper.isNetworkConnected()) {
+            try {
+                val response =cabApi.getRecentRideDetail(rideId = rideId)
                 Log.d("TAG", "fetchRecentRideDetailHistory: recent Rides data => ${response}")
-                handleRecentRideDetailResponse(response)
-            } else {
-                try {
-                    _recentRideDetailResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                            ?.let { JSONObject(it).getString("message") }))
-                }catch (e: Exception){
-                    Log.d("TAG", "fetchRecentRideDetailHistory: recent Rides data => upper ${e}")
+                if (response.isSuccessful) {
+                    Log.d("TAG", "fetchRecentRideDetailHistory: recent Rides data => ${response}")
+                    handleRecentRideDetailResponse(response)
+                } else {
+                    try {
+                        _recentRideDetailResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "fetchRecentRideDetailHistory: recent Rides data => upper ${e}")
+                    }
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "fetchRecentRideDetailHistory: recent Rides data => lower ${e}")
+                _recentRideDetailResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "fetchRecentRideDetailHistory: recent Rides data => lower ${e}")
-            _recentRideDetailResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _recentRideDetailResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 
@@ -160,25 +231,31 @@ class CabRepository @Inject constructor(private val cabApi: CabAPI, private val 
 
     suspend fun fetchRideFareDetail(rideBookRequest: RideBookRequest) {
         _rideFareDetailResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-            Log.d("TAG", "fetchRideFareDetail: post data for that => ${rideBookRequest.toMap()}")
-            val response =cabApi.getAvailableRiders(rideBookRequest)
-            Log.d("TAG", "fetchRideFareDetail: Ride Fare data => ${response}")
-            if (response.isSuccessful) {
-                Log.d("TAG", "fetchRideFareDetail: Ride Fare data => ${response.body()?.drivePath}")
-                handleRideFareDetailResponse(response)
-            } else {
-                try {
-                    _rideFareDetailResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                            ?.let { JSONObject(it).getString("message") }))
-                }catch (e: Exception){
-                    Log.d("TAG", "fetchRideFareDetail: Ride Fare data => upper ${e}")
+        if(networkHelper.isNetworkConnected()) {
+            try {
+                Log.d("TAG", "fetchRideFareDetail: post data for that => ${rideBookRequest.toMap()}")
+                val response =cabApi.getAvailableRiders(rideBookRequest)
+                Log.d("TAG", "fetchRideFareDetail: Ride Fare data => ${response}")
+                if (response.isSuccessful) {
+                    Log.d("TAG", "fetchRideFareDetail: Ride Fare data => ${response.body()?.drivePath}")
+                    handleRideFareDetailResponse(response)
+                } else {
+                    try {
+                        _rideFareDetailResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "fetchRideFareDetail: Ride Fare data => upper ${e}")
+                    }
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "fetchRideFareDetail: Ride Fare data => lower ${e}")
+                _rideFareDetailResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "fetchRideFareDetail: Ride Fare data => lower ${e}")
-            _rideFareDetailResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _rideFareDetailResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 
@@ -196,48 +273,54 @@ class CabRepository @Inject constructor(private val cabApi: CabAPI, private val 
     }
 //********************** get Ride Path with fare ***********************************
 
+//********************** Rate Driver ******************************************
+    val _ratedriverResponseLiveData = MutableLiveData<NetworkResult<ResponseModel>>()
+    val ratedriverResponseLiveData: LiveData<NetworkResult<ResponseModel>>
+        get() = _ratedriverResponseLiveData
 
-//********************** Fetch Driver Detail ******************************************
-    val _driverDetailResponseLiveData = MutableLiveData<NetworkResult<DriverDetailModel>>()
-    val driverDetailResponseLiveData: LiveData<NetworkResult<DriverDetailModel>>
-        get() = _driverDetailResponseLiveData
-
-    suspend fun fetchDriverDetail(driverId: String) {
-        _driverDetailResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-            val response =cabApi.getDriverDetail(driverId)
-            Log.d("TAG", "fetchDriverDetail: driver data => ${response}")
-            if (response.isSuccessful) {
-                Log.d("TAG", "fetchDriverDetail: driver data => ${response.body()}")
-                handleDriverDetailResponse(response)
-            } else {
-                try {
-                    _driverDetailResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                            ?.let { JSONObject(it).getString("message") }))
-                }catch (e: Exception){
-                    Log.d("TAG", "fetchDriverDetail: driver data => upper ${e}")
+    suspend fun rateDriverApi(rideId: String, rating: String) {
+        _ratedriverResponseLiveData.postValue(NetworkResult.Loading())
+        if(networkHelper.isNetworkConnected()) {
+            try {
+                Log.d("TAG", "rateDriverApi: response data => ${rideId} and ${rating}")
+                val response =cabApi.rateDriver(riderId = rideId, rating= rating)
+                Log.d("TAG", "rateDriverApi: response data => ${response}")
+                if (response.isSuccessful) {
+                    handleRateDriverResponse(response)
+                } else {
+                    try {
+                        _ratedriverResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "rateDriverApi: response data => upper ${e}")
+                    }
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "rateDriverApi: response data => lower ${e}")
+                _ratedriverResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "fetchDriverDetail: driver data => lower ${e}")
-            _driverDetailResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _ratedriverResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 
-    private fun handleDriverDetailResponse(response: Response<DriverDetailModel>) {
+    private fun handleRateDriverResponse(response: Response<ResponseModel>) {
         if (response.isSuccessful && response.body() != null) {
-            _driverDetailResponseLiveData.postValue(NetworkResult.Success(response.body()!!))
+            _ratedriverResponseLiveData.postValue(NetworkResult.Success(response.body()!!))
         }
         else if(response.errorBody()!=null){
             val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
-            _driverDetailResponseLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            _ratedriverResponseLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
         }
         else{
-            _driverDetailResponseLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            _ratedriverResponseLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
         }
     }
-//********************** Fetch Driver Detail ***********************************
+//********************** Rate Driver ***********************************
+
 
 
 }

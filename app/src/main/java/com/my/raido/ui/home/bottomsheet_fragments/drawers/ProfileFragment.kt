@@ -22,7 +22,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.LinearLayout
+import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
@@ -58,6 +58,7 @@ import com.my.raido.Validations.EmailRule
 import com.my.raido.Validations.EmptyTextRule
 import com.my.raido.Validations.UserNameRule
 import com.my.raido.Validations.validateRule
+import com.my.raido.constants.Constants
 import com.my.raido.databinding.FragmentProfileBinding
 import com.my.raido.models.Database.DataModel.User
 import com.my.raido.models.profile.ProfileDetailRequest
@@ -318,11 +319,12 @@ class ProfileFragment : BottomSheetDialogFragment(), PermissionRequest.Listener 
                             )
                         )
                     }else{
-                        (binding.dobText.parent.parent as TextInputLayout).error = "Please select date of birth"
+                        binding.dobLayout.error = "Please select date of birth"
                         myContext.showToast("Please select date of birth")
                     }
                 }else{
-                    (binding.selectGender.parent.parent as TextInputLayout).error = "Please select gender"
+//                    (binding.selectGender.parent.parent as TextInputLayout).error = "Please select gender"
+                    binding.selectGender.error = "Please select gender"
                     myContext.showToast("Please select gender")
                 }
             }
@@ -355,7 +357,7 @@ class ProfileFragment : BottomSheetDialogFragment(), PermissionRequest.Listener 
 
                 if (!userList[0].userProfileImg.isNullOrEmpty()){
                     Glide.with(myContext)
-                        .load("http://192.168.1.58:8000/${userList[0].userProfileImg}")
+                        .load("${Constants.IMAGE_BASE_URL}/${userList[0].userProfileImg}")
                         .circleCrop() // Makes the image circular
                         .placeholder(R.drawable.dummyuser) // Optional: placeholder while loading
                         .error(R.drawable.dummyuser) // Optional: error image if loading fails
@@ -372,11 +374,11 @@ class ProfileFragment : BottomSheetDialogFragment(), PermissionRequest.Listener 
                 is NetworkResult.Success -> {
                     hideLoader(myContext, loader)
 
-                    Log.d(TAG, "bindObservers: response received for profile data => ${it.data?.userData?.userEmail}")
+                    Log.d(TAG, "bindObservers: response received for profile data => ${it.data?.userData}")
 
                     val userData = it.data?.userData!!
 
-                    userViewModel.insertUser(
+                    userViewModel.updateUser(
                         User(
                             userId = userData.userId,
                             userName = userData.userName,
@@ -389,10 +391,26 @@ class ProfileFragment : BottomSheetDialogFragment(), PermissionRequest.Listener 
                             currency = userData.currency,
                             totalRatingSum = userData.totalRatingSum,
                             totalRatings = userData.totalRatingsCount,
-                            walletStatus = userData.isWalletActive,
+                            walletStatus = userData.isWalletActive != "false",
                             totalCompleteRides = userData.totalCompleteRides,
                             walletBalance = userData.walletBalance
                         )
+                    )
+
+                    Glide.with(this@ProfileFragment)
+                        .load("${Constants.IMAGE_BASE_URL}/${userData.profilePic}")
+                        .circleCrop() // Apply circular crop to the image
+                        .placeholder(R.drawable.dummyuser) // Placeholder image while loading
+                        .error(R.drawable.dummyuser)
+                        .transition(DrawableTransitionOptions.withCrossFade()) // Fade transition
+                        .into(binding.profilePic)
+
+                    alertDialogService.customAlertDialogAnim(
+                        myContext,
+                        "Success",
+                        "Profile Update Successfully",
+                        R.raw.success,
+                        btnText = "OK"
                     )
 
                     userViewModel.clearProfileRes()
@@ -480,6 +498,11 @@ class ProfileFragment : BottomSheetDialogFragment(), PermissionRequest.Listener 
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        request.removeListener(this)
+    }
+
     private fun createImageFile(): File? {
         val directory = File(myContext.filesDir, "Raido")
 
@@ -524,13 +547,14 @@ class ProfileFragment : BottomSheetDialogFragment(), PermissionRequest.Listener 
         bottomSheetDialog.setContentView(R.layout.edit_profile_dialog)
 
         val cameraBtn =
-            bottomSheetDialog.findViewById<LinearLayout>(R.id.camera_circle);
+            bottomSheetDialog.findViewById<ImageButton>(R.id.camera_circle);
         val galleryBtn =
-            bottomSheetDialog.findViewById<LinearLayout>(R.id.gallery_circle);
+            bottomSheetDialog.findViewById<ImageButton>(R.id.gallery_circle);
 
         bottomSheetDialog.show()
 
         cameraBtn?.setOnClickListener {
+            bottomSheetDialog.dismiss()
             Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 .also { takePictureIntent ->
 
@@ -602,12 +626,12 @@ class ProfileFragment : BottomSheetDialogFragment(), PermissionRequest.Listener 
                         }
                     }
                 }
-            bottomSheetDialog.dismiss()
+
         }
 
         galleryBtn?.setOnClickListener {
-            gallerylauncher.launch("image/*")
             bottomSheetDialog.dismiss()
+            gallerylauncher.launch("image/*")
         }
     }
 

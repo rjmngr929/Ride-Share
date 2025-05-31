@@ -8,6 +8,8 @@ data class RideBookRequest(
     @SerializedName("pickup_longitude") val pickupLng: Double,
     @SerializedName("dropoff_latitude") val dropLat: Double,
     @SerializedName("dropoff_longitude") val dropLng: Double,
+    @SerializedName("pickupaddress") val pickupAddress: String,
+    @SerializedName("dropaddress") val dropAddress: String,
     @SerializedName("categorie_id") val vehicleId: Int,
     @SerializedName("district") val district: String
 )

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cancel_reasons_array">
+        <item>The ride is taking too long to arrive.</item>
+        <item>The pickup location was set incorrectly.</item>
+        <item>The fare is higher than expected.</item>
+        <item>The rider is not answering calls.</item>
+        <item>The rider’s behavior seems unprofessional.</item>
+        <item>An urgent situation has come up.</item>
+        <item>A family member or friend advised against the ride.</item>
+        <item>The rider reached the wrong location.</item>
+        <item>The vehicle does not match expectations.</item>
+        <item>Issues with payment or app functionality.</item>
+        <item>Other</item>
+    </string-array>
+</resources>
+
+
+
+
+
+
+
+
+
+

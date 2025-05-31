@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class NearByRidersModelResponse(
     @SerializedName("message") val message: String = "",
-    @SerializedName("nearby_riders") val nearbyRiders: ArrayList<NearByRiderModel>,
     @SerializedName("status") val status: Boolean,
     @SerializedName("serviceCategories") val serviceCategories: ArrayList<ServiceCategoriesModel>,
     @SerializedName("AboutUs") val aboutUsModel: AboutUsModel,

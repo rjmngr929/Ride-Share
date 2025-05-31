@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.my.raido.Utils.DateUtils
+import com.my.raido.Utils.setOnSingleClickListener
 import com.my.raido.databinding.RecentRidesRowLayoutBinding
 import com.my.raido.models.RidesData
 
-class RecentRidesRecyclerViewAdapter(private var rideList : ArrayList<RidesData>, private val onItemClick: (RidesData) -> Unit ) : RecyclerView.Adapter<RecentRidesRecyclerViewAdapter.ItemViewHolder>() {
+class RecentRidesRecyclerViewAdapter(private var rideList : List<RidesData>, private val onItemClick: (RidesData) -> Unit ) : RecyclerView.Adapter<RecentRidesRecyclerViewAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(val binding : RecentRidesRowLayoutBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -24,10 +25,18 @@ class RecentRidesRecyclerViewAdapter(private var rideList : ArrayList<RidesData>
 
                 try {
 
-                    binding.locationText.text  = this.dropLocation
+                    val dropAddress = this.dropLocation.split("||")
+                    if(dropAddress.size == 2) {
+                        binding.locationText.text  = dropAddress[0]
+                    }else{
+                        binding.locationText.text  = this.dropLocation
+                    }
+
+                    binding.priceStatusText.text = String.format("₹%1s * %2s", if(this.rideStatus == "completed") this.price else "0", if(this.rideStatus == "completed") "Completed" else "Cancelled")
+
                     binding.dateTimeText.text = DateUtils.shared.formateDateProgrammatically(fromFormat = "yyyy-MM-dd HH:mm:ss", toFormat = "dd MMM yyyy | hh:mma", dateToFormat = this.rideDate)
 
-                    binding.root.setOnClickListener {
+                    binding.root.setOnSingleClickListener {
                         onItemClick(this)
                     }
 
@@ -46,7 +55,7 @@ class RecentRidesRecyclerViewAdapter(private var rideList : ArrayList<RidesData>
     }
 
     // Add this function to update the dataset
-    fun updateItems(newItems: ArrayList<RidesData> ) {
+    fun updateItems(newItems: List<RidesData> ) {
         rideList = newItems
         notifyDataSetChanged() // Notify adapter of data change
     }

@@ -5,61 +5,145 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
-import com.my.raido.Helper.SelectVehicle
+import com.google.android.gms.maps.model.LatLng
 import com.my.raido.Utils.NetworkResult
-import com.my.raido.models.DriverDataModel
+import com.my.raido.constants.SocketConstants
 import com.my.raido.models.RecentRideDetailResponse
 import com.my.raido.models.RecentRidesModel
 import com.my.raido.models.cab.NearByRidersModelResponse
 import com.my.raido.models.cab.RideBookRequest
 import com.my.raido.models.cab.RideBookResponse
-import com.my.raido.models.response.DriverDetail
-import com.my.raido.models.response.DriverDetailModel
+import com.my.raido.models.response.ResponseModel
 import com.my.raido.repository.CabRepository
-import com.my.raido.repository.DriverLocationRepository
+import com.my.raido.services.BookingStatus
+import com.my.raido.socket.SocketManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import javax.inject.Inject
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
 
 @HiltViewModel
 class CabViewModel @Inject constructor(
     private val cabRepository: CabRepository,
-    private val database: DatabaseReference,
-    private val driverLocationRepository: DriverLocationRepository,
+    private val socketManager: SocketManager
 ): ViewModel(){
 
-
-    // LiveData to hold the user data
-    private val _selectedVehicle = MutableLiveData<SelectVehicle>()
-    val selectedVehicle: LiveData<SelectVehicle> get() = _selectedVehicle
-
-    // Method to update the user data
-    fun updateVehicleType(vehicleType: SelectVehicle) {
-        _selectedVehicle.value = vehicleType
+    init {
+//        initSocketListeners()
     }
 
-    // LiveData to hold the user data
-    private val _driverDetails = MutableLiveData<DriverDetail>()
-    val driverDetails: LiveData<DriverDetail> get() = _driverDetails
+    private fun initSocketListeners() {
+        socketManager.setOnSocketConnectedListener(object : SocketManager.OnSocketConnectedListener {
+            override fun onConnected() {
 
-    // LiveData to hold the user data
-    private val _rideBookResponse = MutableLiveData<RideBookResponse>()
-    val rideBookResponse: LiveData<RideBookResponse> get() = _rideBookResponse
+                Log.d("CabViewModel", "onConnected: called this event...")
 
-    // Method to update the user data
-    fun updateRideBookResponse(response: RideBookResponse) {
-        _rideBookResponse.value = response
+                socketManager.listenToEvent("welcomeMessage1") { data ->
+                    Log.d("CabViewModel", "onViewCreated: welcome message 1")
+                }
+
+
+                socketManager.listenToEvent(SocketConstants.RIDER_RIDE_START) { data ->
+                    Log.d("CabViewModel", "onViewCreated: ride started success")
+                    triggerBookingOperation(BookingStatus.RIDE_STARTED)
+                }
+
+                socketManager.listenToEvent(SocketConstants.USER_INFO_RIDE_COMPLETE) { data ->
+                    Log.d("CabViewModel", "onConnected: Ride completed success..")
+                    if (data.getBoolean("status")) {
+                        if (data.getString("message") == "Ride Complete") {
+
+                            triggerBookingOperation(BookingStatus.RIDE_COMPLETED)
+
+                            _rideCompleteData.postValue(data)
+
+                        }
+                    }
+
+                }
+
+                socketManager.listenToEvent("receive_message_by_user") { data ->
+                    Log.d("CabViewModel", "onViewCreated: driver message receive to user => $data")
+                }
+
+                socketManager.listenToEvent(SocketConstants.RIDER_LOCATION_CHANGE) { response ->
+                    Log.d("CabViewModel", "onCreate: driver location data is ${response}")
+//                    _driveLocationData.postValue(response)
+                }
+
+            }
+        })
+
+
     }
 
-//    **************************** Selected Payment Mode ******************************************
+//************* Manage Booking Operations *********************************************************
+    private val _statusToPerform = MutableLiveData<BookingStatus>()
+    val statusToPerform: LiveData<BookingStatus> = _statusToPerform
+
+    fun triggerBookingOperation(status: BookingStatus) {
+        _statusToPerform.value = status
+    }
+//************* Manage Booking Operations *********************************************************
+
+//************* Manage Booking Operations *********************************************************
+    private val _rideCompleteData = MutableLiveData<JSONObject>()
+    val rideCompleteData: LiveData<JSONObject> = _rideCompleteData
+
+//************* Manage Booking Operations *********************************************************
+
+//************* Driver Location Update *********************************************************
+    private val _driveLocationData = MutableLiveData<JSONObject>()
+    val driveLocationData: LiveData<JSONObject> = _driveLocationData
+
+//************* Driver Location Update *********************************************************
+
+
+
+//    *********************************** Set Location via marker pin *****************************************
+    private val _markerLocation = MutableLiveData<LatLng>()
+    val markerLocation: LiveData<LatLng> get() = _markerLocation
+
+    // Update the marker location
+    fun updateMarkerLocation(latLng: LatLng) {
+        _markerLocation.value = latLng
+    }
+
+    private val _setLocationFor = MutableLiveData<String>()
+    val setLocationFor: LiveData<String> get() = _setLocationFor
+
+    fun updateLocationFor(key: String) {
+        _setLocationFor.value = key
+    }
+//    *********************************** Set Location via marker pin *****************************************
+
+//    ********************** Create Booking ************************************************************
+    // LiveData to store user information
+    private val _createBookingData = MutableLiveData<JSONObject>()
+    val createBookingData: LiveData<JSONObject> get() = _createBookingData
+
+    // Function to update user data
+    fun setCreateBookingData(data: JSONObject) {
+        _createBookingData.value = data
+    }
+
+//    ********************** Create Booking ************************************************************
+
+
+//    ********************** Ride Data ************************************************************
+    // LiveData to store user information
+    private val _rideData = MutableLiveData<String?>()
+    val rideData: LiveData<String?> get() = _rideData
+
+    // Function to update user data
+    fun setRiderData(data: String?) {
+        _rideData.value = data
+    }
+
+//    ********************** Ride Data ************************************************************
+
+
+    //    **************************** Selected Payment Mode ******************************************
     private val _selectedPaymentMode = MutableLiveData<String>().apply { value = "wallet" }// 🔹 Mutable LiveData
     val selectedPaymentMode: LiveData<String> get() = _selectedPaymentMode // 🔹 Read-Only LiveData
 
@@ -72,9 +156,9 @@ class CabViewModel @Inject constructor(
     val nearByCabsResponseLiveData: LiveData<NetworkResult<NearByRidersModelResponse>>
         get() = cabRepository.nearByCabsResponseLiveData
 
-    fun fetchCabs(lat: Double, lng: Double){
+    fun fetchCabs(){
         viewModelScope.launch {
-            cabRepository.fetchNearbyCabs(lat = lat, lng = lng)
+            cabRepository.fetchDashboardDetail()
         }
     }
 
@@ -83,67 +167,20 @@ class CabViewModel @Inject constructor(
     }
 
 //    ******************************* NearBy Cabs ***********************************************
-    private val _nearbyDrivers = MutableLiveData<List<DriverDataModel>>()
-    val nearbyDrivers: LiveData<List<DriverDataModel>> get() = _nearbyDrivers
-
-    fun fetchDrivers(lat: Double, lng: Double){
-//        val radius = 2.0 // You can set the radius to your preferred value (in kilometers)
-//
-//        driverLocationRepository.getNearbyDrivers(lat, lng, radius) { nearbyDrivers ->
-//            Log.d("TAG", "notifyNearbyDrivers: near by driver data => ${nearbyDrivers.size}")
-//            // Send notifications to the nearby drivers
-////            nearbyDrivers.forEach { driverId ->
-////                sendNotificationToDriver(driverId)
-////            }
-//        }
-
-        viewModelScope.launch {
-            cabRepository.fetchNearbyCabs(lat = lat, lng = lng)
-        }
-
-        val driversRef = database.child("available_drivers")
-
-        driversRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val nearbyDriversList = mutableListOf<DriverDataModel>()
-
-                for (driverSnapshot in snapshot.children) {
-                    val driver = driverSnapshot.getValue(DriverDataModel::class.java)
-
-                    if (driver != null && driver.onDuty && driver.status == "Available") {
-                        val distance = calculateDistance(lat, lng, driver.latitude, driver.longitude)
-
-                        if (distance <= 2.0) { // 2 km radius filter
-                            nearbyDriversList.add(driver)
-                        }
-                    }
-                }
-
-                // 🔹 LiveData update karega UI ko automatically
-                _nearbyDrivers.postValue(nearbyDriversList)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("Firebase", "Error fetching drivers: ${error.message}")
-            }
-        })
-    }
-
-    fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        val R = 6371 // Earth radius in km
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
-
-        val a = sin(dLat / 2) * sin(dLat / 2) +
-                cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
-                sin(dLon / 2) * sin(dLon / 2)
-
-        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        return R * c // Distance in km
-    }
-
 
 //********************** NearBy Cabs ******************************************
+    val updateNonServiceDistrictResponseLiveData: LiveData<NetworkResult<ResponseModel>>
+        get() = cabRepository.nonServiceDistrictResponseLiveData
+
+    fun updateNonServiceDistrict(district: String){
+        viewModelScope.launch {
+            cabRepository.updateNonServiceDistrict(district = district)
+        }
+    }
+
+    fun clearNonServiceDistrictRes(){
+        cabRepository._nonServiceDistrictResponseLiveData.postValue(NetworkResult.Empty())
+    }
 
 //********************** Recent Rides History ******************************************
     val recentRidesResponseLiveData: LiveData<NetworkResult<RecentRidesModel>>
@@ -193,66 +230,21 @@ class CabViewModel @Inject constructor(
 
 //********************** get Ride Path with fare ******************************************
 
-//********************** get Driver Data ******************************************
-    val driverDetailResponseLiveData: LiveData<NetworkResult<DriverDetailModel>>
-        get() = cabRepository.driverDetailResponseLiveData
+//********************** Rate Driver ******************************************
+    val rateDriverResponseLiveData: LiveData<NetworkResult<ResponseModel>>
+        get() = cabRepository.ratedriverResponseLiveData
 
-    fun fetchDriverDetail(driverId: String){
+    fun rateDriverApi(rideId: String, rating: String){
         viewModelScope.launch {
-            cabRepository.fetchDriverDetail(driverId)
+            cabRepository.rateDriverApi(rideId = rideId, rating = rating)
         }
     }
 
-    fun updateDriverData(data : DriverDetail){
-        Log.d("TAG", "updateDriverData: updated data => ${data.driverName}")
-        _driverDetails.postValue(data)
+    fun clearRateDriverRes(){
+        cabRepository._ratedriverResponseLiveData.postValue(NetworkResult.Empty())
     }
 
-    fun clearDriverDetailRes(){
-        cabRepository._driverDetailResponseLiveData.postValue(NetworkResult.Empty())
-    }
-
-//********************** get Driver Data ******************************************
-
-// ******************* Assign Driver Data **********************************************************
-    fun fetchDataForDriver(userId: String, onComplete: (String?) -> Unit){
-        database.child("ride_requests").child("$userId").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    val driverId = snapshot.child("driverId").getValue(Int::class.java)
-                    Log.d("fetchDataForDriver", "Driver id is : $driverId")
-
-                    database.child("available_drivers").child("$driverId").addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            if (snapshot.exists()) {
-                                val rideHistoryId = snapshot.child("riderHistoryId").getValue(String::class.java)
-                                Log.d("fetchDataForDriver", "ride history id is : $rideHistoryId")
-                                onComplete(rideHistoryId)
-                            } else {
-                                onComplete(null)
-                                Log.d("fetchDataForDriver", "No ride history found")
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            onComplete(null)
-                            Log.e("fetchDataForDriver", "Database Error: in ride history ${error.message}")
-                        }
-                    })
-
-                } else {
-                    onComplete(null)
-                    Log.d("fetchDataForDriver", "No ride history id found ")
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                onComplete(null)
-                Log.e("fetchDataForDriver", "Database Error: in driver id ${error.message}")
-            }
-        })
-    }
-// ******************* Assign Driver Data **********************************************************
+//********************** Rate Driver ******************************************
 
 
 }

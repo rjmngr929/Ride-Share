@@ -14,6 +14,8 @@ import com.my.raido.models.contacts.ContactRequestData
 import com.my.raido.models.contacts.ContactResponse
 import com.my.raido.models.profile.ProfileDetailRequest
 import com.my.raido.models.profile.ProfileDetailResponse
+import com.my.raido.models.response.AddBalanceResModel
+import com.my.raido.models.response.DashboardDataModel
 import com.my.raido.models.response.PassbookResModel
 import com.my.raido.models.response.ResponseModel
 import okhttp3.MultipartBody
@@ -24,6 +26,60 @@ import javax.inject.Inject
 
 class UserRepository @Inject constructor(private val userApi: UserAPI, private val networkHelper: NetworkHelper, private val exceptionHandler: NetworkExceptionHandler) {
 
+//********************** Dashboard API ***********************************
+    val _dashboardApiResponseLiveData = MutableLiveData<NetworkResult<DashboardDataModel>>()
+    val dashboardApiResponseLiveData: LiveData<NetworkResult<DashboardDataModel>>
+        get() = _dashboardApiResponseLiveData
+
+    @SuppressLint("SuspiciousIndentation")
+    suspend fun dashboardApi() {
+        _dashboardApiResponseLiveData.postValue(NetworkResult.Loading())
+        if(networkHelper.isNetworkConnected()) {
+            try {
+                val response =userApi.dashboardApi()
+                Log.d("TAG", "dashboardApi: Dashboard data => ${response}")
+                if (response.isSuccessful) {
+                    Log.d("TAG", "dashboardApi: Dashboard data => ${response}")
+                    handleDashboardResponse(response)
+                } else {
+                    try {
+                        val message = response.errorBody()?.string()?.let { JSONObject(it) }?.getString("message")
+    //                    Log.d("TAG", "dashboardApi: error create by ${message}")
+                        _dashboardApiResponseLiveData.postValue(
+                            NetworkResult.Error( message.toString() ))
+                    }catch (e: Exception){
+                        Log.d("TAG", "dashboardApi: Dashboard data => upper ${response.errorBody()}")
+                        _dashboardApiResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it)?.getString("message") }.toString()))
+                    }
+                }
+            }catch (e: Exception){
+                Log.d("TAG", "dashboardApi: Dashboard data => lower ${e}")
+                _dashboardApiResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+            }
+        }else{
+            _dashboardApiResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
+        }
+    }
+
+    private fun handleDashboardResponse(response: Response<DashboardDataModel>) {
+        if (response.isSuccessful && response.body() != null) {
+            _dashboardApiResponseLiveData.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.errorBody()!=null){
+            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _dashboardApiResponseLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+        }
+        else{
+            _dashboardApiResponseLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+        }
+    }
+
+//********************** Dashboard API ***********************************
+
 //********************** Create Payment Order ***********************************
     val _createPaymentResponseLiveData = MutableLiveData<NetworkResult<CreateOrderResponse>>()
     val createPaymentResponseLiveData: LiveData<NetworkResult<CreateOrderResponse>>
@@ -32,28 +88,34 @@ class UserRepository @Inject constructor(private val userApi: UserAPI, private v
     @SuppressLint("SuspiciousIndentation")
     suspend fun createOrder(amount: String) {
         _createPaymentResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-            val response =userApi.createPaymentOrder(amount = amount)
-            Log.d("TAG", "createOrder: Create Order data => ${response}")
-            if (response.isSuccessful) {
+        if(networkHelper.isNetworkConnected()) {
+            try {
+                val response =userApi.createPaymentOrder(amount = amount)
                 Log.d("TAG", "createOrder: Create Order data => ${response}")
-                handleCreateOrderResponse(response)
-            } else {
-                try {
-                    Log.d("TAG", "createOrder: error create by ${response.errorBody()?.string()}")
-                    _createPaymentResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                            ?.let { JSONObject(it).getString("message") }))
-                }catch (e: Exception){
-                    Log.d("TAG", "createOrder: Create Order data => upper ${e}")
-                    _createPaymentResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                            ?.let { JSONObject(it) }?.getString("message")))
+                if (response.isSuccessful) {
+                    Log.d("TAG", "createOrder: Create Order data => ${response}")
+                    handleCreateOrderResponse(response)
+                } else {
+                    try {
+                        Log.d("TAG", "createOrder: error create by ${response.errorBody()?.string()}")
+                        _createPaymentResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "createOrder: Create Order data => upper ${e}")
+                        _createPaymentResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it) }?.getString("message")))
+                    }
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "createOrder: Create Order data => lower ${e}")
+                _createPaymentResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "createOrder: Create Order data => lower ${e}")
-            _createPaymentResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _dashboardApiResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 
@@ -73,36 +135,42 @@ class UserRepository @Inject constructor(private val userApi: UserAPI, private v
 //********************** Create Payment Order ***********************************
 
 //********************** Update Payment Order Status ***********************************
-    val _updatePaymentStatusResponseLiveData = MutableLiveData<NetworkResult<ResponseModel>>()
-    val updatePaymentStatusResponseLiveData: LiveData<NetworkResult<ResponseModel>>
+    val _updatePaymentStatusResponseLiveData = MutableLiveData<NetworkResult<AddBalanceResModel>>()
+    val updatePaymentStatusResponseLiveData: LiveData<NetworkResult<AddBalanceResModel>>
         get() = _updatePaymentStatusResponseLiveData
 
     @SuppressLint("SuspiciousIndentation")
     suspend fun updateOrderStatus(orderId: String) {
         _updatePaymentStatusResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-            Log.d("TAG", "updateOrderStatus: update Status data => ${orderId}")
-            val response =userApi.checkOrderStatus(orderId = orderId)
-            Log.d("TAG", "updateOrderStatus: update Status data => ${response}")
-            if (response.isSuccessful) {
+        if(networkHelper.isNetworkConnected()) {
+            try {
+                Log.d("TAG", "updateOrderStatus: update Status data => ${orderId}")
+                val response =userApi.checkOrderStatus(orderId = orderId)
                 Log.d("TAG", "updateOrderStatus: update Status data => ${response}")
-                handleUpdateOrderStatusResponse(response)
-            } else {
-                try {
-                    _updatePaymentStatusResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                            ?.let { JSONObject(it).getString("message") }))
-                }catch (e: Exception){
-                    Log.d("TAG", "updateOrderStatus: update Status data => upper ${e}")
+                if (response.isSuccessful) {
+                    Log.d("TAG", "updateOrderStatus: update Status data => ${response}")
+                    handleUpdateOrderStatusResponse(response)
+                } else {
+                    try {
+                        _updatePaymentStatusResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "updateOrderStatus: update Status data => upper ${e}")
+                    }
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "updateOrderStatus: update Status data => lower ${e.message}")
+                _updatePaymentStatusResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "updateOrderStatus: update Status data => lower ${e.message}")
-            _updatePaymentStatusResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _updatePaymentStatusResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 
-    private fun handleUpdateOrderStatusResponse(response: Response<ResponseModel>) {
+    private fun handleUpdateOrderStatusResponse(response: Response<AddBalanceResModel>) {
         if (response.isSuccessful && response.body() != null) {
             _updatePaymentStatusResponseLiveData.postValue(NetworkResult.Success(response.body()!!))
         }
@@ -125,24 +193,30 @@ class UserRepository @Inject constructor(private val userApi: UserAPI, private v
     @SuppressLint("SuspiciousIndentation")
     suspend fun fetchPassbook() {
         _passbookHistoryResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-            val response =userApi.fetchPassbook()
-            Log.d("TAG", "fetchPassbook: update Status data => ${response}")
-            if (response.isSuccessful) {
+        if(networkHelper.isNetworkConnected()) {
+            try {
+                val response =userApi.fetchPassbook()
                 Log.d("TAG", "fetchPassbook: update Status data => ${response}")
-                handlePassbookResponse(response)
-            } else {
-                try {
-                    _passbookHistoryResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                            ?.let { JSONObject(it).getString("message") }))
-                }catch (e: Exception){
-                    Log.d("TAG", "fetchPassbook: update Status data => upper ${e}")
+                if (response.isSuccessful) {
+                    Log.d("TAG", "fetchPassbook: update Status data => ${response}")
+                    handlePassbookResponse(response)
+                } else {
+                    try {
+                        _passbookHistoryResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "fetchPassbook: update Status data => upper ${e}")
+                    }
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "fetchPassbook: update Status data => lower ${e.message}")
+                _passbookHistoryResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "fetchPassbook: update Status data => lower ${e.message}")
-            _passbookHistoryResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _passbookHistoryResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 
@@ -168,34 +242,40 @@ class UserRepository @Inject constructor(private val userApi: UserAPI, private v
 
     suspend fun submitProfileDetail(profileRequest: ProfileDetailRequest) {
         _profileDetailResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-//            Log.d("TAG", "submitProfileDetail: response data => ${profileDetailRequest.toMap()} ")
-            val response =userApi.updateProfile(
-                userName = profileRequest.userName,
-                userEmail = profileRequest.userEmail,
-                userGender = profileRequest.userGender,
-                userDob = profileRequest.userDob
-            )
-            Log.d("TAG", "submitProfileDetail: response data => $response ")
-            if (response.isSuccessful) {
-                handleProfileDataResponse(response)
-            } else {
-                Log.d("TAG", "submitProfileDetail: error on response unsuccessfull => ${response.errorBody()?.string().let {
-                    if (it != null) {
-                        JSONObject(it)
+        if(networkHelper.isNetworkConnected()) {
+            try {
+    //            Log.d("TAG", "submitProfileDetail: response data => ${profileDetailRequest.toMap()} ")
+                val response =userApi.updateProfile(
+                    userName = profileRequest.userName,
+                    userEmail = profileRequest.userEmail,
+                    userGender = profileRequest.userGender,
+                    userDob = profileRequest.userDob
+                )
+                Log.d("TAG", "submitProfileDetail: response data => $response ")
+                if (response.isSuccessful) {
+                    handleProfileDataResponse(response)
+                } else {
+                    Log.d("TAG", "submitProfileDetail: error on response unsuccessfull => ${response.errorBody()?.string().let {
+                        if (it != null) {
+                            JSONObject(it)
+                        }
+                    }}")
+                    try {
+                        _profileDetailResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                            ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "submitProfileDetail: error on catch part ${e}")
                     }
-                }}")
-                try {
-                    _profileDetailResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                        ?.let { JSONObject(it).getString("message") }))
-                }catch (e: Exception){
-                    Log.d("TAG", "submitProfileDetail: error on catch part ${e}")
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "submitProfileDetail: error on catch part network => ${e}")
+                _profileDetailResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "submitProfileDetail: error on catch part network => ${e}")
-            _profileDetailResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _profileDetailResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 
@@ -216,31 +296,37 @@ class UserRepository @Inject constructor(private val userApi: UserAPI, private v
 //********************** profile Photo Opertaion ******************************************
     suspend fun submitProfilePhoto(profileImg: MultipartBody.Part) {
     _profileDetailResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-//            Log.d("TAG", "submitProfileDetail: response data => ${profileDetailRequest.toMap()} ")
-            val response =userApi.updateProfile(
-               profileImg = profileImg
-            )
-            Log.d("TAG", "submitProfilePhoto: response data => $response ")
-            if (response.isSuccessful) {
-                handleProfileDataResponse(response)
-            } else {
-                Log.d("TAG", "submitProfilePhoto: error on response unsuccessfull => ${response.errorBody()?.string().let {
-                    if (it != null) {
-                        JSONObject(it)
+        if(networkHelper.isNetworkConnected()) {
+            try {
+    //            Log.d("TAG", "submitProfileDetail: response data => ${profileDetailRequest.toMap()} ")
+                val response =userApi.updateProfile(
+                   profileImg = profileImg
+                )
+                Log.d("TAG", "submitProfilePhoto: response data => $response ")
+                if (response.isSuccessful) {
+                    handleProfileDataResponse(response)
+                } else {
+                    Log.d("TAG", "submitProfilePhoto: error on response unsuccessfull => ${response.errorBody()?.string().let {
+                        if (it != null) {
+                            JSONObject(it)
+                        }
+                    }}")
+                    try {
+                        _profileDetailResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "submitProfilePhoto: error on catch part ${e}")
                     }
-                }}")
-                try {
-                    _profileDetailResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                            ?.let { JSONObject(it).getString("message") }))
-                }catch (e: Exception){
-                    Log.d("TAG", "submitProfilePhoto: error on catch part ${e}")
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "submitProfilePhoto: error on catch part network => $e")
+                _profileDetailResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "submitProfilePhoto: error on catch part network => $e")
-            _profileDetailResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _profileDetailResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 //********************** profile Photo Opertaion ******************************************
@@ -252,24 +338,30 @@ class UserRepository @Inject constructor(private val userApi: UserAPI, private v
 
     suspend fun fetchNotification() {
         _notificationResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-            val response =userApi.getNotifications()
-            Log.d("TAG", "fetchNotification: notification data => ${response}")
-            if (response.isSuccessful) {
+        if(networkHelper.isNetworkConnected()) {
+            try {
+                val response =userApi.getNotifications()
                 Log.d("TAG", "fetchNotification: notification data => ${response}")
-                handleNotificationResponse(response)
-            } else {
-                try {
-                    _notificationResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                            ?.let { JSONObject(it).getString("message") }))
-                }catch (e: Exception){
-                    Log.d("TAG", "fetchNotification: recent Rides data => upper ${e}")
+                if (response.isSuccessful) {
+                    Log.d("TAG", "fetchNotification: notification data => ${response}")
+                    handleNotificationResponse(response)
+                } else {
+                    try {
+                        _notificationResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "fetchNotification: recent Rides data => upper ${e}")
+                    }
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "fetchNotification: recent Rides data => lower ${e}")
+                _notificationResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "fetchNotification: recent Rides data => lower ${e}")
-            _notificationResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _notificationResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 
@@ -295,24 +387,30 @@ class UserRepository @Inject constructor(private val userApi: UserAPI, private v
 
     suspend fun fetchContactList() {
         _contactListResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-            val response =userApi.getContactList()
-            Log.d("TAG", "fetchContactList: Contact list data => ${response}")
-            if (response.isSuccessful) {
+        if(networkHelper.isNetworkConnected()) {
+            try {
+                val response =userApi.getContactList()
                 Log.d("TAG", "fetchContactList: Contact list data => ${response}")
-                handleContactListResponse(response)
-            } else {
-                try {
-                    _contactListResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                            ?.let { JSONObject(it).getString("message") }))
-                }catch (e: Exception){
-                    Log.d("TAG", "fetchContactList: Contact list data => upper ${e}")
+                if (response.isSuccessful) {
+                    Log.d("TAG", "fetchContactList: Contact list data => ${response}")
+                    handleContactListResponse(response)
+                } else {
+                    try {
+                        _contactListResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "fetchContactList: Contact list data => upper ${e}")
+                    }
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "fetchContactList: Contact list data => lower ${e}")
+                _contactListResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "fetchContactList: Contact list data => lower ${e}")
-            _contactListResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _contactListResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 
@@ -339,25 +437,31 @@ class UserRepository @Inject constructor(private val userApi: UserAPI, private v
     @SuppressLint("SuspiciousIndentation")
     suspend fun updateContactList(contactList: ContactRequestData) {
         _updateContactListResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-                Log.d("TAG", "updateContactList: update contact list data => ${contactList}")
-            val response =userApi.submitContactList(contactlist = contactList)
-                Log.d("TAG", "updateContactList: Contact list data => ${response}")
-            if (response.isSuccessful) {
-                Log.d("TAG", "updateContactList: Contact list data => ${response}")
-                handleUpdateContactListResponse(response)
-            } else {
-                try {
-                    _updateContactListResponseLiveData.postValue(
-                        NetworkResult.Error(response.errorBody()?.string()
-                            ?.let { JSONObject(it).getString("message") }))
-                }catch (e: Exception){
-                    Log.d("TAG", "updateContactList: Contact list data => upper ${e}")
+        if(networkHelper.isNetworkConnected()) {
+            try {
+                    Log.d("TAG", "updateContactList: update contact list data => ${contactList}")
+                val response =userApi.submitContactList(contactlist = contactList)
+                    Log.d("TAG", "updateContactList: Contact list data => ${response}")
+                if (response.isSuccessful) {
+                    Log.d("TAG", "updateContactList: Contact list data => ${response}")
+                    handleUpdateContactListResponse(response)
+                } else {
+                    try {
+                        _updateContactListResponseLiveData.postValue(
+                            NetworkResult.Error(response.errorBody()?.string()
+                                ?.let { JSONObject(it).getString("message") }))
+                    }catch (e: Exception){
+                        Log.d("TAG", "updateContactList: Contact list data => upper ${e}")
+                    }
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "updateContactList: Contact list data => lower ${e}")
+                _updateContactListResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "updateContactList: Contact list data => lower ${e}")
-            _updateContactListResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _updateContactListResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 

@@ -11,6 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.my.raido.Utils.AppUtils
+import com.my.raido.Utils.setOnSingleClickListener
 import com.my.raido.constants.Constants
 import com.my.raido.data.prefs.SharedPrefManager
 import com.my.raido.databinding.FragmentAboutBinding
@@ -50,7 +51,7 @@ class AboutFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.alertdialogCloseBtn.setOnClickListener {
+        binding.alertdialogCloseBtn.setOnSingleClickListener {
             dismiss()
         }
 

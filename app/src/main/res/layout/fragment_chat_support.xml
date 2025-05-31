@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.bottomsheet_fragments.ride_book.ChatSupportFragment"
+    android:background="@color/bg_dark">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/header_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_12sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/messageListView">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true">
+                <ImageButton
+                    android:id="@+id/chat_back_btn"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:padding="@dimen/_12sdp"
+                    android:background="@drawable/rounded_curved_border"
+                    android:backgroundTint="@color/bg_light"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Raido Chat"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"/>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/call_customer_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_call_icon"
+                android:padding="@dimen/_8sdp"
+                android:background="@drawable/rounded_border"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+
+
+        </RelativeLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:id="@+id/messageListView"
+            android:layout_weight="2"
+            android:divider="#fff"
+            android:transcriptMode="normal"
+            android:verticalScrollbarPosition="right"
+            android:layout_height="0dp"
+            android:padding="@dimen/_12sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header_section"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_section"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_12sdp"
+            app:layout_constraintTop_toBottomOf="@+id/messageListView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/msg_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/bg_light"
+                app:cardCornerRadius="@dimen/_150sdp"
+                app:cardElevation="0dp"
+                android:layout_marginVertical="@dimen/_4sdp"
+                app:contentPadding="@dimen/_12sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/send_chat_btn">
+                <EditText
+                    android:id="@+id/msg_edittext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/type_msg"
+                    android:textColorHint="@color/text_gray"
+                    android:background="@color/bg_light"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    android:maxLines="1"
+                    android:maxLength="60"
+                    android:inputType="text"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <ImageButton
+                android:id="@+id/send_chat_btn"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:src="@drawable/ic_send"
+                android:padding="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:background="@drawable/ic_circle"
+                android:backgroundTint="@color/bg_light"
+                app:tint="@color/white"
+                android:layout_toEndOf="@+id/msg_layout"
+                app:layout_constraintStart_toEndOf="@+id/msg_layout"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

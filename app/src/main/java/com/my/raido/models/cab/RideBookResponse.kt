@@ -9,7 +9,8 @@ data class RideBookResponse(
     @SerializedName("steps") val drivePath: String = "",
     @SerializedName("fare") val fareData: FareData,
     @SerializedName("Distance") val Distance: String,
-    @SerializedName("bookingId") val bookingId: String
+    @SerializedName("bookingId") val bookingId: String,
+    @SerializedName("districtfare") val districtFareData: ArrayList<DistrictFareData>
 )
 
 //data class NearbyRiders(
@@ -59,6 +60,20 @@ data class RiderFares(
     @SerializedName("Bike_Litefare_final_amount") val bikeLiteFareFinal: Double = 0.0,
     @SerializedName("Bike_Lite_Expected_Drop_Time") val bikeLiteArrivalTime: String = "",
     @SerializedName("Bike_Lite_Duration_in_Minutes") val bikeLiteDurationMin: String = "",
+)
+
+data class DistrictFareData(
+    @SerializedName("service_category_id") val serviceCategoryId: Int,
+    @SerializedName("base_fare") val baseFare: Int,
+    @SerializedName("distance_fare_min_1") val distanceFareMinFirst: Int,
+    @SerializedName("distance_fare_max_1") val distanceFareMaxFirst: Int,
+    @SerializedName("distance_fare_rate_1") val distanceFareRateFirst: Any,
+    @SerializedName("distance_fare_min_2") val distanceFareMinSecond: Int,
+    @SerializedName("distance_fare_max_2") val distanceFareMaxSecond: Int,
+    @SerializedName("distance_fare_rate_2") val distanceFareRateSecond: Any,
+    @SerializedName("night_fare") val nightFare: Int,
+    @SerializedName("wait_time_max") val waitTimeMax: Int,
+    @SerializedName("wait_time_charge") val waitTimeCharge: Int,
 )
 
 

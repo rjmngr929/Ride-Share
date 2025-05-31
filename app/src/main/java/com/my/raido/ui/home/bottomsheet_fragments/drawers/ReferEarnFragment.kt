@@ -10,6 +10,7 @@ import android.view.ViewGroup.LayoutParams
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.my.raido.Utils.Helper
 import com.my.raido.databinding.FragmentReferEarnBinding
 
 
@@ -50,6 +51,21 @@ class ReferEarnFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
+        binding.whatsappBtn.setOnClickListener {
+            Helper.openWhatsApp(myContext, "919876543210")
+        }
+
+        binding.instagramBtn.setOnClickListener {
+            Helper.openInstagramProfile(myContext, "instaProfile")
+        }
+
+        binding.smsBtn.setOnClickListener {
+            Helper.sendSMS(myContext, "9876543210", "Hello from my app!")
+        }
+
+        binding.moreBtn.setOnClickListener {
+            Helper.shareText(myContext, "Hello from my app!")
+        }
 
     }
 

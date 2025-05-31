@@ -19,8 +19,10 @@ import com.my.raido.R
 import com.my.raido.Utils.AlertDialogUtility
 import com.my.raido.Utils.NetworkResult
 import com.my.raido.Utils.getLoadingDialog
+import com.my.raido.Utils.gone
 import com.my.raido.Utils.hideLoader
 import com.my.raido.Utils.showLoader
+import com.my.raido.Utils.visible
 import com.my.raido.adapters.PassbookRecyclerViewAdapter
 import com.my.raido.databinding.FragmentPassbookBinding
 import com.my.raido.models.response.TransactionModel
@@ -140,11 +142,11 @@ class PassbookFragment : BottomSheetDialogFragment() {
 
                     val trxnList = it.data?.trxnAry ?: ArrayList<TransactionModel>()
 
-//                    if(trxnList.isNullOrEmpty()){
-//                        binding.emptylist.emptyData.visible()
-//                    }else{
-//                        binding.emptylist.emptyData.gone()
-//                    }
+                    if(trxnList.isNullOrEmpty()){
+                        binding.emptylist.emptyData.visible()
+                    }else{
+                        binding.emptylist.emptyData.gone()
+                    }
 
                     Log.d(TAG, "bindObservers: trxnList data => ${it.data?.status}, ${it.data?.message} and ${it.data?.trxnAry}")
 

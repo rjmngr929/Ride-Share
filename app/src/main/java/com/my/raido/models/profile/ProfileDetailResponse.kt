@@ -18,7 +18,7 @@ data class UserDataModel(
     @SerializedName("date_of_birth") val dob: String = "",
     @SerializedName("wallet_balance") val walletBalance: String = "",
     @SerializedName("currency") val currency: String = "",
-    @SerializedName("is_wallet_active") val isWalletActive: Boolean = false,
+    @SerializedName("is_wallet_active") val isWalletActive: String = "false",
     @SerializedName("total_completed_rides") val totalCompleteRides: Int = 0,
     @SerializedName("total_rating_sum") val totalRatingSum: Int = 0,
     @SerializedName("total_ratings_count") val totalRatingsCount: Int = 0

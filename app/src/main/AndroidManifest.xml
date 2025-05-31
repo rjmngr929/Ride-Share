@@ -18,7 +18,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
+<!--    <uses-permission android:name="android.permission.SEND_SMS" />-->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+
 
     <application
         android:name=".services.BaseApplication"
@@ -34,41 +36,39 @@
         android:theme="@style/Theme.Raido"
         tools:targetApi="31">
         <activity
-            android:name=".ui.MapTestActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.RiderHistoryDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.home.SetLocationOnMapActivity"
+            android:name=".ui.home.bottomsheet_fragments.ride_book.setLocationOnMap.SetLocationOnMapActivity"
             android:exported="false" />
         <activity
             android:name=".ui.home.bookRide.BookRideActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:windowSoftInputMode="adjustPan"
+            android:supportsPictureInPicture="true"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".ui.home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.map.MapsActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.auth.AuthActivity"
             android:exported="false" /> <!-- <activity -->
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
+<!--        <activity-->
+<!--            android:name=".ui.MainActivity"-->
+<!--            android:exported="false"-->
+<!--            android:windowSoftInputMode="adjustPan">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.SEARCH" />-->
+<!--            </intent-filter>-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--            </intent-filter>-->
 
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+<!--            <meta-data-->
+<!--                android:name="android.app.lib_name"-->
+<!--                android:value="" />-->
+<!--        </activity>-->
         <activity
             android:name=".ui.SplashScreenActivity"
             android:exported="true"

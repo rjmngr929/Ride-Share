@@ -21,6 +21,7 @@ import com.my.raido.Utils.NetworkResult
 import com.my.raido.Utils.getLoadingDialog
 import com.my.raido.Utils.gone
 import com.my.raido.Utils.hideLoader
+import com.my.raido.Utils.setOnSingleClickListener
 import com.my.raido.Utils.showLoader
 import com.my.raido.Utils.visible
 import com.my.raido.adapters.RecentRidesRecyclerViewAdapter
@@ -73,7 +74,7 @@ class RecentRideHistoryFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.alertdialogCloseBtn.setOnClickListener {
+        binding.alertdialogCloseBtn.setOnSingleClickListener {
             dismiss()
         }
 
@@ -160,8 +161,10 @@ class RecentRideHistoryFragment : BottomSheetDialogFragment() {
 
                     Log.d(TAG, "bindObservers: riderList data => ${it.data?.status}, ${it.data?.message} and ${it.data?.rideList}")
 
+                    val aryData = riderList.asReversed()
+
                     // Update the adapter with new data
-                    recentRidesAdapter.updateItems(riderList)
+                    recentRidesAdapter.updateItems(aryData)
 
                     cabViewModel.clearRes()
 

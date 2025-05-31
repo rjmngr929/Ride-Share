@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.home.bottomsheet_fragments.RecentRideHistoryFragment"
     android:background="@drawable/top_cornor_rounded"
-    android:backgroundTint="@color/bg_dark_secondary">
+    android:backgroundTint="@color/bg_dark_secondary"
+    android:paddingHorizontal="@dimen/_12sdp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +26,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_18sdp">
+            android:layout_marginVertical="@dimen/_18sdp">
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
@@ -39,16 +40,27 @@
                 android:layout_centerInParent="true"
                 />
 
-            <View
+<!--            <View-->
+<!--                android:id="@+id/alertdialog_close_btn"-->
+<!--                android:layout_width="@dimen/_16sdp"-->
+<!--                android:layout_height="@dimen/_16sdp"-->
+<!--                android:background="@drawable/ic_close"-->
+<!--                android:backgroundTint="@color/white"-->
+<!--                android:padding="@dimen/_12sdp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_centerVertical="true"/>-->
+            <ImageButton
                 android:id="@+id/alertdialog_close_btn"
-                android:layout_width="@dimen/_16sdp"
-                android:layout_height="@dimen/_16sdp"
-                android:background="@drawable/ic_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_close"
                 android:backgroundTint="@color/white"
-                android:padding="@dimen/_12sdp"
-                android:layout_gravity="center"
+                android:padding="@dimen/_8sdp"
+                android:background="@android:color/transparent"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                app:tint="@color/white" />
         </RelativeLayout>
 
         <include

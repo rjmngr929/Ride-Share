@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.home.bottomsheet_fragments.SetLocationOnMapFragment"
+    tools:context=".ui.home.bottomsheet_fragments.ride_book.setLocationOnMap.SetLocationOnMapFragment"
     android:background="@drawable/top_cornor_rounded"
     android:backgroundTint="@color/bg_dark_secondary">
 
@@ -30,16 +30,28 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"/>
 
-            <View
+<!--            <View-->
+<!--                android:id="@+id/alertdialog_close_btn"-->
+<!--                android:layout_width="@dimen/_16sdp"-->
+<!--                android:layout_height="@dimen/_16sdp"-->
+<!--                android:background="@drawable/ic_close"-->
+<!--                android:backgroundTint="@color/white"-->
+<!--                android:padding="@dimen/_12sdp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_centerVertical="true"/>-->
+
+            <ImageButton
                 android:id="@+id/alertdialog_close_btn"
-                android:layout_width="@dimen/_16sdp"
-                android:layout_height="@dimen/_16sdp"
-                android:background="@drawable/ic_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_close"
                 android:backgroundTint="@color/white"
-                android:padding="@dimen/_12sdp"
-                android:layout_gravity="center"
+                android:padding="@dimen/_8sdp"
+                android:background="@android:color/transparent"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                app:tint="@color/white" />
 
         </RelativeLayout>
 
@@ -109,75 +121,83 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:dividerColor="@color/gray"
-            android:layout_marginVertical="@dimen/_6sdp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" save location as"
-            android:textSize="@dimen/_10ssp"
-            android:textColor="@color/white"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginVertical="@dimen/_4sdp">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <LinearLayout
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="@color/gray"
+                android:layout_marginVertical="@dimen/_6sdp"/>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-               android:background="@drawable/rounded_curved_border"
-                android:backgroundTint="@color/bg_light"
-                android:paddingHorizontal="@dimen/_10ssp"
-                android:paddingVertical="@dimen/_4sdp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="HOME"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_10ssp"
-                    android:layout_gravity="center"/>
-            </LinearLayout>
+                android:text=" save location as"
+                android:textSize="@dimen/_10ssp"
+                android:textColor="@color/white"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"/>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_curved_border"
-                android:backgroundTint="@color/bg_light"
-                android:paddingHorizontal="@dimen/_10ssp"
-                android:paddingVertical="@dimen/_4sdp"
-                android:layout_marginHorizontal="@dimen/_6sdp">
-                <TextView
+                android:orientation="horizontal"
+                android:layout_marginVertical="@dimen/_4sdp">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Work"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_10ssp"
-                    android:layout_gravity="center"/>
+                    android:background="@drawable/rounded_curved_border"
+                    android:backgroundTint="@color/bg_light"
+                    android:paddingHorizontal="@dimen/_10ssp"
+                    android:paddingVertical="@dimen/_4sdp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="HOME"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10ssp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_curved_border"
+                    android:backgroundTint="@color/bg_light"
+                    android:paddingHorizontal="@dimen/_10ssp"
+                    android:paddingVertical="@dimen/_4sdp"
+                    android:layout_marginHorizontal="@dimen/_6sdp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Work"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10ssp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_curved_border"
+                    android:backgroundTint="@color/bg_light"
+                    android:paddingHorizontal="@dimen/_10ssp"
+                    android:paddingVertical="@dimen/_4sdp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+ADD NEW"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10ssp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_curved_border"
-                android:backgroundTint="@color/bg_light"
-                android:paddingHorizontal="@dimen/_10ssp"
-                android:paddingVertical="@dimen/_4sdp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+ADD NEW"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_10ssp"
-                    android:layout_gravity="center"/>
-            </LinearLayout>
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton

@@ -34,6 +34,7 @@ sspAndroid = "1.0.6"
 lifecycleLivedataCore = "2.8.7"
 viewpager2 = "1.1.0"
 transportRuntime = "4.0.0"
+coreAnimation = "1.0.0"
 
 [libraries]
 android-maps-utils = { module = "com.google.maps.android:android-maps-utils", version.ref = "androidMapsUtils" }
@@ -80,6 +81,7 @@ squareup-okhttp = { module = "com.squareup.okhttp:okhttp", version.ref = "okhttp
 ssp-android = { module = "com.intuit.ssp:ssp-android", version.ref = "sspAndroid" }
 androidx-lifecycle-livedata-core = { group = "androidx.lifecycle", name = "lifecycle-livedata-core", version.ref = "lifecycleLivedataCore" }
 transport-runtime = { group = "com.google.android.datatransport", name = "transport-runtime", version.ref = "transportRuntime" }
+androidx-core-animation = { group = "androidx.core", name = "core-animation", version.ref = "coreAnimation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

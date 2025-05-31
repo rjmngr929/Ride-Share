@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.my.raido.Utils.gone
+import com.my.raido.Utils.setOnSingleClickListener
 import com.my.raido.Utils.showToast
 import com.my.raido.Utils.visible
 import com.my.raido.databinding.ContactRowLayoutBinding
@@ -50,7 +51,7 @@ class ContactListRecyclerviewAdapter(private var contactList : MutableList<Conta
                     }
                 }
 
-                binding.contactDeleteBtn.setOnClickListener {
+                binding.contactDeleteBtn.setOnSingleClickListener {
                     onItemClick(this)
                 }
 

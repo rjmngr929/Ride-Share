@@ -2,14 +2,22 @@ package com.my.raido.constants
 
 object Constants {
 
-    const val BASE_URL = "http://192.168.1.58:8000/api/"
-//    const val BASE_URL = "https://panel.raidobiketaxi.in/api/"
+//    const val BASE_URL = "http://192.168.1.58:8000/api/"
+    const val BASE_URL = "https://raido.guddukumar.com/api/"
+
+    const val IMAGE_BASE_URL = "https://raido.guddukumar.com"
 
     const val USER_TOKEN = "user_token"
 
     const val FCM_TOKEN = "fcm_token"
 
     const val USER_ID = "user_id"
+
+    const val WALLET_ACTIVE_STATUS = "wallet_active_status"
+
+    const val TEMP_BOOKING_ID = "temp_booking_id"
+
+    const val CURRENT_DISTRICT = "current_district"
 
     const val PREFS_TOKEN_FILE = "prefs_token_file"
 
@@ -55,5 +63,14 @@ object Constants {
     const val BIKE_LITE_ID = "bike_lite_id"
 
     const val DRIVER_ID = "driver_id"
+
+    const val RIDE_OTP = "ride_otp"
+
+    const val IMG_URL = "img_url"
+
+
+    const val DRIVER_INFO = "driver_info_data"
+
+    const val RIDE_STATUS = "ride_status"
 
 }

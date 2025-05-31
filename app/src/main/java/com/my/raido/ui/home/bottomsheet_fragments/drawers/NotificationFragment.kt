@@ -21,6 +21,7 @@ import com.my.raido.Utils.NetworkResult
 import com.my.raido.Utils.getLoadingDialog
 import com.my.raido.Utils.gone
 import com.my.raido.Utils.hideLoader
+import com.my.raido.Utils.setOnSingleClickListener
 import com.my.raido.Utils.showLoader
 import com.my.raido.Utils.visible
 import com.my.raido.adapters.NotificationRecyclerViewAdapter
@@ -73,7 +74,7 @@ class NotificationFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.alertdialogCloseBtn.setOnClickListener {
+        binding.alertdialogCloseBtn.setOnSingleClickListener {
             dismiss()
         }
 

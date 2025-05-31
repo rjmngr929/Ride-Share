@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.cashfree.pg.api.CFPaymentGatewayService
 import com.cashfree.pg.base.exception.CFException
@@ -28,8 +29,11 @@ import com.my.raido.Utils.AlertDialogUtility
 import com.my.raido.Utils.NetworkResult
 import com.my.raido.Utils.getLoadingDialog
 import com.my.raido.Utils.hideLoader
+import com.my.raido.Utils.setOnSingleClickListener
 import com.my.raido.Utils.showLoader
+import com.my.raido.Utils.showSnack
 import com.my.raido.databinding.FragmentAddMoneyBinding
+import com.my.raido.ui.viewmodels.MasterViewModel
 import com.my.raido.ui.viewmodels.userViewModel.UserDataViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -47,6 +51,8 @@ class AddMoneyFragment : BottomSheetDialogFragment(), CFCheckoutResponseCallback
     lateinit var alertDialogService: AlertDialogUtility
 
     private val userViewModel: UserDataViewModel by activityViewModels()
+
+    private val masterViewModel: MasterViewModel by viewModels()
 
     private lateinit var loader: AlertDialog
 
@@ -81,18 +87,28 @@ class AddMoneyFragment : BottomSheetDialogFragment(), CFCheckoutResponseCallback
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.alertdialogCloseBtn.setOnClickListener {
+        binding.alertdialogCloseBtn.setOnSingleClickListener {
             dismiss()
         }
 
-        binding.changePaymentModeBtn.setOnClickListener {
-            val bottomSheetFragment = PaymentOptionFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        binding.changePaymentModeBtn.setOnSingleClickListener {
+            val sheet = PaymentOptionFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = PaymentOptionFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
 
         binding.addMoneyBtn.setOnClickListener {
 //            userViewModel.updateOrderStatus(orderId = "order_104033342shTQCogRVrKVHfazlLUyAhvwBL")
-            userViewModel.createOrder(binding.amountEditText.text.toString())
+            if(binding.amountEditText.text.toString().toFloat() <= 5000) {
+                userViewModel.createOrder(binding.amountEditText.text.toString())
+            }else{
+               view.showSnack("Amount must be less than or equal to ₹5000 only", textColor = R.color.white, bgColor = R.color.failed)
+            }
         }
 
 //        ***************************************************
@@ -237,11 +253,23 @@ class AddMoneyFragment : BottomSheetDialogFragment(), CFCheckoutResponseCallback
 
                     val data = it.data
 
+                    userViewModel.updateOrderResponseLiveData.removeObservers(viewLifecycleOwner)
                     Log.d(TAG, "updateStatusObserver: response data => $data")
 
-                    if(data?.status == true){
-                        dismissAllBottomSheets(requireActivity())
+                    if(data != null){
+                        if(data.status){
+                            val balance = data.walletBalance
+                            masterViewModel.setWalletBalanceData(balance)
+
+                            alertDialogService.customAlertDialogAnim(myContext = myContext, titleMsg = data.message, msg = "", msgDisplay = false, rawFile = if(data.message == "Payment successful") R.raw.success else R.raw.failed, btnText = "OK"){
+                                dismissAllBottomSheets(requireActivity())
+                            }
+
+
+                        }
                     }
+
+
 
                     userViewModel.clearOrderStatusRes()
                 }

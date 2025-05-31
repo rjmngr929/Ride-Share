@@ -18,21 +18,32 @@
             app:dividerInsetEnd="140dp"
             app:dividerColor="@color/white"/>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/alertdialog_close_btn"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            app:cardBackgroundColor="@color/bg_light"
-            app:cardCornerRadius="@dimen/_50sdp"
-            android:layout_margin="@dimen/_10sdp">
-            <View
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_18sdp"
-                android:background="@drawable/ic_arrow_back"
-                android:backgroundTint="@color/white"
-                android:padding="@dimen/_12sdp"
-                android:layout_gravity="center"/>
-        </androidx.cardview.widget.CardView>
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:id="@+id/alertdialog_close_btn"-->
+<!--            android:layout_width="@dimen/_50sdp"-->
+<!--            android:layout_height="@dimen/_50sdp"-->
+<!--            app:cardBackgroundColor="@color/bg_light"-->
+<!--            app:cardCornerRadius="@dimen/_50sdp"-->
+<!--            android:layout_margin="@dimen/_10sdp">-->
+<!--            <View-->
+<!--                android:layout_width="@dimen/_18sdp"-->
+<!--                android:layout_height="@dimen/_18sdp"-->
+<!--                android:background="@drawable/ic_arrow_back"-->
+<!--                android:backgroundTint="@color/white"-->
+<!--                android:padding="@dimen/_12sdp"-->
+<!--                android:layout_gravity="center"/>-->
+<!--        </androidx.cardview.widget.CardView>-->
+
+    <ImageButton
+        android:id="@+id/alertdialog_close_btn"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:src="@drawable/ic_arrow_back"
+        android:padding="@dimen/_12sdp"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:background="@drawable/rounded_curved_border"
+        android:backgroundTint="@color/bg_light"
+        app:tint="@color/white" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -47,12 +58,19 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/profile_sec"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="@dimen/_12sdp"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_6sdp">
+
+                    <ImageView
+                        android:id="@+id/profilePic"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/dummyuser"
+                        android:scaleType="centerCrop"/>
 
                 </androidx.cardview.widget.CardView>
 
@@ -65,14 +83,14 @@
                     android:layout_toRightOf="@+id/profile_sec"
                     android:layout_centerVertical="true">
                     <TextView
-                        android:id="@+id/textView"
+                        android:id="@+id/name_text_drawer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hello, Guddu!"
                         android:maxLength="20"
                         android:ellipsize="end"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_20ssp"
+                        android:textSize="@dimen/_16ssp"
                         android:textStyle="bold"
                         />
                     <TextView
@@ -106,7 +124,7 @@
                     android:id="@+id/drawer_profile_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_14ssp">
+                    android:paddingVertical="@dimen/_12sdp">
                     <LinearLayout
                         android:id="@+id/left_profile"
                         android:layout_width="0dp"
@@ -118,14 +136,14 @@
                         app:layout_constraintEnd_toStartOf="@+id/right_profile">
 
                         <View
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
                             android:background="@drawable/ic_user"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Profile"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/white"
                             android:fontFamily="@font/poppins_medium"
                             android:layout_marginHorizontal="@dimen/_10ssp"/>
@@ -133,8 +151,8 @@
 
                     <View
                         android:id="@+id/right_profile"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
                         android:background="@drawable/ic_forward_arrow"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -145,13 +163,13 @@
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dividerColor="@color/gray"/>
+                    app:dividerColor="@color/text_gray_opacity"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/drawer_ride_history_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_14ssp">
+                    android:paddingVertical="@dimen/_12sdp">
                     <LinearLayout
                         android:id="@+id/left_ride_history"
                         android:layout_width="0dp"
@@ -163,14 +181,14 @@
                         app:layout_constraintEnd_toStartOf="@+id/right_ride_history">
 
                         <View
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:background="@drawable/ic_recent_ride_location_icon"/>
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
+                            android:background="@drawable/ic_your_rides"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ride History"
-                            android:textSize="@dimen/_14ssp"
+                            android:text="Your Rides"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/white"
                             android:fontFamily="@font/poppins_medium"
                             android:layout_marginHorizontal="@dimen/_10ssp"/>
@@ -178,8 +196,8 @@
 
                     <View
                         android:id="@+id/right_ride_history"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
                         android:background="@drawable/ic_forward_arrow"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -190,14 +208,14 @@
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dividerColor="@color/gray"/>
+                    app:dividerColor="@color/text_gray_opacity"/>
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/drawer_refer_earn_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_14ssp">
+                    android:paddingVertical="@dimen/_12sdp">
                     <LinearLayout
                         android:id="@+id/left_refer_earn"
                         android:layout_width="0dp"
@@ -209,14 +227,14 @@
                         app:layout_constraintEnd_toStartOf="@+id/right_refer_earn">
 
                         <View
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:background="@drawable/ic_recent_ride_location_icon"/>
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
+                            android:background="@drawable/ic_refer_earn"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Refer &amp; earn"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/white"
                             android:fontFamily="@font/poppins_medium"
                             android:layout_marginHorizontal="@dimen/_10ssp"/>
@@ -224,8 +242,8 @@
 
                     <View
                         android:id="@+id/right_refer_earn"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
                         android:background="@drawable/ic_forward_arrow"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -236,13 +254,13 @@
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dividerColor="@color/gray"/>
+                    app:dividerColor="@color/text_gray_opacity"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/drawer_payment_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_14ssp">
+                    android:paddingVertical="@dimen/_12sdp">
                     <LinearLayout
                         android:id="@+id/left_payment"
                         android:layout_width="0dp"
@@ -254,15 +272,15 @@
                         app:layout_constraintEnd_toStartOf="@+id/right_payment">
 
                         <View
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
                             android:background="@drawable/ic_wallet"
-                            android:backgroundTint="@color/white"/>
+                            android:backgroundTint="@color/text_gray"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Payment"
-                            android:textSize="@dimen/_14ssp"
+                            android:text="Payments"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/white"
                             android:fontFamily="@font/poppins_medium"
                             android:layout_marginHorizontal="@dimen/_10ssp"/>
@@ -270,8 +288,8 @@
 
                     <View
                         android:id="@+id/right_payment"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
                         android:background="@drawable/ic_forward_arrow"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -282,13 +300,13 @@
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dividerColor="@color/gray"/>
+                    app:dividerColor="@color/text_gray_opacity"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/drawer_safety_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_14ssp">
+                    android:paddingVertical="@dimen/_12sdp">
                     <LinearLayout
                         android:id="@+id/left_safety"
                         android:layout_width="0dp"
@@ -300,14 +318,15 @@
                         app:layout_constraintEnd_toStartOf="@+id/right_safety">
 
                         <View
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:background="@drawable/ic_recent_ride_location_icon"/>
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
+                            android:background="@drawable/active_tab"
+                            android:backgroundTint="@color/text_gray"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Safety"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/white"
                             android:fontFamily="@font/poppins_medium"
                             android:layout_marginHorizontal="@dimen/_10ssp"/>
@@ -315,8 +334,8 @@
 
                     <View
                         android:id="@+id/right_safety"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
                         android:background="@drawable/ic_forward_arrow"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -327,13 +346,13 @@
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dividerColor="@color/gray"/>
+                    app:dividerColor="@color/text_gray_opacity"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/drawer_reward_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_14ssp">
+                    android:paddingVertical="@dimen/_12sdp">
                     <LinearLayout
                         android:id="@+id/left_rewards"
                         android:layout_width="0dp"
@@ -345,14 +364,14 @@
                         app:layout_constraintEnd_toStartOf="@+id/right_rewards">
 
                         <View
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
                             android:background="@drawable/ic_reward"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="My Rewards"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/white"
                             android:fontFamily="@font/poppins_medium"
                             android:layout_marginHorizontal="@dimen/_10ssp"/>
@@ -360,8 +379,8 @@
 
                     <View
                         android:id="@+id/right_rewards"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
                         android:background="@drawable/ic_forward_arrow"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -372,13 +391,13 @@
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dividerColor="@color/gray"/>
+                    app:dividerColor="@color/text_gray_opacity"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/drawer_raido_coin_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_14ssp">
+                    android:paddingVertical="@dimen/_12sdp">
                     <LinearLayout
                         android:id="@+id/left_raido_coins"
                         android:layout_width="0dp"
@@ -390,14 +409,14 @@
                         app:layout_constraintEnd_toStartOf="@+id/right_raido_coins">
 
                         <View
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
                             android:background="@drawable/ic_coin"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Raido Coins"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/white"
                             android:fontFamily="@font/poppins_medium"
                             android:layout_marginHorizontal="@dimen/_10ssp"/>
@@ -405,8 +424,8 @@
 
                     <View
                         android:id="@+id/right_raido_coins"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
                         android:background="@drawable/ic_forward_arrow"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -417,13 +436,13 @@
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dividerColor="@color/gray"/>
+                    app:dividerColor="@color/text_gray_opacity"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/drawer_notification_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_14ssp">
+                    android:paddingVertical="@dimen/_12sdp">
                     <LinearLayout
                         android:id="@+id/left_notifications"
                         android:layout_width="0dp"
@@ -435,14 +454,14 @@
                         app:layout_constraintEnd_toStartOf="@+id/right_notifications">
 
                         <View
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
                             android:background="@drawable/ic_notification"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Notifications"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/white"
                             android:fontFamily="@font/poppins_medium"
                             android:layout_marginHorizontal="@dimen/_10ssp"/>
@@ -450,8 +469,8 @@
 
                     <View
                         android:id="@+id/right_notifications"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
                         android:background="@drawable/ic_forward_arrow"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -462,13 +481,13 @@
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dividerColor="@color/gray"/>
+                    app:dividerColor="@color/text_gray_opacity"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/drawer_claims_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_14ssp">
+                    android:paddingVertical="@dimen/_12sdp">
                     <LinearLayout
                         android:id="@+id/left_claims"
                         android:layout_width="0dp"
@@ -480,14 +499,14 @@
                         app:layout_constraintEnd_toStartOf="@+id/right_claims">
 
                         <View
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:background="@drawable/ic_recent_ride_location_icon"/>
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
+                            android:background="@drawable/ic_claims"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Claims"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/white"
                             android:fontFamily="@font/poppins_medium"
                             android:layout_marginHorizontal="@dimen/_10ssp"/>
@@ -495,8 +514,8 @@
 
                     <View
                         android:id="@+id/right_claims"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
                         android:background="@drawable/ic_forward_arrow"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -507,13 +526,13 @@
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dividerColor="@color/gray"/>
+                    app:dividerColor="@color/text_gray_opacity"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/drawer_help_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_14ssp">
+                    android:paddingVertical="@dimen/_12sdp">
                     <LinearLayout
                         android:id="@+id/left_help"
                         android:layout_width="0dp"
@@ -525,14 +544,14 @@
                         app:layout_constraintEnd_toStartOf="@+id/right_help">
 
                         <View
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
                             android:background="@drawable/ic_info"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Help"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/white"
                             android:fontFamily="@font/poppins_medium"
                             android:layout_marginHorizontal="@dimen/_10ssp"/>
@@ -540,8 +559,8 @@
 
                     <View
                         android:id="@+id/right_help"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
                         android:background="@drawable/ic_forward_arrow"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -552,13 +571,13 @@
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dividerColor="@color/gray"/>
+                    app:dividerColor="@color/text_gray_opacity"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/drawer_about_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_14ssp">
+                    android:paddingVertical="@dimen/_12sdp">
                     <LinearLayout
                         android:id="@+id/left_about"
                         android:layout_width="0dp"
@@ -570,14 +589,14 @@
                         app:layout_constraintEnd_toStartOf="@+id/right_about">
 
                         <View
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:background="@drawable/ic_info"/>
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
+                            android:background="@drawable/ic_about_us"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="About"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/white"
                             android:fontFamily="@font/poppins_medium"
                             android:layout_marginHorizontal="@dimen/_10ssp"/>
@@ -585,8 +604,8 @@
 
                     <View
                         android:id="@+id/right_about"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
                         android:background="@drawable/ic_forward_arrow"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -597,13 +616,13 @@
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dividerColor="@color/gray"/>
+                    app:dividerColor="@color/text_gray_opacity"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/drawer_logout_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_14ssp">
+                    android:paddingVertical="@dimen/_12sdp">
                     <LinearLayout
                         android:id="@+id/left_logout"
                         android:layout_width="0dp"
@@ -615,14 +634,14 @@
                         app:layout_constraintEnd_toStartOf="@+id/right_logout">
 
                         <View
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:background="@drawable/ic_info"/>
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
+                            android:background="@drawable/ic_logout"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Logout"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:textColor="@color/white"
                             android:fontFamily="@font/poppins_medium"
                             android:layout_marginHorizontal="@dimen/_10ssp"/>
@@ -630,8 +649,8 @@
 
                     <View
                         android:id="@+id/right_logout"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
                         android:background="@drawable/ic_forward_arrow"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -642,7 +661,7 @@
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dividerColor="@color/gray"/>
+                    app:dividerColor="@color/text_gray_opacity"/>
 
             </LinearLayout>
 

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.bottomsheet_fragments.ride_book.CancelRideFragment"
+    android:background="@drawable/top_cornor_rounded"
+    android:backgroundTint="@color/bg_dark_secondary"
+    android:orientation="vertical"
+    android:padding="@dimen/_12sdp">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerThickness="@dimen/_2sdp"
+        app:dividerInsetStart="150dp"
+        app:dividerInsetEnd="150dp"
+        app:dividerColor="@color/white"
+        android:layout_marginTop="@dimen/_16sdp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_12sdp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel Ride"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+<!--        <View-->
+<!--            android:id="@+id/alertdialog_close_btn"-->
+<!--            android:layout_width="@dimen/_16sdp"-->
+<!--            android:layout_height="@dimen/_16sdp"-->
+<!--            android:background="@drawable/ic_close"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            android:padding="@dimen/_12sdp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <ImageButton
+            android:id="@+id/alertdialog_close_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close"
+            android:backgroundTint="@color/white"
+            android:padding="@dimen/_8sdp"
+            android:background="@android:color/transparent"
+            app:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/spinner_select_cancel_reason"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/dropdownListPreferredItemHeight"
+        app:boxStrokeColor="@color/textinput_stroke_color"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:endIconCheckable="false"
+        app:endIconDrawable="@drawable/ic_down_arrow"
+        app:endIconTint="@color/white">
+
+        <AutoCompleteTextView
+            android:id="@+id/typesFilter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:dropDownSelector="@drawable/rounded_border"
+            android:ellipsize="end"
+            android:inputType="none"
+            android:maxLines="1"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:singleLine="true"
+            android:text="Select reason"
+            android:textAlignment="textStart"
+            android:textColor="@color/white"
+            tools:ignore="LabelFor" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeColor="@color/textinput_stroke_color"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:hintTextColor="@color/white"
+        android:layout_marginVertical="@dimen/_12sdp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/cancel_reason_textInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:minLines="4"
+            android:maxLength="200"
+            android:hint="reason"
+            android:enabled="false"
+            android:textColorHint="@color/white"
+            android:scrollbars="vertical"
+            android:background="@null"
+            android:gravity="start|top"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancel_ride_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/bg_light"
+        android:text="@string/cancel_ride"
+        android:textColor="@color/primary"
+        android:layout_marginTop="@dimen/_14sdp"/>
+
+</LinearLayout>

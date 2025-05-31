@@ -20,6 +20,7 @@ import com.my.raido.Utils.AlertDialogUtility
 import com.my.raido.Utils.NetworkResult
 import com.my.raido.Utils.getLoadingDialog
 import com.my.raido.Utils.hideLoader
+import com.my.raido.Utils.setOnSingleClickListener
 import com.my.raido.Utils.showLoader
 import com.my.raido.adapters.HelpQuotesRecyclerviewAdapter
 import com.my.raido.databinding.FragmentHelpBinding
@@ -71,7 +72,7 @@ class HelpFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.alertdialogCloseBtn.setOnClickListener {
+        binding.alertdialogCloseBtn.setOnSingleClickListener {
             dismiss()
         }
 
@@ -88,7 +89,12 @@ class HelpFragment : BottomSheetDialogFragment() {
             bundle.putString("helpTitles", helpTopic.topicName) // Example of another type
             bundle.putInt("questionId", helpTopic.id) // Example of another type
             bottomSheetFragment.arguments = bundle
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+
+            val existingSheet = childFragmentManager.findFragmentByTag(bottomSheetFragment.tag)
+            if (existingSheet == null) {
+                bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+            }
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
 
         }
         binding.recyclerView.adapter = helpQuotesAdapter

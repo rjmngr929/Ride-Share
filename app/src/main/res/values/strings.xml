@@ -81,6 +81,10 @@
     <string name="emailUs">Email Us</string>
     <string name="Back_to_home">Back to home</string>
     <string name="download_bill">Download bill</string>
+    <string name="cancel_ride">Cancel Ride</string>
+    <string name="close_icon_btn">dialog_dissmiss_desc</string>
+    <string name="Back">Back</string>
+    <string name="type_msg">Type a Message</string>
     <!--    ***************************      -->
 
 </resources>

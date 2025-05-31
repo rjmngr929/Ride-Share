@@ -76,7 +76,7 @@
 
                 <EditText
                     android:id="@+id/otp_one"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/_50sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:maxLength="1"
                     android:inputType="number"
@@ -93,7 +93,7 @@
 
                 <EditText
                     android:id="@+id/otp_two"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/_50sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:maxLength="1"
                     android:inputType="number"
@@ -110,7 +110,7 @@
 
                 <EditText
                     android:id="@+id/otp_three"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/_50sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:maxLength="1"
                     android:inputType="number"
@@ -127,7 +127,7 @@
 
                 <EditText
                     android:id="@+id/otp_four"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/_50sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:maxLength="1"
                     android:inputType="number"

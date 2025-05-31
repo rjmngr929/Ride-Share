@@ -43,13 +43,40 @@
 <!--            android:id="@+id/mapView"-->
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="match_parent"/>-->
-        <com.ola.maps.navigation.v5.navigation.OlaMapView
-            android:id="@+id/mapView"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+
+            <com.ola.maps.navigation.v5.navigation.OlaMapView
+                android:id="@+id/mapView"
+                style="@style/NavigationMapRoute"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigationDarkTheme="@style/NavigationViewDark"
+                app:navigationLightTheme="@style/NavigationViewLight" />
+
+            <ImageButton
+                android:id="@+id/gps_location_btn"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/_14sdp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_gps_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.cardview.widget.CardView>
-
 
 
     <androidx.fragment.app.FragmentContainerView

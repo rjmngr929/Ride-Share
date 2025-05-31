@@ -15,8 +15,8 @@ import android.os.Build
 import android.util.Patterns
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.my.raido.ui.MainActivity
 import com.my.raido.R
+import com.my.raido.ui.home.HomeActivity
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
@@ -63,7 +63,7 @@ class NotificationUtils(private val context: Context) {
     }
 
     private fun getLaunchIntent(notificationId: Int): PendingIntent {
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, HomeActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         intent.putExtra("notificationId", notificationId)
         return PendingIntent.getActivity(context, 0, intent,

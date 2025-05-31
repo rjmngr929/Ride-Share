@@ -147,17 +147,22 @@ class SendOtpFragment : Fragment() {
 
                     authViewModel.clearOtpSendRes()
 
-                    val navOptions = NavOptions.Builder()
-                        .setPopUpTo(R.id.sendOtpFragment, true)  // Pops SendOtpFragment from the back stack
-                        .build()
+                    try {
+                        val navOptions = NavOptions.Builder()
+                            .setPopUpTo(R.id.sendOtpFragment, true)  // Pops SendOtpFragment from the back stack
+                            .build()
 
-                    val bundle = Bundle()
-                    bundle.putString("mobile_no", binding.mobileEdittext.text.toString())
-                    NavHostFragment.findNavController(this@SendOtpFragment)
-                        .navigate(
-                            R.id.action_sendOtpFragment_to_otpVerifyFragment,
-                            bundle, navOptions = navOptions
-                        );
+                        val bundle = Bundle()
+                        bundle.putString("mobile_no", binding.mobileEdittext.text.toString())
+                        NavHostFragment.findNavController(this@SendOtpFragment)
+                            .navigate(
+                                R.id.action_sendOtpFragment_to_otpVerifyFragment,
+                                bundle, navOptions = navOptions
+                            )
+                    } catch (e: IllegalArgumentException) {
+                        Log.e("NavigationError", "Navigation action not found: ${e.message}")
+                    }
+
 
                 }
                 is NetworkResult.Error -> {

@@ -1,9 +1,15 @@
 package com.my.raido.Utils
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
+import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -14,8 +20,10 @@ import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.util.Patterns
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -73,6 +81,77 @@ class Helper {
             return MultipartBody.Part.createFormData(partName, file.name, requestBody)
         }
 
+        fun openWhatsApp(context: Context, phone: String) {
+            try {
+                val uri = Uri.parse("https://wa.me/$phone") // E.g. 919876543210
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(context, "WhatsApp not installed", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        fun openInstagramProfile(context: Context, username: String) {
+            val uri = Uri.parse("http://instagram.com/_u/$username")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            intent.setPackage("com.instagram.android")
+
+            try {
+                context.startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                // Fallback to browser if app not installed
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/$username")))
+            }
+        }
+
+        fun sendSMS(context: Context, phoneNumber: String, message: String) {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("sms:$phoneNumber")
+                putExtra("sms_body", message)
+            }
+            context.startActivity(intent)
+        }
+
+        fun shareImageWithText(context: Context, imageUri: Uri, message: String) {
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, message)
+                putExtra(Intent.EXTRA_STREAM, imageUri)
+                type = "image/*"
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, "Share via")
+            context.startActivity(shareIntent)
+        }
+
+        fun shareText(context: Context, text: String) {
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, text)
+                type = "text/plain"
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, "Share via")
+            context.startActivity(shareIntent)
+        }
+
+
+
+        fun openDialer(context: Context, phoneNumber: String) {
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:$phoneNumber")
+            context.startActivity(intent)
+        }
+
+        fun sendEmail(context: Context, to: String, subject: String, body: String) {
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:$to")
+                putExtra(Intent.EXTRA_SUBJECT, subject)
+                putExtra(Intent.EXTRA_TEXT, body)
+            }
+            context.startActivity(intent)
+        }
 
 
         fun changeWordColor(myContext: Context, view: TextView, word: String, sentence: String, colorCode: Int){
@@ -196,7 +275,56 @@ class Helper {
             return resultBuffer.toString()
         }
 
+        fun expandView(view: View, arrow: ImageButton? = null) {
+            view.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            val targetHeight = view.measuredHeight
 
+            view.layoutParams.height = 0
+            view.visibility = View.VISIBLE
+
+            val animator = ValueAnimator.ofInt(0, targetHeight)
+            animator.addUpdateListener { animation ->
+                view.layoutParams.height = animation.animatedValue as Int
+                view.requestLayout()
+            }
+            animator.duration = 300
+            animator.start()
+
+            // Rotate arrow to point upwards (0 to 180 degrees)
+            if(arrow != null) {
+                rotateArrow(arrow, 0f, 180f)
+            }
+        }
+
+        fun collapseView(view: View, arrow: ImageButton? = null) {
+            val initialHeight = view.measuredHeight
+
+            val animator = ValueAnimator.ofInt(initialHeight, 0)
+            animator.addUpdateListener { animation ->
+                view.layoutParams.height = animation.animatedValue as Int
+                view.requestLayout()
+            }
+            animator.duration = 300
+            animator.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    view.visibility = View.GONE
+                }
+            })
+            animator.start()
+
+            // Rotate arrow to point downwards (180 to 0 degrees)
+            if(arrow != null) {
+                rotateArrow(arrow, 180f, 0f)
+            }
+        }
+
+        // Rotate the arrow ImageButton smoothly
+        private fun rotateArrow(arrow: ImageButton, fromDegree: Float, toDegree: Float) {
+            ObjectAnimator.ofFloat(arrow, "rotation", fromDegree, toDegree).apply {
+                duration = 300
+                start()
+            }
+        }
 
 
     }

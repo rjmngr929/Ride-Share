@@ -10,6 +10,7 @@ import android.view.ViewGroup.LayoutParams
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.my.raido.Utils.setOnSingleClickListener
 import com.my.raido.databinding.FragmentMyRewardsBinding
 
 
@@ -45,7 +46,7 @@ class MyRewardsFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.alertdialogCloseBtn.setOnClickListener {
+        binding.alertdialogCloseBtn.setOnSingleClickListener {
             dismiss()
         }
 

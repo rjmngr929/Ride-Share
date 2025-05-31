@@ -82,29 +82,35 @@ class AuthRepository @Inject constructor(private val authAPI: AuthAPI, private v
 
     suspend fun verifyOtp(otpVerifyRequest: OtpVerifyRequest) {
         _otpVerifyResponseLiveData.postValue(NetworkResult.Loading())
-        try {
-            val response =authAPI.verifyOtp(otpVerifyRequest.toMap())
+        if(networkHelper.isNetworkConnected()) {
+            try {
+                val response =authAPI.verifyOtp(otpVerifyRequest.toMap())
 
-            Log.d("TAG", "verifyOtp: response data => request ${otpVerifyRequest.toMap()}")
-            Log.d("TAG", "verifyOtp: response data => ${response}")
+                Log.d("TAG", "verifyOtp: response data => request ${otpVerifyRequest.toMap()}")
+                Log.d("TAG", "verifyOtp: response data => ${response}")
 
-            if (response.isSuccessful) {
-                handleVerifyOtpResponse(response)
-            } else {
-                try {
-//                    Log.d("TAG", "verifyOtp: response data => ${response.errorBody()?.string()?.let { JSONObject(it).getString("message") }}")
+                if (response.isSuccessful) {
+                    handleVerifyOtpResponse(response)
+                } else {
+                    try {
+    //                    Log.d("TAG", "verifyOtp: response data => ${response.errorBody()?.string()?.let { JSONObject(it).getString("message") }}")
 
-//                    _otpVerifyResponseLiveData.postValue(NetworkResult.Error("xyz djnkjdjkd"))
-                    _otpVerifyResponseLiveData.postValue(NetworkResult.Error(
-                        response.errorBody()?.string()?.let { JSONObject(it).getString("message") }
-                    ))
-                }catch (e: Exception){
-                    Log.d("TAG", "loginUser: error on catch part for loginUser")
+    //                    _otpVerifyResponseLiveData.postValue(NetworkResult.Error("xyz djnkjdjkd"))
+                        _otpVerifyResponseLiveData.postValue(NetworkResult.Error(
+                            response.errorBody()?.string()?.let { JSONObject(it).getString("message") }
+                        ))
+                    }catch (e: Exception){
+                        Log.d("TAG", "loginUser: error on catch part for loginUser")
+                    }
                 }
+            }catch (e: Exception){
+                Log.d("TAG", "verifyOtp: response data => catch error ${e}")
+                _otpVerifyResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
             }
-        }catch (e: Exception){
-            Log.d("TAG", "verifyOtp: response data => catch error ${e}")
-            _otpVerifyResponseLiveData.postValue(NetworkResult.Error(exceptionHandler.handleException(e)))
+        }else{
+            _otpVerifyResponseLiveData.postValue(
+                NetworkResult.Error("No internet connection" )
+            )
         }
     }
 

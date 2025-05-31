@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/top_cornor_rounded"
+    android:padding="@dimen/_12sdp">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_2sdp"
+        app:dividerColor="@color/white"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/fare_title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="@dimen/_16ssp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginVertical="@dimen/_14sdp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total estimate fare."
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/total_fare_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₹0*"
+            android:textSize="@dimen/_16ssp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_12sdp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_6sdp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ride Fare"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/fare_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₹0"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/white"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*Price may vary based on final pickup or drop location, time taken, final route and toll area."
+        android:textSize="@dimen/_10ssp"
+        android:textColor="@color/text_gray"
+        android:layout_marginVertical="@dimen/_6sdp"/>
+
+    <TextView
+        android:id="@+id/distance_desc_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="@dimen/_10ssp"
+        android:textColor="@color/text_gray"
+        android:layout_marginVertical="@dimen/_6sdp"/>
+
+    <TextView
+        android:id="@+id/waiting_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="@dimen/_10ssp"
+        android:textColor="@color/text_gray"
+        android:layout_marginVertical="@dimen/_6sdp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/got_it_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/bg_light"
+        android:text="Got it"
+        android:textColor="@color/primary"
+        android:layout_marginVertical="@dimen/_12sdp" />
+
+</LinearLayout>

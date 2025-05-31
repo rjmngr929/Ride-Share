@@ -46,16 +46,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <View
+<!--            <View-->
+<!--                android:id="@+id/alertdialog_close_btn"-->
+<!--                android:layout_width="@dimen/_16sdp"-->
+<!--                android:layout_height="@dimen/_16sdp"-->
+<!--                android:background="@drawable/ic_close"-->
+<!--                android:backgroundTint="@color/white"-->
+<!--                android:padding="@dimen/_12sdp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <ImageButton
                 android:id="@+id/alertdialog_close_btn"
-                android:layout_width="@dimen/_16sdp"
-                android:layout_height="@dimen/_16sdp"
-                android:background="@drawable/ic_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_close"
                 android:backgroundTint="@color/white"
-                android:padding="@dimen/_12sdp"
+                android:padding="@dimen/_8sdp"
+                android:background="@android:color/transparent"
+                app:tint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -63,67 +75,75 @@
             android:layout_height="wrap_content"
             android:textColor="@color/bg_dark"
             android:text="Make sure your belongins are not left behind"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_10ssp"
             android:textAlignment="center"
             android:background="@color/primary"
-            android:fontFamily="@font/poppins_medium"
-            android:padding="@dimen/_8sdp"/>
+            android:fontFamily="@font/poppins_semibold"
+            android:padding="@dimen/_2sdp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_12sdp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/_12sdp">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="@dimen/_12sdp"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/_6sdp">
-
+                android:layout_margin="@dimen/_6sdp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/_12sdp">
+                <ImageView
+                    android:id="@+id/profilePic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/dummyuser"
+                    android:scaleType="centerCrop"/>
             </androidx.cardview.widget.CardView>
 
             <TextView
+                android:id="@+id/driver_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Driver’s Name"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="@color/white"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/_4sdp"/>
+                android:layout_margin="@dimen/_4sdp"
+                android:text="Driver’s Name"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/vehicle_name_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLength="30"
                     android:text="Royal Enfield"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10ssp"
-                    android:maxLength="30"
-                    android:ellipsize="end"/>
+                    android:textSize="@dimen/_10ssp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_4sdp"
                     android:text="|"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10ssp"
-                    android:layout_marginHorizontal="@dimen/_4sdp"/>
+                    android:textSize="@dimen/_10ssp" />
 
                 <TextView
+                    android:id="@+id/vehicle_number_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLength="10"
                     android:text="DL7CD8977"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10ssp"
-                    android:maxLength="10"/>
+                    android:textSize="@dimen/_10ssp" />
 
             </LinearLayout>
 
@@ -131,33 +151,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_4sdp">
+
                 <TextView
                     android:id="@+id/trip_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Trip complited"
-                    android:textSize="@dimen/_10ssp"
+                    android:layout_alignParentStart="true"
+                    android:text="Trip completed"
                     android:textColor="@color/white"
-                    android:layout_alignParentStart="true"/>
+                    android:textSize="@dimen/_10ssp" />
 
                 <LinearLayout
                     android:id="@+id/trip_id_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentEnd="true">
+                    android:layout_alignParentEnd="true"
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/trip_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="lorem#998765432109"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10ssp" />
+
                     <View
                         android:layout_width="@dimen/_14sdp"
                         android:layout_height="@dimen/_14sdp"
-                        android:background="@drawable/ic_copy_icon"
-                        android:layout_marginHorizontal="@dimen/_4sdp"/>
+                        android:layout_marginHorizontal="@dimen/_4sdp"
+                        android:background="@drawable/ic_copy_icon" />
                 </LinearLayout>
 
 
@@ -165,72 +188,73 @@
                     android:id="@+id/date_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date"
-                    android:layout_marginVertical="@dimen/_8sdp"
-                    android:textSize="@dimen/_10ssp"
-                    android:textColor="@color/white"
                     android:layout_below="@+id/trip_label"
-                    android:layout_alignParentStart="true"/>
+                    android:layout_alignParentStart="true"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:text="Date"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp" />
 
                 <TextView
                     android:id="@+id/date_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sunday, 20 october 2024"
-                    android:layout_marginVertical="@dimen/_8sdp"
-                    android:textSize="@dimen/_10ssp"
-                    android:textColor="@color/white"
                     android:layout_below="@+id/trip_id_layout"
-                    android:layout_alignParentEnd="true"/>
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:text="Sunday, 20 october 2024"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp" />
 
             </RelativeLayout>
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:dividerColor="@color/gray"/>
+                app:dividerColor="@color/gray" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:text="How’s your trip?"
-                android:textSize="@dimen/_12ssp"
                 android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_12sdp"/>
+                android:textSize="@dimen/_12ssp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="(Give 1 to 5 stars about your trip)"
-                android:textSize="@dimen/_10ssp"
-                android:textColor="@color/white"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/_12sdp"/>
+                android:layout_marginBottom="@dimen/_12sdp"
+                android:text="(Give 1 to 5 stars about your trip)"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp" />
 
             <RatingBar
+                android:id="@+id/rating_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:numStars="5"
+                android:progressBackgroundTint="#a8a8a8"
+                android:progressTint="@color/primary"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
-                android:stepSize="0.2"
-                android:layout_gravity="center"
-                android:progressTint="@color/primary"
-                android:progressBackgroundTint="#a8a8a8"/>
+                android:stepSize="0.2" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:dividerColor="@color/gray"
-                android:layout_marginVertical="@dimen/_4sdp"/>
+                android:layout_marginVertical="@dimen/_4sdp"
+                app:dividerColor="@color/gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp"
                 android:background="@drawable/rounded_curved_border"
                 android:backgroundTint="@color/bg_light"
-                android:layout_marginVertical="@dimen/_10sdp"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -238,36 +262,38 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="@dimen/_12sdp"
                     android:paddingVertical="@dimen/_8sdp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Trip Details"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="@color/white"
                         android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:text="Trip Details"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:background="@drawable/rounded_curved_border"
                         android:backgroundTint="@color/primary"
-                        android:padding="@dimen/_6sdp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true">
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_6sdp">
+
                         <View
                             android:layout_width="@dimen/_12sdp"
                             android:layout_height="@dimen/_12sdp"
-                            android:background="@drawable/ic_coin_vertical"/>
+                            android:background="@drawable/ic_coin_vertical" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="+23coins"
-                            android:textSize="@dimen/_8ssp"
                             android:textColor="@color/bg_dark"
-                            />
+                            android:textSize="@dimen/_8ssp" />
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -277,22 +303,27 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="@dimen/_12sdp"
                     android:paddingVertical="@dimen/_4sdp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pickup Location"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="@color/white"
                         android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:text="Pickup Location"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp" />
+
                     <TextView
+                        android:id="@+id/pickup_location_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Railway station"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="@color/white"
                         android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:ellipsize="end"
+                        android:maxLength="20"
+                        android:text="Railway station"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -300,51 +331,59 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="@dimen/_12sdp"
                     android:paddingVertical="@dimen/_4sdp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Destination"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="@color/white"
                         android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:text="Destination"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp" />
+
                     <TextView
+                        android:id="@+id/drop_location_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Home"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="@color/white"
                         android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:ellipsize="end"
+                        android:maxLength="20"
+                        android:text="Home"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dividerColor="@color/gray"
-                    android:layout_marginVertical="@dimen/_4sdp"/>
+                    android:layout_marginVertical="@dimen/_4sdp"
+                    app:dividerColor="@color/gray" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="@dimen/_12sdp"
                     android:paddingVertical="@dimen/_8sdp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Payment Method"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="@color/white"
                         android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:text="Payment Method"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp" />
+
                     <TextView
+                        android:id="@+id/payment_mode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Cash"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="@color/white"
                         android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:text="Cash"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -358,10 +397,10 @@
                     android:id="@+id/back_home_btn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_4sdp"
                     android:backgroundTint="@color/bg_light"
                     android:text="@string/Back_to_home"
                     android:textColor="@color/primary"
-                    android:layout_marginHorizontal="@dimen/_4sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/bill_download_btn"
                     app:layout_constraintStart_toStartOf="parent"
@@ -371,10 +410,10 @@
                     android:id="@+id/bill_download_btn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_4sdp"
                     android:backgroundTint="@color/bg_light"
                     android:text="@string/download_bill"
                     android:textColor="@color/primary"
-                    android:layout_marginHorizontal="@dimen/_4sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/back_home_btn"

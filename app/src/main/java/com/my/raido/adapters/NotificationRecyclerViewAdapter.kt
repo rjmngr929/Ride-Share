@@ -18,7 +18,6 @@ class NotificationRecyclerViewAdapter(private var notificationList : List<Notifi
 
     override fun onBindViewHolder(holder: ItemViewHolder, @SuppressLint("RecyclerView") position: Int) {
 
-
         with(holder){
             with(notificationList[position]){
                 binding.notifyTitleText.text = this.type

@@ -25,7 +25,6 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.messaging.FirebaseMessaging
 import com.my.raido.R
 import com.my.raido.Utils.AlertDialogUtility
-import com.my.raido.constants.Constants
 import com.my.raido.Utils.Helper
 import com.my.raido.Utils.NetworkResult
 import com.my.raido.Utils.TokenManager
@@ -34,12 +33,14 @@ import com.my.raido.Utils.hideLoader
 import com.my.raido.Utils.invisible
 import com.my.raido.Utils.showLoader
 import com.my.raido.Utils.visible
+import com.my.raido.constants.Constants
 import com.my.raido.data.prefs.SharedPrefManager
 import com.my.raido.databinding.FragmentOtpVerifyBinding
 import com.my.raido.models.Database.DataModel.User
 import com.my.raido.models.login.OtpVerifyRequest
 import com.my.raido.ui.auth.AuthViewModel
 import com.my.raido.ui.home.HomeActivity
+import com.my.raido.ui.viewmodels.MasterViewModel
 import com.my.raido.ui.viewmodels.userViewModel.UserDataViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -66,6 +67,9 @@ class OtpVerifyFragment : Fragment() {
 
     private val authViewModel: AuthViewModel by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
+    private val masterDataViewModel: MasterViewModel by viewModels()
+
+    private var resendTimer: CountDownTimer? = null
 
     private lateinit var loader: AlertDialog
 
@@ -214,6 +218,7 @@ class OtpVerifyFragment : Fragment() {
         }
 
         binding.verifyOtpBtn.setOnClickListener {
+            Log.d(TAG, "onViewCreated: otp btn clicked => ${otp_code}")
             if(otp_code.length == 4) {
                 binding.otpErr.invisible()
                 val otpRequestData =  OtpVerifyRequest(
@@ -243,6 +248,12 @@ class OtpVerifyFragment : Fragment() {
         verifyOTPListener()
 
         Helper.changeWordColor(myContext, binding.didNtGetOtpCode, "OTP code?", resources.getString(R.string.did_nt_get_otp_code), R.color.primary)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        resendTimer?.cancel()
+        resendTimer = null
     }
 
     fun clearOtpFields(){
@@ -288,7 +299,7 @@ class OtpVerifyFragment : Fragment() {
     }
 
     private fun resendTimer(){
-        object : CountDownTimer(59000, 1000) {
+        resendTimer = object : CountDownTimer(59000, 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
 //                TimerText.setText("00 : " + millisUntilFinished / 1000)
@@ -318,6 +329,10 @@ class OtpVerifyFragment : Fragment() {
 
                     sharedPrefManager.putInt(Constants.USER_ID, userData.userId)
 
+                    sharedPrefManager.putBoolean(Constants.WALLET_ACTIVE_STATUS, userData.isWalletActive != "false")
+
+                    masterDataViewModel.setWalletBalanceData(userData.walletBalance)
+
                     userDataViewModel.insertUser(
                         User(
                             userId = userData.userId,
@@ -331,7 +346,7 @@ class OtpVerifyFragment : Fragment() {
                             currency = userData.currency,
                             totalRatingSum = userData.totalRatingSum,
                             totalRatings = userData.totalRatingsCount,
-                            walletStatus = userData.isWalletActive,
+                            walletStatus = userData.isWalletActive != "false",
                             totalCompleteRides = userData.totalCompleteRides,
                             walletBalance = userData.walletBalance
                         )

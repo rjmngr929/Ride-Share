@@ -19,6 +19,7 @@
             android:layout_width="@dimen/_14sdp"
             android:layout_height="@dimen/_19sdp"
             android:background="@drawable/ic_notification"
+            android:backgroundTint="@color/white"
             android:layout_gravity="center"/>
     </androidx.cardview.widget.CardView>
 

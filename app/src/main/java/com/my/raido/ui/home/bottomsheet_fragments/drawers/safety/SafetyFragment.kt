@@ -279,6 +279,11 @@ class SafetyFragment : BottomSheetDialogFragment(), PermissionRequest.Listener {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        request.removeListener(this)
+    }
+
     private fun bindObservers() {
         contactsViewModel.contactListResponseLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {

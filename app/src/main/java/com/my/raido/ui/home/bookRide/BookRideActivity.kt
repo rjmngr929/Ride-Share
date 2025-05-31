@@ -1,58 +1,87 @@
 package com.my.raido.ui.home.bookRide
 
+import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
-import android.annotation.SuppressLint
+import android.app.PictureInPictureParams
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.location.Geocoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
+import android.util.Rational
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.Polyline
+import com.kotlinpermissions.PermissionStatus
+import com.kotlinpermissions.allGranted
+import com.kotlinpermissions.anyPermanentlyDenied
+import com.kotlinpermissions.anyShouldShowRationale
+import com.kotlinpermissions.extension.permissionsBuilder
+import com.kotlinpermissions.request.PermissionRequest
+import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.my.raido.Helper.SelectVehicle
 import com.my.raido.R
 import com.my.raido.Utils.AlertDialogUtility
-import com.my.raido.constants.Constants
+import com.my.raido.Utils.AppUtils
 import com.my.raido.Utils.NetworkResult
 import com.my.raido.Utils.getLoadingDialog
+import com.my.raido.Utils.gone
 import com.my.raido.Utils.hideLoader
+import com.my.raido.Utils.setOnSingleClickListener
+import com.my.raido.Utils.showPermanentlyDeniedDialog
+import com.my.raido.Utils.showRationaleDialog
 import com.my.raido.Utils.showToast
+import com.my.raido.Utils.visible
+import com.my.raido.constants.Constants
+import com.my.raido.constants.SocketConstants
 import com.my.raido.data.prefs.SharedPrefManager
 import com.my.raido.databinding.ActivityBookRideBinding
 import com.my.raido.models.cab.RideBookRequest
-import com.my.raido.models.simulateModel.Driver
 import com.my.raido.services.BookingStatus
 import com.my.raido.services.ManageBooking
-import com.my.raido.ui.home.MapSharedViewModel
-import com.my.raido.ui.home.bottomsheet_fragments.SelectVehicleTypeFragment
-import com.my.raido.ui.viewmodels.BookRideViewModel
-import com.my.raido.ui.viewmodels.DummyDataViewModel
+import com.my.raido.socket.SocketManager
+import com.my.raido.ui.home.HomeActivity
+import com.my.raido.ui.home.bottomsheet_fragments.driver.AssignDriverFragment
+import com.my.raido.ui.home.bottomsheet_fragments.ride_book.CancelRideFragment
+import com.my.raido.ui.home.bottomsheet_fragments.ride_book.LookingForRiderFragment
+import com.my.raido.ui.home.bottomsheet_fragments.ride_book.SelectVehicleTypeFragment
+import com.my.raido.ui.home.bottomsheet_fragments.ride_book.cancel_ride.CancelLookingRideFragment
+import com.my.raido.ui.viewmodels.MasterViewModel
+import com.my.raido.ui.viewmodels.NavigationViewModel
 import com.my.raido.ui.viewmodels.cabViewModel.CabViewModel
 import com.ola.maps.mapslibrary.models.OlaLatLng
 import com.ola.maps.mapslibrary.models.OlaMapsConfig
 import com.ola.maps.mapslibrary.models.OlaMarkerOptions
-import com.ola.maps.mapslibrary.models.OlaPolylineOptions
 import com.ola.maps.mapslibrary.utils.MapTileStyle
 import com.ola.maps.navigation.ui.v5.MapStatusCallback
+import com.ola.maps.navigation.v5.model.route.RouteInfoData
+import com.ola.maps.navigation.v5.navigation.NavigationMapRoute
 import com.ola.maps.navigation.v5.navigation.OlaMapView
+import com.ola.maps.navigation.v5.navigation.direction.transform
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONArray
+import org.json.JSONObject
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class BookRideActivity : AppCompatActivity() , ManageBooking, MapStatusCallback { //OnMapReadyCallback
+class BookRideActivity : AppCompatActivity() ,PermissionRequest.Listener, ManageBooking, MapStatusCallback
+     { //OnMapReadyCallback  NavigationStatusCallback, RouteProgressListener
 
     companion object{
         private const val TAG = "Book Ride Activity"
@@ -60,8 +89,14 @@ class BookRideActivity : AppCompatActivity() , ManageBooking, MapStatusCallback 
 
     private lateinit var binding: ActivityBookRideBinding
 
-    private val mapSharedViewModel: MapSharedViewModel by viewModels()
     private val cabViewModel: CabViewModel by viewModels()
+
+    private val navigationViewModel: NavigationViewModel by viewModels()
+
+    private var manageBookingOperations: ManageBooking? = null
+
+    // initialize this variable after onMapReady callback
+    private var navigationRoute: NavigationMapRoute? = null
 
     @Inject
     lateinit var sharedPreference: SharedPrefManager
@@ -69,30 +104,33 @@ class BookRideActivity : AppCompatActivity() , ManageBooking, MapStatusCallback 
     @Inject
     lateinit var alertDialogService: AlertDialogUtility
 
-    private val dummyDataViewModel: DummyDataViewModel by viewModels()
+    @Inject
+    lateinit var socketManager: SocketManager
 
-    private val bookRideViewModel: BookRideViewModel by viewModels()
+    private var isRideStatus = BookingStatus.PENDING
 
-    private lateinit var polyline: Polyline
+     private val request by lazy {
+         permissionsBuilder(Manifest.permission.ACCESS_FINE_LOCATION,
+             Manifest.permission.ACCESS_COARSE_LOCATION).build()
+     }
+
+     private val GPSLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+         if(AppUtils.sharedInstance.isLocationEnabled(this)){
+             request.send()
+         }else{
+             promptUserToEnableLocation()
+         }
+     }
+
+    var accessToken = ""
+
+    private val masterViewModel: MasterViewModel by viewModels()
+
+    private lateinit var polylineData: String
 
     private lateinit var olaMapView: OlaMapView
 
-//    private lateinit var map: GoogleMap
-    private val driverMarkers = mutableMapOf<String, Marker>()
-
-    private var cabAry = ArrayList<Driver>()
-    private var bikeAry = ArrayList<Driver>()
-    private var autoAry = ArrayList<Driver>()
-    private var bikeLiteAry = ArrayList<Driver>()
-
-    private lateinit var marker: Marker
-
-//    private lateinit var source: PassOlaLatLng
-//    private lateinit var destination: PassOlaLatLng
-
-    private val map_view_bundle_key = "My_Bundle"
-
-//    private lateinit var mapView: MapView
+    private var driverLatLng: OlaLatLng? = OlaLatLng()
 
     private lateinit var loader: AlertDialog
 
@@ -104,23 +142,19 @@ class BookRideActivity : AppCompatActivity() , ManageBooking, MapStatusCallback 
 
     private var vehicleId by Delegates.notNull<Int>()
 
-    private lateinit var decodedPoints:  List<LatLng>
+    private var drawPath = false
 
-//    private lateinit var decodedPointsOla:  List<OlaLatLng>
-//
-//    private lateinit var olaMapView: OlaMapView
-//    private lateinit var olaMap: OlaMap
-//    private lateinit var polylineOlaMap: com.ola.mapsdk.view.Polyline
-//
-//
-//    val mapControlSettings = MapControlSettings.Builder()
-//        .setRotateGesturesEnabled(false)
-//        .setScrollGesturesEnabled(true)
-//        .setZoomGesturesEnabled(true)
-//        .setCompassEnabled(false)
-//        .setTiltGesturesEnabled(false)
-//        .setDoubleTapGesturesEnabled(false)
-//        .build()
+    private var directionsRouteList  = arrayListOf<DirectionsRoute>() //  arrayListOf<DirectionsRoute>()
+
+    private val markerViewOptions = OlaMarkerOptions.Builder()
+        .setIconIntRes(R.drawable.ic_location)
+        .setIconSize(0.05f)
+        .build()
+
+    private val driverMarkerViewOptions = OlaMarkerOptions.Builder()
+        .setMarkerId("driver")
+        .setIconIntRes(R.drawable.ic_bike_top)
+        .build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,102 +173,143 @@ class BookRideActivity : AppCompatActivity() , ManageBooking, MapStatusCallback 
 
         loader = getLoadingDialog(this)
 
-//        source = sharedPreference.getLatLng(Constants.PICKUP_LOCATION)!!
-//        destination = sharedPreference.getLatLng(Constants.DROP_LOCATION)!!
+        request.addListener(this)
 
-//        sourceAddress = intent.getStringExtra("sourceText")!!
-//        destinationAddress = intent.getStringExtra("destText")!!
+        drawPath = intent.getBooleanExtra("drawPath", false)
 
-        sourceAddress = sharedPreference.getString(Constants.PICKUP_ADDRESS)!!
-        destinationAddress = sharedPreference.getString(Constants.DROP_ADDRESS)!!
+        manageBookingOperations = this
+
+        masterViewModel.dashboardData.observe(this, Observer {
+            Log.d(TAG, "onCreate: ${it}")
+
+            if(it != null){
+
+                val jsonObject = JSONObject()
+                jsonObject.put("name", it.driverName)
+                jsonObject.put("phone", it.driverMobile)
+                jsonObject.put("dropaddress", it.dropLocation)
+                jsonObject.put("pickupaddress", it.pickupLocation)
+                jsonObject.put("fare", it.finalFareAfterDiscount)
+                jsonObject.put("vehicle_name", it.vehicleName)
+                jsonObject.put("vehicle_type", it.vehicle)
+                jsonObject.put("vehicle_number", it.vehicleNumber)
+                jsonObject.put("profile_picture", it.driverImage)
+                jsonObject.put("ride_id", it.rideId)
+                jsonObject.put("date", it.rideDate)
+                jsonObject.put("newRideId", it.id)
+
+
+                isRideStatus = sharedPreference.getEnum(Constants.RIDE_STATUS, BookingStatus::class.java, BookingStatus.ARRIVEING)
+
+
+                cabViewModel.setRiderData(jsonObject.toString())
+
+                val bottomSheetFragment = AssignDriverFragment()
+//                bottomSheetFragment.arguments = Bundle().apply {
+//                    putString("json_data", jsonObject.toString())
+//                }
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container_bookride, bottomSheetFragment)
+                    .addToBackStack(null)
+                    .commit()
+
+//                showBottomSheetSafely(bottomSheetFragment.tag.toString()){
+//                    bottomSheetFragment
+//                }
+
+                when(isRideStatus) {
+                    BookingStatus.RIDE_ACCEPTED -> {
+                        olaMapView.removeAllMarkers()
+                        showToast("Ride Accepted")
+                        isRideStatus = BookingStatus.RIDE_ACCEPTED
+                        sharedPreference.saveEnum(Constants.RIDE_STATUS, isRideStatus)
+
+                    }
+                    BookingStatus.ARRIVEING -> {
+                        olaMapView.removeAllMarkers()
+                        showToast("Driver arriving soon")
+                        isRideStatus = BookingStatus.ARRIVEING
+                        sharedPreference.saveEnum(Constants.RIDE_STATUS, isRideStatus)
+                    }
+                    BookingStatus.ARRIVED -> {
+                        showToast("Driver arrived")
+                        isRideStatus = BookingStatus.ARRIVED
+                        sharedPreference.saveEnum(Constants.RIDE_STATUS, isRideStatus)
+                    }
+                    BookingStatus.RIDE_STARTED -> {
+                        showToast("Ride Started")
+                        isRideStatus = BookingStatus.RIDE_STARTED
+                        sharedPreference.saveEnum(Constants.RIDE_STATUS, isRideStatus)
+                    }
+                    else -> {
+                        Log.d(TAG, "onCreate: nothing can do on that")
+                    }
+                }
+                masterViewModel.dashboardData.removeObservers(this)
+            }
+
+        })
+
+        isRideStatus = sharedPreference.getEnum(Constants.RIDE_STATUS, BookingStatus::class.java, BookingStatus.ARRIVEING)
+        manageBookingOperations?.performOperation(isRideStatus)
+
+        if(AppUtils.sharedInstance.isLocationEnabled(this)){
+            request.send()
+        }else{
+            promptUserToEnableLocation()
+        }
 
         try {
+            sourceAddress = sharedPreference.getString(Constants.PICKUP_ADDRESS)!!
+            destinationAddress = sharedPreference.getString(Constants.DROP_ADDRESS)!!
+
+
             sourceLatLng = sharedPreference.getLatLng(Constants.PICKUP_LOCATION)!!
             destinationLatLng = sharedPreference.getLatLng(Constants.DROP_LOCATION)!!
+
+
         }catch (err: Exception){
             Log.d(TAG, "onCreate: error occur on that => ${err}")
         }
-   
 
-//        source = intent.getParcelableExtra<PassOlaLatLng>("sourceText")!!
-//        destination = intent.getParcelableExtra<PassOlaLatLng>("destText")!!
 
-        //        *********************** OlaMapSdk **********************************************************
-        // Initialize the OlaMapView
-//        olaMapView = binding.mapView
-//
-//        olaMapView.getMap(apiKey = "1mthwdRIjnbT77e4xJUcLserilOY5BhRtn5sQa4S",
-//            olaMapCallback = object : OlaMapCallback {
-//                override fun onMapReady(olaMap: OlaMap) {
-//
-//                    this@BookRideActivity.olaMap = olaMap
-//
-//                    val currentLocation = OlaLatLng(sourceLatLng.latitude, sourceLatLng.longitude)
-//                    val destinationLocation = OlaLatLng(destinationLatLng.latitude, destinationLatLng.longitude)
-//
-//                    olaMap.moveCameraToLatLong(currentLocation, 14.0, 1000)
-//
-//
-//                    Handler(Looper.getMainLooper()).postDelayed({
-//                        val markerOptions1 = OlaMarkerOptions.Builder()
-//                            .setMarkerId("marker1")
-//                            .setPosition(currentLocation)
-//                            .setIconSize(0.6f)
-//                            .setIsAnimationEnable(true)
-//                            .build()
-//                        olaMap.addMarker(markerOptions1)
-//
-//                        val markerOptions2 = OlaMarkerOptions.Builder()
-//                            .setMarkerId("marker2")
-//                            .setPosition(destinationLocation)
-//                            .setIconSize(0.6f)
-//                            .setIsAnimationEnable(true)
-//                            .build()
-//                        olaMap.addMarker(markerOptions2)
-//                    }, 1000)
-//
-//                }
-//
-//                override fun onMapError(error: String) {
-//                    // Handle map error
-//                }
-//            },mapControlSettings
-//        )
 
-        try {
-            //call onCreate function of OlaMapView after layout initialize
-//            olaMapView.onCreate(savedInstanceState)
+//        try {
+//            //call initialize function of OlaMapView with custom configuration
+//            olaMapView.initialize(
+//                mapStatusCallback = this,
+//                olaMapsConfig = OlaMapsConfig.Builder()
+//                    .setApplicationContext(applicationContext) //pass the application context here, it is mandatory
+//                    .setMapBaseUrl("https://api.olamaps.io") // pass the Base URL of Ola-Maps here (Stage/Prod URL), it is mandatory
+//                    .setApiKey("B99cOWJwLYnmj1ewxa8RoZYQTqXQbfYfJlRZFrKb")
+//                    .setProjectId("d9485b50-6b6c-4f42-8a7a-14bd33a758f7") //Pass the Origination ID here, it is mandatory
+//                    .setMapTileStyle(MapTileStyle.DEFAULT_LIGHT_STANDARD) //pass the MapTileStyle here, it is Optional.
+//                    .setMinZoomLevel(3.0)
+//                    .setMaxZoomLevel(21.0)
+//                    .setZoomLevel(14.0)
+//                    .showCurrentLocation(false)
+//                    .build()
+//            )
+//        }catch (err: Exception){
+//
+//        }
 
-            //call initialize function of OlaMapView with custom configuration
-            olaMapView.initialize(
-                mapStatusCallback = this,
-                olaMapsConfig = OlaMapsConfig.Builder()
-                    .setApplicationContext(applicationContext) //pass the application context here, it is mandatory
-                    .setMapBaseUrl("https://api.olamaps.io") // pass the Base URL of Ola-Maps here (Stage/Prod URL), it is mandatory
-                    .setApiKey("1mthwdRIjnbT77e4xJUcLserilOY5BhRtn5sQa4S")
-                    .setProjectId("bd6f4c73-2798-4281-93cc-eaca0bd184b5") //Pass the Origination ID here, it is mandatory
-                    .setMapTileStyle(MapTileStyle.DEFAULT_LIGHT_STANDARD) //pass the MapTileStyle here, it is Optional.
-                    .setMinZoomLevel(3.0)
-                    .setMaxZoomLevel(21.0)
-                    .setZoomLevel(14.0)
-                    .build()
-            )
-        }catch (err: Exception){
 
-        }
 //        *********************** OlaMapSdk **********************************************************
 
-        val bottomSheetFragment = SelectVehicleTypeFragment()
-//        val bundle = Bundle()
-//        bundle.putParcelable("sourcelatLng", sourceLatLng)
-//        bundle.putParcelable("destlatLng", destinationLatLng)
-//        bottomSheetFragment.arguments = bundle
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_bookride, bottomSheetFragment)
-            .addToBackStack(null)
-            .commit()
+        if(masterViewModel.dashboardData.value == null) {
+            val bottomSheetFragment = SelectVehicleTypeFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container_bookride, bottomSheetFragment)
+                .addToBackStack(null)
+                .commit()
+
+//            val bottomSheet = SelectVehicleTypeFragment()
+//            bottomSheet.show(supportFragmentManager, SelectVehicleTypeFragment.TAG)
 
 
+
+        }
 
         vehicleId = when(sharedPreference.getEnum(Constants.VEHICLE_TYPE, SelectVehicle::class.java ,SelectVehicle.BIKE)){
             SelectVehicle.BIKE -> {
@@ -251,284 +326,817 @@ class BookRideActivity : AppCompatActivity() , ManageBooking, MapStatusCallback 
             }
         }
 
-//        Log.d(
-//            TAG, "onCreate: pickup drop location => $vehicleId and  ${
-//                RideBookRequest(
-//                    pickuplat = sourceLatLng.latitude,
-//                    pickupLng = sourceLatLng.longitude,
-//                    dropLat = destinationLatLng.latitude,
-//                    dropLng = destinationLatLng.longitude,
-//                    vehicleId = vehicleId,
-//                    district = "jodhpur"
-//                ).toMap()
-//            }"
-//        )
+        val district = sharedPreference.getString(Constants.CURRENT_DISTRICT)
+
+        if(masterViewModel.dashboardData.value == null) {
+            if (!district.isNullOrEmpty()) {
+                cabViewModel.fetchRideFareDetail(
+                    RideBookRequest(
+                        pickuplat = sourceLatLng.latitude,
+                        pickupLng = sourceLatLng.longitude,
+                        dropLat = destinationLatLng.latitude,
+                        dropLng = destinationLatLng.longitude,
+                        vehicleId = vehicleId,
+                        district = district,
+                        pickupAddress = sourceAddress,
+                        dropAddress = destinationAddress
+                    )
+                )
+            } else {
+                getStateAndCityFromLatLng(sourceLatLng.latitude, sourceLatLng.longitude)
+            }
+        }
+
+        binding.gpsLocationBtn.setOnSingleClickListener {
+
+            if (ActivityCompat.checkSelfPermission(
+                    applicationContext,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                if(::olaMapView.isInitialized) {
+//                    val currentLatLng = sharedPrefManager.getLatLng(Constants.CURRENT_LATLNG)
+//
+//                    if(currentLatLng != null){
+//                        val userLatLng = OlaLatLng(currentLatLng.latitude, currentLatLng.longitude)
+//                        olaMapView.moveCameraToLatLong(
+//                            userLatLng,
+//                            zoomLevel = 15.0,
+//                            1000
+//                        ) // Move camera to current location with zoom level
+//
+//
+//
+//                    }
+
+                    olaMapView.moveToCurrentLocation()
 
 
-        Log.d(TAG, "onCreate: api data => ${sourceLatLng}, ${destinationLatLng}, $vehicleId")
 
-        cabViewModel.fetchRideFareDetail(
-            RideBookRequest(
-                pickuplat = sourceLatLng.latitude,
-                pickupLng = sourceLatLng.longitude,
-                dropLat = destinationLatLng.latitude,
-                dropLng = destinationLatLng.longitude,
-                vehicleId = vehicleId,
-                district = "jodhpur"
-            )
-        )
-
-//      source = LatLng(26.284311, 73.016209)
-//      destination = LatLng(26.276004, 73.008284)
+                }
+            } else {
+                request.send()
+            }
+        }
 
 
+//  ************************* Socket Listener ******************************************************
 
-//        mapView = binding.googleMap
-//        var mapViewBundle: Bundle? = null
-//        if (savedInstanceState != null) {
-//            mapViewBundle = savedInstanceState.getBundle(map_view_bundle_key)
+//        cabViewModel.driveLocationData.observe (this) {response ->
+//            Log.d(TAG, "onCreate: driver location data is ${response}")
+//            isRideStatus = sharedPreference.getEnum(
+//                Constants.RIDE_STATUS,
+//                BookingStatus::class.java,
+//                BookingStatus.ARRIVEING
+//            )
+//            try {
+//                driverLatLng = OlaLatLng(
+//                    response.getDouble("latitude"),
+//                    response.getDouble("longitude")
+//                )
+//
+//                Log.d(TAG, "onCreate: driver location data is ${response}")
+//
+//                if (driverLatLng != null) {
+////                    olaMapView.removeMarker("driver")
+//
+////                    olaMapView.addMarker(
+////                        point = com.mapbox.mapboxsdk.geometry.LatLng(
+////                            response.getDouble("latitude"),
+////                            response.getDouble("longitude")
+////                        ),
+////                        icon = R.drawable.ic_bike_top,
+////                        isAnimRequired = true,
+////                        iconImage = "driver"
+////                    )
+//
+//
+//                    olaMapView.updateMarkerView(
+//                        OlaMarkerOptions.Builder()
+//                            .setMarkerId(driverMarkerViewOptions.markerId)
+//                            .setPosition(
+//                                OlaLatLng(
+//                                    latitude = response.getDouble("latitude"),
+//                                    longitude = response.getDouble("longitude")
+//                                )
+//                            )
+//                            .setIconIntRes(driverMarkerViewOptions.iconIntRes!!)
+//                            .setIconSize(driverMarkerViewOptions.iconSize)
+//                            .build()
+//                    )
+//
+//                    if (isRideStatus == BookingStatus.RIDE_ACCEPTED) {
+//                        Log.d(
+//                            TAG,
+//                            "onCreate: rideStatus => ${isRideStatus.name} and origin = ${driverLatLng} and dest = ${
+//                                OlaLatLng(
+//                                    sourceLatLng.latitude,
+//                                    sourceLatLng.longitude
+//                                )
+//                            }"
+//                        )
+////                        navigationViewModel.fetchRoute(
+////                            driverLatLng!!,
+////                            OlaLatLng(sourceLatLng.latitude, sourceLatLng.longitude)
+////                        )
+//
+//                        setupRoute(
+//                            LatLng(driverLatLng!!.latitude, driverLatLng!!.longitude),
+//                            LatLng(sourceLatLng.latitude, sourceLatLng.longitude)
+//                        )
+////                        if(directionsRouteList.isEmpty()) { //directionsRouteList.isNullOrEmpty()
+//////                            navigationViewModel.fetchRouteAPI(
+//////                                driverLatLng!!,
+//////                                OlaLatLng(sourceLatLng.latitude, sourceLatLng.longitude)
+//////                            )
+////                            setupRoute(
+////                                LatLng(driverLatLng!!.latitude, driverLatLng!!.longitude),
+////                                LatLng(sourceLatLng.latitude, sourceLatLng.longitude)
+////                            )
+////                        }
+//
+//                    }
+//
+//                    if (isRideStatus == BookingStatus.RIDE_STARTED) {
+//                        Log.d(
+//                            TAG,
+//                            "onCreate: rideStatus => ${isRideStatus.name} and origin = ${driverLatLng} and dest = ${
+//                                OlaLatLng(
+//                                    sourceLatLng.latitude,
+//                                    sourceLatLng.longitude
+//                                )
+//                            }"
+//                        )
+////                        navigationViewModel.fetchRoute(
+////                            driverLatLng!!,
+////                            OlaLatLng(destinationLatLng.latitude, destinationLatLng.longitude)
+////                        )
+//
+//                        setupRoute(
+//                            LatLng(driverLatLng!!.latitude, driverLatLng!!.longitude),
+//                            LatLng(destinationLatLng.latitude, destinationLatLng.longitude)
+//                        )
+////                        if(directionsRouteList.isEmpty()) {
+//////                            navigationViewModel.fetchRouteAPI(
+//////                                driverLatLng!!,
+//////                                OlaLatLng(destinationLatLng.latitude, destinationLatLng.longitude)
+//////                            )
+////                            setupRoute(
+////                                LatLng(driverLatLng!!.latitude, driverLatLng!!.longitude),
+////                                LatLng(destinationLatLng.latitude, destinationLatLng.longitude)
+////                            )
+////                        }
+//                    }
+//                }
+//
+//            } catch (err: Exception) {
+//                Log.d(TAG, "onCreate: error occor on update driver location")
+//            }
 //        }
-//        mapView.onCreate(mapViewBundle)
-////        val mapFragment = binding.googleMap as SupportMapFragment
-//        mapView.getMapAsync(this)
 
+//        socketManager.setOnSocketConnectedListener(object : SocketManager.OnSocketConnectedListener {
+//            override fun onConnected() {
+//
+//                Log.d(TAG, "onConnected: now all event triggered...!!!!")
 
-
-
-
-
-        cabViewModel.selectedVehicle.observe(this, Observer {vehicle ->
-            Log.d(TAG, "bindObservers: selected vehicle is => ${vehicle} = ${bikeAry.size}")
-            when(vehicle){
-                SelectVehicle.BIKE -> {
-                    updateMotors(bikeAry, R.drawable.bike_map)
+                socketManager.listenToEvent(SocketConstants.RIDE_ACCEPT_RESPONSE) { response ->
+                    Log.d(TAG, "onConnected: booking accept listen on activity $response")
                 }
-                SelectVehicle.AUTO -> {
-                    updateMotors(autoAry, R.drawable.car_map)
+                
+                socketManager.listenToEvent(SocketConstants.RECEIVE_NEARBY_RIDERS) { data ->
+                    val riders = data.getJSONArray("data")
+                    ShowDrivers(riders)
                 }
-                SelectVehicle.CABS -> {
-                    updateMotors(cabAry, R.drawable.ic_car)
+
+                socketManager.listenToEvent(SocketConstants.RIDER_LOCATION_CHANGE) { response ->
+                    Log.d(TAG, "onCreate: driver location data is ${response}")
+                    isRideStatus = sharedPreference.getEnum(
+                        Constants.RIDE_STATUS,
+                        BookingStatus::class.java,
+                        BookingStatus.ARRIVEING
+                    )
+                    try {
+                        driverLatLng = OlaLatLng(
+                            response.getDouble("latitude"),
+                            response.getDouble("longitude")
+                        )
+
+                        Log.d(TAG, "onCreate: driver location data is ${response}")
+
+                        if (driverLatLng != null) {
+//                    olaMapView.removeMarker("driver")
+
+//                    olaMapView.addMarker(
+//                        point = com.mapbox.mapboxsdk.geometry.LatLng(
+//                            response.getDouble("latitude"),
+//                            response.getDouble("longitude")
+//                        ),
+//                        icon = R.drawable.ic_bike_top,
+//                        isAnimRequired = true,
+//                        iconImage = "driver"
+//                    )
+
+
+                            olaMapView.updateMarkerView(
+                                OlaMarkerOptions.Builder()
+                                    .setMarkerId(driverMarkerViewOptions.markerId)
+                                    .setPosition(
+                                        OlaLatLng(
+                                            latitude = response.getDouble("latitude"),
+                                            longitude = response.getDouble("longitude")
+                                        )
+                                    )
+                                    .setIconIntRes(driverMarkerViewOptions.iconIntRes!!)
+                                    .setIconSize(driverMarkerViewOptions.iconSize)
+                                    .build()
+                            )
+
+                            if (isRideStatus == BookingStatus.RIDE_ACCEPTED) {
+                                Log.d(
+                                    TAG,
+                                    "onCreate: rideStatus => ${isRideStatus.name} and origin = ${driverLatLng} and dest = ${
+                                        OlaLatLng(
+                                            sourceLatLng.latitude,
+                                            sourceLatLng.longitude
+                                        )
+                                    }"
+                                )
+//                        navigationViewModel.fetchRoute(
+//                            driverLatLng!!,
+//                            OlaLatLng(sourceLatLng.latitude, sourceLatLng.longitude)
+//                        )
+
+                                setupRoute(
+                                    LatLng(driverLatLng!!.latitude, driverLatLng!!.longitude),
+                                    LatLng(sourceLatLng.latitude, sourceLatLng.longitude)
+                                )
+//                        if(directionsRouteList.isEmpty()) { //directionsRouteList.isNullOrEmpty()
+////                            navigationViewModel.fetchRouteAPI(
+////                                driverLatLng!!,
+////                                OlaLatLng(sourceLatLng.latitude, sourceLatLng.longitude)
+////                            )
+//                            setupRoute(
+//                                LatLng(driverLatLng!!.latitude, driverLatLng!!.longitude),
+//                                LatLng(sourceLatLng.latitude, sourceLatLng.longitude)
+//                            )
+//                        }
+
+                            }
+
+                            if (isRideStatus == BookingStatus.RIDE_STARTED) {
+                                Log.d(
+                                    TAG,
+                                    "onCreate: rideStatus => ${isRideStatus.name} and origin = ${driverLatLng} and dest = ${
+                                        OlaLatLng(
+                                            sourceLatLng.latitude,
+                                            sourceLatLng.longitude
+                                        )
+                                    }"
+                                )
+//                        navigationViewModel.fetchRoute(
+//                            driverLatLng!!,
+//                            OlaLatLng(destinationLatLng.latitude, destinationLatLng.longitude)
+//                        )
+
+                                setupRoute(
+                                    LatLng(driverLatLng!!.latitude, driverLatLng!!.longitude),
+                                    LatLng(destinationLatLng.latitude, destinationLatLng.longitude)
+                                )
+//                        if(directionsRouteList.isEmpty()) {
+////                            navigationViewModel.fetchRouteAPI(
+////                                driverLatLng!!,
+////                                OlaLatLng(destinationLatLng.latitude, destinationLatLng.longitude)
+////                            )
+//                            setupRoute(
+//                                LatLng(driverLatLng!!.latitude, driverLatLng!!.longitude),
+//                                LatLng(destinationLatLng.latitude, destinationLatLng.longitude)
+//                            )
+//                        }
+                            }
+                        }
+
+                    } catch (err: Exception) {
+                        Log.d(TAG, "onCreate: error occor on update driver location")
+                    }
+
+
                 }
-                SelectVehicle.BIKE_LITE -> {
-                    updateMotors(bikeLiteAry, R.drawable.bike_map)
+
+                socketManager.listenToEvent(SocketConstants.RIDE_CANCELLED) {
+                    startActivity(Intent(this@BookRideActivity, HomeActivity::class.java))
+                    finish()
                 }
-                else -> {
-                    updateMotors(bikeAry, R.drawable.bike_map)
+//            }
+//        })
+
+//  ************************* Socket Listener ******************************************************
+
+//        navigationViewModel.routeData.observe(this) { DirectionRoute ->
+//            if(DirectionRoute != null) {
+//                if (::navigationRoute.isInitialized) {
+//                    navigationRoute.removeRoute()
+//                    directionsRouteList.clear()
+//
+//                    directionsRouteList.add(transform(DirectionRoute))
+//
+////            try {
+////                val angle = calculateAngle(driverLatLng!!, OlaLatLng(sourceLatLng.latitude, sourceLatLng.longitude) ) // (new, this side set previous latlng)
+////
+////                val markerOptions = OlaMarkerOptions.Builder()
+////                    .setMarkerId("marker1")
+////                    .setIconSize(0.6f)
+////                    .setIconRotation(angle)
+////                    .setIconBitmap(MapUtils.getCarBitmap(this, R.drawable.bike_map))
+////                    .setIsAnimationEnable(true)
+////                    .build()
+////                olaMapView.moveMarkerBetweenPoints(srcOlaLatLng = driverLatLng!!, enOlaLatLng =  OlaLatLng(sourceLatLng.latitude, sourceLatLng.longitude), olaMarkerOptions = markerOptions, 1000 )
+////            }catch (err: Exception){
+////                Log.d(TAG, "onMapReady: error => $err")
+////            }
+//
+//                    Log.d(
+//                        TAG,
+//                        "onMapReady: directionsRouteList data size => ${directionsRouteList.size}"
+//                    )
+//
+//                    if (directionsRouteList.isNotEmpty()){
+//                        navigationRoute?.addRoutesForRoutePreview(directionsRouteList)
+//                    }
+//                }
+//            }
+//        }
+
+        navigationViewModel.fetchRouteResponseLiveData.observe(this, Observer {
+            Log.d(TAG, "bindObservers: response received  => ${it}")
+            when (it) {
+                is NetworkResult.Success -> {
+
+                    hideLoader(this, loader)
+
+                    val directionRoute = it.data
+
+                    if(directionRoute != null) {
+
+                        showRoute(routeInfoData = directionRoute, destinationLatLng)
+
+//                        if (::navigationRoute.isInitialized) {
+//                            navigationRoute.removeRoute()
+//                            directionsRouteList.clear()
+//
+//                            lifecycleScope.launch(Dispatchers.IO) {
+//                                directionsRouteList.add(transform(directionRoute))
+//                            }
+//
+//
+//
+////            try {
+////                val angle = calculateAngle(driverLatLng!!, OlaLatLng(sourceLatLng.latitude, sourceLatLng.longitude) ) // (new, this side set previous latlng)
+////
+////                val markerOptions = OlaMarkerOptions.Builder()
+////                    .setMarkerId("marker1")
+////                    .setIconSize(0.6f)
+////                    .setIconRotation(angle)
+////                    .setIconBitmap(MapUtils.getCarBitmap(this, R.drawable.bike_map))
+////                    .setIsAnimationEnable(true)
+////                    .build()
+////                olaMapView.moveMarkerBetweenPoints(srcOlaLatLng = driverLatLng!!, enOlaLatLng =  OlaLatLng(sourceLatLng.latitude, sourceLatLng.longitude), olaMarkerOptions = markerOptions, 1000 )
+////            }catch (err: Exception){
+////                Log.d(TAG, "onMapReady: error => $err")
+////            }
+//
+//                            if (directionsRouteList.isNotEmpty()){
+//                                navigationRoute?.addRoutesForRoutePreview(directionsRouteList)
+//
+//
+//
+//                            }
+//                        }
+                    }
+
+                }
+                is NetworkResult.Error -> {
+                    hideLoader(this, loader)
+
+                    alertDialogService.alertDialogAnim(
+                        this,
+                        it.message.toString(),
+                        R.raw.failed
+                    )
+                    Log.d(TAG, "bindObservers: response received => Error = ${it.message}")
+                }
+                is NetworkResult.Loading ->{
+//                    showLoader(this, loader)
+                }
+                is NetworkResult.Empty -> {
+                    hideLoader(this, loader)
                 }
             }
         })
 
+        navigationViewModel.fetchAccessTokenResponseLiveData.observe(this, Observer {result ->
+            accessToken = result.data?.accessToken.toString()
 
-//        ************************************************************
-
-//        dummyDataViewModel.listenForDriverUpdates { driver ->
-//            Log.d(TAG, "bindObservers: driver data => ${driver}")
-//            when(driver.vehicleType){
-//                "Bike" -> {
-//                    bikeAry.add(driver)
-//                }
-//                "Cabs" -> {
-//                    cabAry.add(driver)
-//                }
-//                "Auto" -> {
-//                    autoAry.add(driver)
-//                }
-//                "Bike Lite" -> {
-//                    bikeLiteAry.add(driver)
-//                }
-//                else -> {
-//                    bikeAry.add(driver)
-//                }
-//            }
-////            updateMotors(bikeAry, R.drawable.bike_map)
-//        }
-
-        // Fetch drivers within 1 km
-        dummyDataViewModel.fetchNearbyDrivers(sourceLatLng.latitude, sourceLatLng.longitude, 1.0) { nearbyDrivers ->
-            bikeAry.clear()
-            autoAry.clear()
-            cabAry.clear()
-            bikeLiteAry.clear()
-            for (driver in nearbyDrivers) {
-                Log.d("Nearby Driver", "Driver: ${driver.riderId}, Location: ${driver.latitude}, ${driver.longitude} vehicleType: ${driver.vehicleType}")
-                when(driver.vehicleType){
-                    "Bike" -> {
-                        bikeAry.add(driver)
-//                        if(sharedPreference.getEnum(Constants.VEHICLE_TYPE, SelectVehicle::class.java ,SelectVehicle.BIKE) == SelectVehicle.BIKE){
-//                            updateMotors(bikeAry, R.drawable.bike_map)
-//                        }
-                    }
-                    "Cabs" -> {
-                        cabAry.add(driver)
-//                        if(sharedPreference.getEnum(Constants.VEHICLE_TYPE, SelectVehicle::class.java ,SelectVehicle.BIKE) == SelectVehicle.CABS){
-//                            updateMotors(cabAry, R.drawable.ic_car)
-//                        }
-                    }
-                    "Auto" -> {
-                        autoAry.add(driver)
-//                        if(sharedPreference.getEnum(Constants.VEHICLE_TYPE, SelectVehicle::class.java ,SelectVehicle.BIKE) == SelectVehicle.AUTO){
-//                            updateMotors(autoAry, R.drawable.car_map)
-//                        }
-                    }
-                    "Bike Lite" -> {
-                        bikeLiteAry.add(driver)
-//                        if(sharedPreference.getEnum(Constants.VEHICLE_TYPE, SelectVehicle::class.java ,SelectVehicle.BIKE) == SelectVehicle.BIKE_LITE){
-//                            updateMotors(bikeLiteAry, R.drawable.bike_map)
-//                        }
-                    }
-                    else -> {
-                        bikeAry.add(driver)
-//                        if(sharedPreference.getEnum(Constants.VEHICLE_TYPE, SelectVehicle::class.java ,SelectVehicle.BIKE) == SelectVehicle.BIKE){
-//                            updateMotors(bikeAry, R.drawable.bike_map)
-//                        }
-                    }
-                }
-            }
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                val selectedVehicle = sharedPreference.getEnum(Constants.VEHICLE_TYPE, SelectVehicle::class.java ,SelectVehicle.BIKE)
-
-                when(selectedVehicle){
-                    SelectVehicle.BIKE -> {
-                        updateMotors(bikeAry, R.drawable.bike_map)
-                    }
-                    SelectVehicle.AUTO -> {
-                        updateMotors(autoAry, R.drawable.car_map)
-                    }
-                    SelectVehicle.CABS -> {
-                        updateMotors(cabAry, R.drawable.ic_car)
-                    }
-                    SelectVehicle.BIKE_LITE -> {
-                        updateMotors(bikeLiteAry, R.drawable.bike_map)
-                    }
-                    else -> {
-                        updateMotors(bikeAry, R.drawable.bike_map)
-                    }
-                }
-            }, 500)
-
-
-
-        }
-
-
-
+            navigationViewModel.clearFetchAccessTokenRes()
+            navigationViewModel.fetchAccessTokenResponseLiveData.removeObservers(this)
+        })
 
     }
 
-//    fun decodePolylineInBackground(encoded: String, onResult: (ArrayList<OlaLatLng>) -> Unit) {
-//        // Using GlobalScope to launch the coroutine
-//        GlobalScope.launch {
-//            val result = withContext(Dispatchers.IO) {
-//                try {
-//                    decodePolylineOlaMapSdk(encoded) // Decoding polyline in the background
-//                }catch (err: Exception){
-//                    Log.d(TAG, "decodePolylineInBackground: error on create path => ${err}")
-//                    ArrayList<OlaLatLng>()
-//                }
-//
-//            }
-//
-//            // Call onResult with the result, this will run in the main thread
-//            onResult(result)
-//        }
+    //    ******************** Handle PIP mode *********************************************
+    override fun onBackPressed() {
+
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_bookride)
+
+        Log.d(TAG, "onBackPressed: current fragment is ${currentFragment}")
+
+        if(currentFragment !is SelectVehicleTypeFragment && currentFragment !is LookingForRiderFragment && currentFragment !is CancelLookingRideFragment && currentFragment !is CancelRideFragment){
+            enterPiPMode()
+        }else{
+            super.onBackPressed()
+
+        }
+
+    }
+
+    // Method to enter PiP mode
+    private fun enterPiPMode() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val aspectRatio = Rational(1, 2) // Set the aspect ratio for PiP window
+            val pipParams = PictureInPictureParams.Builder()
+                .setAspectRatio(aspectRatio)
+                .build()
+            enterPictureInPictureMode(pipParams)
+
+
+        }
+    }
+
+//    override fun onPause() {
+//        super.onPause()
+//        enterPiPMode()
 //    }
 
+     override fun onUserLeaveHint() {
+         super.onUserLeaveHint()
+         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_bookride)
+         if(currentFragment !is SelectVehicleTypeFragment)
+            enterPiPMode()
+     }
+
+    override fun onPictureInPictureModeChanged(
+        isInPictureInPictureMode: Boolean,
+        newConfig: Configuration
+    ) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        Log.d(TAG, "onPictureInPictureModeChanged: PIP mode status => $isInPictureInPictureMode")
+        if (isInPictureInPictureMode) {
+            // Simplify UI
+            binding.fragmentContainerBookride.gone()
+            binding.topDivider.gone()
+        } else {
+            // Restore full UI
+            binding.fragmentContainerBookride.visible()
+            binding.topDivider.visible()
+            olaMapView.removeBezierCurve("bcurve1")
+            olaMapView.removeMarkerViewWithId("pickUpHere")
+        }
+
+    }
+
+//    ******************** Handle PIP mode *********************************************
+
+     private fun promptUserToEnableLocation() {
+         alertDialogService.customAlertDialogAnim(this,"Location Services Disabled", "Location services are required for this app to function correctly. Please enable them.", R.raw.failed){
+             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+             GPSLauncher.launch(intent)
+         }
+     }
+
+    private fun olaMapsInit() {
+        try {
+            //call initialize function of OlaMapView with custom configuration
+            olaMapView.initialize(
+                mapStatusCallback = this,
+                olaMapsConfig = OlaMapsConfig.Builder()
+                    .setApplicationContext(applicationContext)
+                    .setMapBaseUrl("https://api.olamaps.io") // pass the Base URL of Ola-Maps here (Stage/Prod URL), it is mandatory
+//                    .setClientId("54ddd969-9c71-4e07-85db-e6cf89f2051c")
+                    .setApiKey("B99cOWJwLYnmj1ewxa8RoZYQTqXQbfYfJlRZFrKb")
+                    .setProjectId("d9485b50-6b6c-4f42-8a7a-14bd33a758f7") //Pass the Origination ID here, it is mandatory
+                    .setMapTileStyle(MapTileStyle.DEFAULT_LIGHT_STANDARD) //pass the MapTileStyle here, it is Optional.
+                    .setMinZoomLevel(3.0)
+                    .setMaxZoomLevel(21.0)
+                    .setZoomLevel(14.0)
+                    .showCurrentLocation(false)
+                    .setInterceptor ({chain ->
+                        val originalRequest = chain.request()
+
+                        val newRequest = originalRequest.newBuilder()
+                            .addHeader(
+                                "Authorization",
+                                "Bearer $accessToken"
+                            )
+                            .build()
+
+                        chain.proceed(newRequest)
+                    })
+                    .build()
+            )
+
+//            olaMapView.updateMarkerView(
+//                OlaMarkerOptions.Builder()
+//                    .setMarkerId("dest_marker")
+//                    .setPosition(
+//                        OlaLatLng(
+//                            latitude = latLng.latitude,
+//                            longitude = latLng.longitude
+//                        )
+//                    )
+//                    .setIconIntRes(markerViewOptions.iconIntRes!!)
+//                    .setIconSize(markerViewOptions.iconSize)
+//                    .build()
+//            )
+
+        }catch (err: Exception){
+
+        }
+//        fusedLocationClient.lastLocation
+//            .addOnSuccessListener { location: Location? ->
+//                location?.let {
+//                    currentLatLng = com.mapbox.mapboxsdk.geometry.LatLng(it.latitude, it.longitude)
+//
+//                    binding.olaMapView.addHuddleMarkerView(
+//                        olaLatLng = OlaLatLng(
+//                            latitude = currentLatLng.latitude,
+//                            longitude = currentLatLng.longitude
+//                        ),
+//                        headerText = "Current Location",
+//                        descriptionText = "This is your location"
+//                    )
+//
+//                }
+//            }
+//            .addOnFailureListener {
+//                Toast.makeText(
+//                    this,
+//                    "unable to fetch current latitude, longitude",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+    }
+
+    private fun setupRoute(sourceLatLng: LatLng, destLatLng: LatLng) {
+        Log.d(TAG, "showRoute: display route success setupRoute")
+
+//        olaMapView.updateMarkerView(
+//            OlaMarkerOptions.Builder()
+//                .setMarkerId("dest_marker")
+//                .setPosition(
+//                    OlaLatLng(
+//                        latitude = sourceLatLng.latitude,
+//                        longitude = sourceLatLng.longitude
+//                    )
+//                )
+//                .setIconIntRes(markerViewOptions.iconIntRes!!)
+//                .setIconSize(markerViewOptions.iconSize)
+//                .build()
+//        )
+
+
+        if(navigationRoute != null) {
+            navigationRoute!!.removeRoute()
+            navigationRoute!!.animateCamera(
+                com.mapbox.mapboxsdk.geometry.LatLng(
+                    sourceLatLng.latitude,
+                    sourceLatLng.longitude
+                ), 1.0
+            )
+            navigationViewModel.fetchRouteAPI(
+                OlaLatLng(sourceLatLng.latitude, sourceLatLng.longitude),
+                OlaLatLng(destLatLng.latitude, destLatLng.longitude)
+            )
+        }
+    }
+
+    private fun showRoute(routeInfoData: RouteInfoData, latLng: LatLng) {
+        if(driverLatLng != null && navigationRoute != null) {
+            navigationRoute?.removeRoute()
+            directionsRouteList.clear()
+            directionsRouteList.add(transform(routeInfoData))
+
+            Log.d(TAG, "showRoute: display route success")
+            
+            navigationRoute!!.addRoutesForRoutePreview(directionsRouteList)
+
+            olaMapView.animateCameraWithLatLngs(
+                olaLatLngs = listOf(
+                    OlaLatLng(driverLatLng!!.latitude, driverLatLng!!.longitude),
+                    OlaLatLng(latLng.latitude, latLng.longitude)
+                ),
+                paddingLeft = 160,
+                paddingBottom = 160,
+                paddingRight = 160,
+                paddingTop = 160,
+                durationMs = 1000
+            )
+
+//            olaMapView.removeMarkerViewWithId("dest_marker")
+
+
+//            // Once we get the transformed response from SDK, we can get the NavigationViewOptions instance
+//            val navigationViewOptions = getNavigationViewOptions(transform(routeInfoData))
+//// Register the listener and start the Navigation for Turn-by-Turn Mode
+//            if (navigationViewOptions != null) {
+//                olaMapView?.addRouteProgressListener(this@BookRideActivity)
+//                olaMapView?.registerNavigationStatusCallback(this@BookRideActivity)
+//                olaMapView?.startNavigation(navigationViewOptions)
+//            }
+
+
+        }
+    }
+
+    private fun ShowDrivers(drivers: JSONArray) {
+        olaMapView.removeAllMarkers()
+        for (i in 0 until drivers.length()) {
+//            Log.d(TAG, "updateUIWithDrivers: selected vehicle => ${driver.vehicleType.uppercase() == SelectVehicle.BIKE.name}")
+            Log.d(TAG, "updateUIWithDrivers: selected vehicle => ${drivers.getJSONObject(i)}")
+            when(drivers.getJSONObject(i).getString("vehicle_type").uppercase()){
+                SelectVehicle.BIKE.name -> {
+                    olaMapView.addMarker(point = com.mapbox.mapboxsdk.geometry.LatLng(drivers.getJSONObject(i).getString("latitude").toDouble(), drivers.getJSONObject(i).getString("longitude").toDouble()), icon = R.drawable.ic_bike_top, isAnimRequired = true, iconImage = "ic_bike_top")
+                }
+                SelectVehicle.CABS.name -> {
+                    olaMapView.addMarker(point = com.mapbox.mapboxsdk.geometry.LatLng(drivers.getJSONObject(i).getString("latitude").toDouble(), drivers.getJSONObject(i).getString("longitude").toDouble()), icon = R.drawable.ic_cab_top, isAnimRequired = true, iconImage = "ic_cab_top")
+                }
+                SelectVehicle.AUTO.name -> {
+                    olaMapView.addMarker(point = com.mapbox.mapboxsdk.geometry.LatLng(drivers.getJSONObject(i).getString("latitude").toDouble(), drivers.getJSONObject(i).getString("longitude").toDouble()), icon = R.drawable.ic_cab_bottom, isAnimRequired = true, iconImage = "ic_auto")
+                }
+                SelectVehicle.BIKE_LITE.name -> {
+                    olaMapView.addMarker(point = com.mapbox.mapboxsdk.geometry.LatLng(drivers.getJSONObject(i).getString("latitude").toDouble(), drivers.getJSONObject(i).getString("longitude").toDouble()), icon = R.drawable.ic_car, isAnimRequired = true, iconImage = "ic_car")
+                }
+            }
+        }
+    }
+
+    private fun getStateAndCityFromLatLng(latitude: Double, longitude: Double) {
+        try {
+            val geocoder = Geocoder(this, Locale.getDefault())
+            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+
+            if (!addresses.isNullOrEmpty()) {
+                val address = addresses[0]
+                val city = address.locality ?: address.subAdminArea
+                val state = address.adminArea
+                sharedPreference.putString(Constants.CURRENT_DISTRICT, city.toString())
+                cabViewModel.fetchRideFareDetail(
+                    RideBookRequest(
+                        pickuplat = sourceLatLng.latitude,
+                        pickupLng = sourceLatLng.longitude,
+                        dropLat = destinationLatLng.latitude,
+                        dropLng = destinationLatLng.longitude,
+                        vehicleId = vehicleId,
+                        district = city.toString(),
+                        pickupAddress = sourceAddress,
+                        dropAddress = destinationAddress
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun calculateAngle(from: OlaLatLng, to: OlaLatLng): Float {
+        val lat1 = Math.toRadians(from.latitude)
+        val lon1 = Math.toRadians(from.longitude)
+        val lat2 = Math.toRadians(to.latitude)
+        val lon2 = Math.toRadians(to.longitude)
+
+        val deltaLon = lon2 - lon1
+        val y = Math.sin(deltaLon) * Math.cos(lat2)
+        val x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLon)
+
+        val angle = Math.toDegrees(Math.atan2(y, x))
+
+        // Apply 180-degree rotation
+//        val rotatedAngle = (angle + 245) % 360
+//        return rotatedAngle.toFloat()
+
+        // Ensure the angle is between 0 and 360 degrees and cast to Float
+        return ((angle + 360) % 360).toFloat()
+    }
+
     override fun onMapReady() {
-        Toast.makeText(this, "Map is ready to use", Toast.LENGTH_SHORT).show()
+
+        navigationRoute = olaMapView.getNavigationMapRoute()!!
+
+//        val markerOptionsSource = OlaMarkerOptions.Builder()
+//            .setMarkerId("source")
+//            .setPosition(OlaLatLng(sourceLatLng.latitude, sourceLatLng.longitude))
+//            .setIconIntRes(R.drawable.ic_location)
+//            .setIconSize(0.04F)
+//            .setIsIconClickable(true)
+//            .setIconRotation(0f)
+//            .setIsAnimationEnable(true)
+//            .setIsInfoWindowDismissOnClick(true)
+//            .build()
+//
+//        olaMapView.addMarkerView(markerOptionsSource)
+
+//        *************************************************************
 
 
-        val markerOptionsSource = OlaMarkerOptions.Builder()
-            .setMarkerId("source")
-            .setPosition(OlaLatLng(sourceLatLng.latitude, sourceLatLng.longitude))
-            .setIconIntRes(R.drawable.ic_location_pin)
-            .setIconSize(0.1F)
-            .setIsIconClickable(true)
-            .setIconRotation(0f)
-            .setIsAnimationEnable(true)
-            .setIsInfoWindowDismissOnClick(true)
-            .build()
+//
+//        val markerOptionsDestination = OlaMarkerOptions.Builder()
+//            .setMarkerId("destination")
+//            .setPosition(OlaLatLng(destinationLatLng.latitude, destinationLatLng.longitude))
+//            .setIconIntRes(com.ola.maps.R.drawable.ic_user_destination)
+////            .setIconSize(0.1F)
+//            .setIsIconClickable(true)
+//            .setIconRotation(0f)
+//            .setIsAnimationEnable(true)
+//            .setIsInfoWindowDismissOnClick(true)
+//            .build()
+//
+//        olaMapView.addMarkerView(markerOptionsDestination)
 
-        olaMapView.addMarkerView(markerOptionsSource)
-
-        val markerOptionsDestination = OlaMarkerOptions.Builder()
-            .setMarkerId("destination")
-            .setPosition(OlaLatLng(destinationLatLng.latitude, destinationLatLng.longitude))
-            .setIconIntRes(R.drawable.ic_location_pin)
-            .setIconSize(0.1F)
-            .setIsIconClickable(true)
-            .setIconRotation(0f)
-            .setIsAnimationEnable(true)
-            .setIsInfoWindowDismissOnClick(true)
-            .build()
-
-        olaMapView.addMarkerView(markerOptionsDestination)
-
+        if(drawPath) {
+            drawPath = false
+//            navigationViewModel.fetchRouteAPI(
+//                OlaLatLng(sourceLatLng.latitude, sourceLatLng.longitude),
+//                OlaLatLng(destinationLatLng.latitude, destinationLatLng.longitude)
+//            )
+            setupRoute(LatLng(sourceLatLng.latitude, sourceLatLng.longitude), LatLng(destinationLatLng.latitude, destinationLatLng.longitude))
+        }
 
     }
 
     override fun onMapLoadFailed(p0: String?) {
         Log.d(TAG, "onMapLoadFailed: errro on map load => ${p0}")
-        Toast.makeText(this, "error on map load $p0", Toast.LENGTH_SHORT).show()
+
+        p0?.let {
+            val errorCode = p0.substring(it.lastIndex - 2)
+            if (errorCode == "401") {
+                navigationViewModel.fetchAccessTokenAPI(
+                    clientId = "54ddd969-9c71-4e07-85db-e6cf89f2051c",
+                    clientSecret = "PLo98S3rcnrg3oj9pV6nMsv3Lrssp8BQ"
+                )
+            }
+
+        }
+
     }
 
     override fun onDestroy() {
         olaMapView?.onDestroy()
         loader.dismiss()
         cabViewModel.clearRideFareDetailRes()
+
+        masterViewModel.setDashboardData(null)
         super.onDestroy()
 
+//        if(::olaMapView.isInitialized){
+//            olaMapView.removeRouteProgressListener()
+//        }
+
+
     }
+
+
 
     override fun onResume() {
         super.onResume()
         bindObservers()
-    }
 
-    private fun updateMotors(motorsAry: ArrayList<Driver>, motorIcon: Int) {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            // Map for new markers
-//            val updatedMarkers = mutableMapOf<String, Marker>()
-//
-//            // Fade out existing markers
-//            withContext(Dispatchers.Main) {
-//                driverMarkers.values.forEach { marker ->
-//                    fadeOutMarker(marker) {
-//                        marker.remove() // Remove marker after fade-out
-//                    }
+        Log.d(TAG, "onResume: onResume called!!..")
+
+        var bookingId = sharedPreference.getString(Constants.TEMP_BOOKING_ID)
+
+        val rideHistories = masterViewModel.dashboardData.value
+        if(rideHistories != null){
+            bookingId = rideHistories.tempBookingsId
+            sharedPreference.putString(Constants.TEMP_BOOKING_ID, bookingId)
+        }
+
+//        if(!bookingId.isNullOrEmpty()) {
+//            socketManager.sendData("user_update", JSONObject().apply {
+//                put("temp_bookings_id", bookingId)
+//                put("socket_id", socketManager.getSocketId())
+//            }) {
+//                runOnUiThread {
+//                    showToast(
+//                        "user connect emit success!!..."
+//                    )
 //                }
-//            }
-//
-//            // If motorsAry is not empty, add or update markers
-//            if (motorsAry.isNotEmpty()) {
-//                motorsAry.forEach { driver ->
-//                    val position = LatLng(driver.latitude.toDouble(), driver.longitude.toDouble())
-//
-//                    withContext(Dispatchers.Main) {
-//                        val newMarker = addCustomMarker(position, motorIcon)
-//                        updatedMarkers[driver.riderId.toString()] = newMarker
-//                        fadeInMarker(newMarker, motorIcon)
-//                    }
-//                }
-//            }
-//
-//            // Update the markers map on the main thread
-//            withContext(Dispatchers.Main) {
-//                driverMarkers.clear()
-//                driverMarkers.putAll(updatedMarkers)
 //            }
 //        }
-    }
 
-//    private fun addCustomMarker(position: LatLng, motorIcon: Int): Marker {
-//        val bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(MapUtils.getCarBitmap(this, motorIcon))
-//        return map.addMarker(
-//            MarkerOptions()
-//                .position(position)
-//                .icon(bitmapDescriptor)
-//                .alpha(0f) // Start with transparent for fade-in animation
-//        )!!
-//    }
+
+        if(::olaMapView.isInitialized)
+            olaMapView?.onResume()
+
+
+    }
 
     private fun fadeOutMarker(marker: Marker, onComplete: () -> Unit) {
         val animator = ValueAnimator.ofFloat(1f, 0f)
@@ -563,123 +1171,9 @@ class BookRideActivity : AppCompatActivity() , ManageBooking, MapStatusCallback 
                     Log.d(TAG, "bindObservers: response received => ${it}")
                     val responseData = it.data
 
-//                    cabAry.clear()
-//                    autoAry.clear()
-//                    bikeAry.clear()
-//                    bikeLiteAry.clear()
-
                     if(responseData?.status == true){
-                        val polylineData = responseData.drivePath ?: ""
+                        polylineData = responseData.drivePath ?: ""
 
-                        Log.d(TAG, "bindObservers: polyLine Data => $${responseData.message}")
-                        Log.d(TAG, "bindObservers: polyLine Data => $polylineData")
-
-//                        val motordata = responseData.nearbyRiders
-
-
-                        if(polylineData.isNotEmpty() && polylineData != "null"){
-
-//                            drawPolyline(polylineData)
-
-                            var polyData = decodePolylineOlaMapSdk(polylineData)
-
-
-                            val polylineOptions = OlaPolylineOptions.Builder()
-                                .setPolylineId("pid1")
-                                .setPoints(polyData)
-                                .setWidth(2f)
-                                .setColor("#0000FF")
-                                .build()
-//
-                            olaMapView.addPolyline(polylineOptions)
-
-//                            polylineOptions.points.addAll(polyData)
-                            Log.d(TAG, "bindObservers: route array length => Outer ${polyData.size} and ${::olaMapView.isInitialized}")
-                            println(polyData)
-                            if(::olaMapView.isInitialized) {
-                                Log.d(TAG, "bindObservers: route array length => Inner ${polyData.size} and ${polylineOptions.points}")
-                                olaMapView.addPolyline(polylineOptions)
-                            }
-
-
-//  ********************************************************************************************************************************************************
-//                            if(::olaMapView.isInitialized) {
-//                                val polylineOptions = OlaPolylineOptions.Builder()
-//                                    .setPolylineId("pid1")
-//                                    .setWidth(2f)
-//                                    .setColor("#0000FF")
-//                                    .build()
-//
-//                                val polyline = olaMapView.addPolyline(polylineOptions)
-//
-//                                val animator = ValueAnimator.ofInt(0, polyData.size - 1)
-//                                animator.duration = 2000 // Animation duration
-//                                animator.addUpdateListener { animation ->
-//                                    val subList = ArrayList<OlaLatLng>()
-//                                    val index = animation.animatedValue as Int
-//                                    subList.addAll(polyData.subList(0, index + 1))
-//                                    polyline?.setPoints(subList)
-//                                }
-//                                animator.start()
-//                            }
-//  *********************************************************************************************************************************************************
-
-
-//                            GlobalScope.launch {
-//                                val result = withContext(Dispatchers.IO) {
-//                                    try {
-//                                         decodePolylineOlaMapSdk(polylineData)
-//                                    }catch (err: Exception){
-//                                        Log.d(TAG, "decodePolylineInBackground: error on create path => ${err}")
-//                                        ArrayList<OlaLatLng>()
-//                                    }
-//
-//                                }
-//
-//                               runOnUiThread {
-//
-//                                   val polylineOptions = OlaPolylineOptions.Builder()
-//                                       .setPolylineId("pid1")
-//                                       .setPoints(result)
-//                                       .setWidth(2f)
-//                                       .setColor("#0000FF")
-//                                       .build()
-//                                   Log.d(TAG, "bindObservers: route array length => Outer ${result.size} and ${::olaMap.isInitialized}")
-//                                   if(::olaMapView.isInitialized) {
-//                                       Log.d(TAG, "bindObservers: route array length => Inner ${result.size} and ${polylineOptions.points}")
-//                                       olaMapView.addPolyline(polylineOptions)
-//                                   }
-//                               }
-//                            }
-//
-//
-//
-//
-//                            // Decode polyline
-//                            decodedPoints = decodePolyline(polylineData)
-//
-//                            // Initialize empty polyline
-//                            polyline = olaMapView.addPolyline(PolylineOptions().color(Color.GRAY).width(10f))
-//
-//                            // Animate polyline
-//                            animatePolyline(decodedPoints)
-
-                        }
-
-
-
-
-//                        motordata.nearbyCabs.riders.let { it1 -> cabAry.addAll(it1) }
-//                        motordata.nearbyAutos.riders.let { it1 -> autoAry.addAll(it1) }
-//                        motordata.nearbyBikes.riders.let { it1 -> bikeAry.addAll(it1) }
-//                        motordata.nearbyBikeLite.riders.let { it1 -> bikeLiteAry.addAll(it1) }
-
-                        Log.d(TAG, "bindObservers: ")
-                        
-                        cabViewModel.updateVehicleType(sharedPreference.getEnum(Constants.VEHICLE_TYPE, SelectVehicle::class.java ,SelectVehicle.BIKE))
-                        cabViewModel.updateRideBookResponse(responseData)
-
-//                        cabViewModel.clearRideFareDetailRes()
                     }else{
                         alertDialogService.alertDialogAnim(
                             this,
@@ -687,6 +1181,10 @@ class BookRideActivity : AppCompatActivity() , ManageBooking, MapStatusCallback 
                             R.raw.failed,
                             true
                         )
+                        val district = sharedPreference.getString(Constants.CURRENT_DISTRICT, "")
+                        cabViewModel.updateNonServiceDistrict(district.toString())
+                        cabViewModel.rideFareDetailResponseLiveData.removeObservers(this)
+                        cabViewModel.clearRideFareDetailRes()
                     }
 
                 }
@@ -745,46 +1243,11 @@ class BookRideActivity : AppCompatActivity() , ManageBooking, MapStatusCallback 
         return poly
     }
 
-    
-    fun decodePolyline(encoded: String): ArrayList<LatLng> {
-        val poly = ArrayList<LatLng>()
-        var index = 0
-        val len = encoded.length
-        var lat = 0
-        var lng = 0
-
-        while (index < len) {
-            var b: Int
-            var shift = 0
-            var result = 0
-            do {
-                b = encoded[index++].code - 63
-                result = result or (b and 0x1f shl shift)
-                shift += 5
-            } while (b >= 0x20)
-            val dlat = if (result and 1 != 0) (result shr 1).inv() else result shr 1
-            lat += dlat
-
-            shift = 0
-            result = 0
-            do {
-                b = encoded[index++].code - 63
-                result = result or (b and 0x1f shl shift)
-                shift += 5
-            } while (b >= 0x20)
-            val dlng = if (result and 1 != 0) (result shr 1).inv() else result shr 1
-            lng += dlng
-
-//            poly.add(LatLng(lat / 1E5, lng / 1E5))
-            poly.add(LatLng(lat / 1E5, lng / 1E5))
-        }
-        return poly
-    }
 
     //call onStop() of SDK before removing the OlaMaps
     override fun onStop() {
         super.onStop()
-        olaMapView?.onStop()
+//        olaMapView?.onStop()
     }
 
 
@@ -821,50 +1284,121 @@ class BookRideActivity : AppCompatActivity() , ManageBooking, MapStatusCallback 
 //        animator.start()
 //    }
 
-    @SuppressLint("CommitTransaction")
-    private fun replaceFragment(currentFragment: Fragment, newFragment: Fragment){
-        // Check if the current fragment exists and is attached
-        val removeFragment = supportFragmentManager.findFragmentByTag(currentFragment.javaClass.simpleName) as? DialogFragment
-        removeFragment?.dismissAllowingStateLoss()
-//        val bottomSheetFragment = AssignDriverFragment()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_bookride, newFragment, newFragment.javaClass.simpleName)
-            .addToBackStack(null)
-            .commitAllowingStateLoss()
-    }
 
     override fun performOperation(status: BookingStatus) {
         when(status){
-            BookingStatus.ACCEPTED -> {
+            BookingStatus.SELECT_VEHICLE -> {
+
+            }
+            BookingStatus.LOOKING_DRIVER -> {
+                showToast("Looking drivers")
+                isRideStatus = BookingStatus.LOOKING_DRIVER
+                sharedPreference.saveEnum(Constants.RIDE_STATUS, isRideStatus)
+            }
+            BookingStatus.RIDE_CANCELLED -> {
+                showToast("Ride Cancelled")
+                isRideStatus = BookingStatus.RIDE_CANCELLED
+                sharedPreference.saveEnum(Constants.RIDE_STATUS, isRideStatus)
+            }
+            BookingStatus.RIDE_ACCEPTED -> {
+                olaMapView.removeAllMarkers()
                 showToast("Ride Accepted")
 
-//                replaceFragment(LookingForRiderFragment(), AssignDriverFragment())
+                directionsRouteList.clear()
+//                navigationViewModel.clearRoute()
 
-
-
-//                val currentFragment = supportFragmentManager.findFragmentByTag(LookingForRiderFragment.TAG) as? LookingForRiderFragment
-//                currentFragment?.dismiss()
-//                val bottomSheetFragment = AssignDriverFragment()
-//                supportFragmentManager.beginTransaction()
-//                    .replace(R.id.fragment_container_bookride, bottomSheetFragment)
-//                    .addToBackStack(null)
-//                    .commitAllowingStateLoss()
-
-                
+                isRideStatus = BookingStatus.RIDE_ACCEPTED
+                sharedPreference.saveEnum(Constants.RIDE_STATUS, isRideStatus)
 
 
             }
             BookingStatus.ARRIVEING -> {
+                olaMapView.removeAllMarkers()
+
+                directionsRouteList.clear()
+
                 showToast("Driver arriving soon")
+                isRideStatus = BookingStatus.ARRIVEING
+                sharedPreference.saveEnum(Constants.RIDE_STATUS, isRideStatus)
             }
             BookingStatus.ARRIVED -> {
                 showToast("Driver arrived")
+                directionsRouteList.clear()
+
+
+                isRideStatus = BookingStatus.ARRIVED
+                sharedPreference.saveEnum(Constants.RIDE_STATUS, isRideStatus)
+            }
+            BookingStatus.RIDE_STARTED -> {
+                showToast("Ride Started")
+                directionsRouteList.clear()
+
+
+//                navigationViewModel.clearRoute()
+                isRideStatus = BookingStatus.RIDE_STARTED
+                sharedPreference.saveEnum(Constants.RIDE_STATUS, isRideStatus)
+
+
+//                if(::polylineData.isInitialized && polylineData.isNotEmpty()){
+//
+//                    var polyData = decodePolylineOlaMapSdk(polylineData)
+//
+//
+//                    val polylineOptions = OlaPolylineOptions.Builder()
+//                        .setPolylineId("pid1")
+//                        .setPoints(polyData)
+//                        .setWidth(2f)
+//                        .setColor("#060606") //0000FF
+//                        .build()
+////
+//                    olaMapView.addPolyline(polylineOptions)
+//
+////                            polylineOptions.points.addAll(polyData)
+//                    Log.d(TAG, "bindObservers: route array length => Outer ${polyData.size} and ${::olaMapView.isInitialized}")
+//                    println(polyData)
+//                    if(::olaMapView.isInitialized) {
+//                        Log.d(TAG, "bindObservers: route array length => Inner ${polyData.size} and ${polylineOptions.points}")
+//                        olaMapView.addPolyline(polylineOptions)
+//                    }
+
+//                }
+
+            }
+            BookingStatus.RIDE_COMPLETED -> {
+                showToast("Ride Completed")
+                isRideStatus = BookingStatus.RIDE_COMPLETED
+                sharedPreference.saveEnum(Constants.RIDE_STATUS, isRideStatus)
+                sharedPreference.putString(Constants.TEMP_BOOKING_ID, "")
+
+                directionsRouteList.clear()
             }
             else -> {
-                showToast("nothing happened")
+                Log.d(TAG, "performOperation: no status on Booking Ride Activity")
             }
         }
+
+
+
     }
+
+     override fun onPermissionsResult(result: List<PermissionStatus>) {
+             when {
+                 result.anyPermanentlyDenied() -> showPermanentlyDeniedDialog(result, "Please allowed Permission"){
+                     val intent = Intent().apply {
+                         action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                         data = Uri.fromParts("package", packageName, null)
+                     }
+                     GPSLauncher.launch(intent)
+                 }
+                 result.anyShouldShowRationale() -> showRationaleDialog(result, request, "Please allowed Permission")
+                 result.allGranted() -> {
+
+                     olaMapsInit()
+
+
+                 }
+             }
+         }
 
 
 }

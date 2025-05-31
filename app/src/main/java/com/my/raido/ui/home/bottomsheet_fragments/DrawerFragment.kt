@@ -9,10 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.my.raido.R
 import com.my.raido.Utils.TokenManager
+import com.my.raido.Utils.setOnSingleClickListener
+import com.my.raido.constants.Constants
 import com.my.raido.data.prefs.SharedPrefManager
 import com.my.raido.databinding.FragmentDrawerBinding
 import com.my.raido.ui.auth.AuthActivity
@@ -67,63 +73,145 @@ class DrawerFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.alertdialogCloseBtn.setOnClickListener {
+        binding.alertdialogCloseBtn.setOnSingleClickListener {
             dismiss()
         }
 
-        binding.drawerProfileBtn.setOnClickListener {
-            val bottomSheetFragment = ProfileFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+//  ************************* Local Data access ****************************************************
+        userViewModel.allUsers.observe(viewLifecycleOwner, Observer { userList ->
+            if (userList.isNotEmpty()) {
+                binding.nameTextDrawer.text = String.format("Hello, %s!", userList[0].userName)
+
+                Glide.with(this@DrawerFragment)
+                    .load("${Constants.IMAGE_BASE_URL}/${userList[0].userProfileImg}")
+                    .placeholder(R.drawable.dummyuser) // Placeholder image while loading
+                    .error(R.drawable.dummyuser)
+                    .transition(DrawableTransitionOptions.withCrossFade()) // Fade transition
+                    .into(binding.profilePic)
+
+            }
+        })
+//  ************************* Local Data access ****************************************************
+
+        binding.drawerProfileBtn.setOnSingleClickListener {
+            val sheet = ProfileFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = ProfileFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
 
-        binding.drawerRideHistoryBtn.setOnClickListener {
-            val bottomSheetFragment = RiderHistoryFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        binding.drawerRideHistoryBtn.setOnSingleClickListener {
+            val sheet = RiderHistoryFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = RiderHistoryFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
 
-        binding.drawerReferEarnBtn.setOnClickListener {
-            val bottomSheetFragment = ReferEarnFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        binding.drawerReferEarnBtn.setOnSingleClickListener {
+            val sheet = ReferEarnFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = ReferEarnFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
 
-        binding.drawerPaymentBtn.setOnClickListener {
-            val bottomSheetFragment = DrawerPaymentFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        binding.drawerPaymentBtn.setOnSingleClickListener {
+            val sheet = DrawerPaymentFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = DrawerPaymentFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
-        binding.drawerSafetyBtn.setOnClickListener {
-            val bottomSheetFragment = SafetyFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        binding.drawerSafetyBtn.setOnSingleClickListener {
+            val sheet = SafetyFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = SafetyFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
-        binding.drawerRewardBtn.setOnClickListener {
-            val bottomSheetFragment = MyRewardsFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        binding.drawerRewardBtn.setOnSingleClickListener {
+            val sheet = MyRewardsFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = MyRewardsFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
-        binding.drawerRaidoCoinBtn.setOnClickListener {
-            val bottomSheetFragment = RaidoCoinsFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        binding.drawerRaidoCoinBtn.setOnSingleClickListener {
+            val sheet = RaidoCoinsFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = RaidoCoinsFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
 
-        binding.drawerNotificationBtn.setOnClickListener {
-            val bottomSheetFragment = NotificationFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        binding.drawerNotificationBtn.setOnSingleClickListener {
+            val sheet = NotificationFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = NotificationFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
 
-        binding.drawerClaimsBtn.setOnClickListener {
-            val bottomSheetFragment = ClaimsFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        binding.drawerClaimsBtn.setOnSingleClickListener {
+            val sheet = ClaimsFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = ClaimsFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
 
-        binding.drawerHelpBtn.setOnClickListener {
-            val bottomSheetFragment = HelpFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        binding.drawerHelpBtn.setOnSingleClickListener {
+            val sheet = HelpFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = HelpFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
 
-        binding.drawerAboutBtn.setOnClickListener {
-            val bottomSheetFragment = AboutFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        binding.drawerAboutBtn.setOnSingleClickListener {
+            val sheet = AboutFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = AboutFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
 
-        binding.drawerLogoutBtn.setOnClickListener {
+        binding.drawerLogoutBtn.setOnSingleClickListener {
             userViewModel.logoutUser()
             tokenManager.removeToken()
             sharedPrefManager.removeAll()

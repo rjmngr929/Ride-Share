@@ -7,13 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.my.raido.Utils.setOnSingleClickListener
 import com.my.raido.databinding.FragmentDrawerPaymentBinding
 import com.my.raido.ui.home.bottomsheet_fragments.AddMoneyFragment
+import com.my.raido.ui.home.bottomsheet_fragments.drawers.AboutFragment
+import com.my.raido.ui.viewmodels.MasterViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class DrawerPaymentFragment : BottomSheetDialogFragment() {
 
     companion object{
@@ -21,6 +27,8 @@ class DrawerPaymentFragment : BottomSheetDialogFragment() {
     }
 
     private lateinit var binding: FragmentDrawerPaymentBinding
+
+    private val masterViewModel: MasterViewModel by viewModels()
 
     private lateinit var myContext: Context
 
@@ -43,18 +51,35 @@ class DrawerPaymentFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.alertdialogCloseBtn.setOnClickListener {
+        binding.alertdialogCloseBtn.setOnSingleClickListener {
             dismiss()
         }
 
-        binding.addMoneyBtn.setOnClickListener {
-            val bottomSheetFragment = AddMoneyFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        masterViewModel.walletBalanceData.observe(this) { balance ->
+            binding.balanceText.text = String.format("₹ %s", balance)
         }
 
-        binding.showPassbookBtn.setOnClickListener {
-            val bottomSheetFragment = PassbookFragment()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+
+        binding.addMoneyBtn.setOnSingleClickListener {
+            val sheet = AddMoneyFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = AddMoneyFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        }
+
+        binding.showPassbookBtn.setOnSingleClickListener {
+            val sheet = PassbookFragment()
+            val existingSheet = childFragmentManager.findFragmentByTag(sheet.tag)
+            if (existingSheet == null) {
+                sheet.show(childFragmentManager, sheet.tag)
+            }
+
+//            val bottomSheetFragment = PassbookFragment()
+//            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
 
     }

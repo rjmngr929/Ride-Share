@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.home.bottomsheet_fragments.LookingForRiderFragment"
+    tools:context=".ui.home.bottomsheet_fragments.ride_book.LookingForRiderFragment"
     android:background="@drawable/top_cornor_rounded"
     android:backgroundTint="@color/bg_dark_secondary">
 
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Looking for Rider"
-            android:textSize="@dimen/_20ssp"
+            android:textSize="@dimen/_18ssp"
             android:textColor="@color/white"
             android:fontFamily="@font/poppins_medium"
             android:textAlignment="center"/>
@@ -52,7 +52,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Meet at the pick up point"
-                android:textSize="@dimen/_14ssp"
+                android:textSize="@dimen/_12ssp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/poppins_medium"
                 app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +64,7 @@
                 android:id="@+id/right_s_1"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
+                android:visibility="invisible"
                 android:background="@drawable/ic_menu_icon"
                 app:layout_constraintStart_toEndOf="@+id/left_s_1"
                 app:layout_constraintTop_toTopOf="parent"

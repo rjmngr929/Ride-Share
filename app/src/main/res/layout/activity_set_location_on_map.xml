@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.home.SetLocationOnMapActivity"
+    tools:context=".ui.home.bottomsheet_fragments.ride_book.setLocationOnMap.SetLocationOnMapActivity"
     android:background="@color/bg_dark_secondary">
 
 <com.google.android.material.divider.MaterialDivider
@@ -48,13 +48,15 @@
         android:layout_height="match_parent"/>
 
     <!-- Center marker (custom marker) -->
-    <View
+    <ImageView
         android:id="@+id/centerMarker"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
         android:layout_gravity="center"
-        android:background="@drawable/ic_location_pin"
-       app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_user_current_location"
+        android:layout_marginBottom="@dimen/_20sdp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

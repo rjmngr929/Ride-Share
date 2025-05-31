@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.my.raido.Utils.setOnSingleClickListener
 import com.my.raido.databinding.HelpQuotesRowLayoutBinding
 import com.my.raido.models.response.help.HelpTopics
 
@@ -24,7 +25,7 @@ class HelpQuotesRecyclerviewAdapter(private var helpQuotesList : ArrayList<HelpT
                 with(helpQuotesList[position]) {
                     binding.title.text = this.topicName
 
-                    binding.root.setOnClickListener {
+                    binding.root.setOnSingleClickListener {
                         onHelpQuoteItemClick(this)
                     }
 
