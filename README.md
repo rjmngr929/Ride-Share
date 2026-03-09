@@ -1,6 +1,6 @@
-<h1 align="center">Raido 🚖</h1>
+<h1 align="center">Ride Share 🚖</h1>
 
-<p><strong>Raido</strong> is a modern ride-hailing Android application built entirely in <strong>Kotlin</strong>, designed for customers to conveniently book rides in real-time. It offers a smooth user experience with robust architecture and efficient data handling.</p>
+<p><strong>Ride Share</strong> is a modern ride-hailing Android application built entirely in <strong>Kotlin</strong>, designed for customers to conveniently book rides in real-time. It offers a smooth user experience with robust architecture and efficient data handling.</p>
 
 <h2>🛠 Tech Stack & Architecture</h2>
 
